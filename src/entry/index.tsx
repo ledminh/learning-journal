@@ -4,7 +4,7 @@ export default function Entry(props: { type: "full" | "summary" }) {
       <p>Date</p>
       <h2>Entry Title</h2>
       <p>Tags</p>
-      <p>Link/Quote/Image</p>
+      <p>Link/Quote/Code/Image</p>
       <section>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam

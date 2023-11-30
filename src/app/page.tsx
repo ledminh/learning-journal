@@ -1,5 +1,6 @@
 import { DateBlock } from "@/date";
 import Entry from "@/entry";
+import { FilterBlock } from "@/filter";
 import Footer from "@/layout/Footer";
 import { TagBlock } from "@/tag";
 
@@ -21,6 +22,7 @@ export default function Home() {
       </p>
       <Entry type="full" />
       <Entry type="summary" />
+      <FilterBlock />
       <TagBlock />
       <DateBlock />
       <Footer />
