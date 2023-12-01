@@ -6,10 +6,10 @@ import { SortBlock } from "@/sort";
 export default function SideBar() {
   return (
     <div className="flex flex-col gap-4">
-      <SortBlock />
-      <FilterBlock />
       <TagBlock />
       <DateBlock />
+      <SortBlock />
+      <FilterBlock />
     </div>
   );
 }

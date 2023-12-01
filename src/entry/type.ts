@@ -9,7 +9,7 @@ enum MaterialType {
   Image = "image",
 }
 
-type Entry = {
+type JournalEntry = {
   id: string;
   title: string;
   slug: string;
@@ -26,16 +26,33 @@ type Entry = {
 /***********************
  * Functions
  */
-type GetEntryFunction = (slug: string) => Entry;
-type GetEntriesFunction = (options: {
-  filters?: {
-    materialType?: MaterialType;
-    keyword?: string;
-    tag?: string;
-    date?: string;
-  };
-  sort?: {
-    by?: "date" | "title";
-    order?: "asc" | "desc";
-  };
-}) => Entry[];
+type GetJournalEntryFunction = (slug: string) => JournalEntry;
+type GetJournalEntriesByTagFunction = (
+  tag: string,
+  options: {
+    filters?: {
+      date?: string;
+      materialType?: MaterialType;
+      keyword?: string;
+    };
+    sort?: {
+      by?: "date" | "title";
+      order?: "asc" | "desc";
+    };
+  }
+) => JournalEntry[];
+
+type GetJournalEntriesByDateFunction = (
+  date: string,
+  options: {
+    filters?: {
+      tag?: string;
+      materialType?: MaterialType;
+      keyword?: string;
+    };
+    sort?: {
+      by?: "date" | "title";
+      order?: "asc" | "desc";
+    };
+  }
+) => JournalEntry[];

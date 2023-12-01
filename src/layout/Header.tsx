@@ -3,7 +3,9 @@ import Link from "next/link";
 export default function Header() {
   return (
     <div className="flex flex-col gap-3">
-      <h1 className="text-4xl font-bold">LEARNING JOURNAL</h1>
+      <Link href="/">
+        <h1 className="text-4xl font-bold">LEARNING JOURNAL</h1>
+      </Link>
       <p className="bg-slate-200 p-1 text-sm">
         I created this learning journal to practice writing and to document my
         learning process.{" "}
