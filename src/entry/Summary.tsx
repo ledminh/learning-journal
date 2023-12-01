@@ -1,6 +1,6 @@
 export default function Summary() {
   return (
-    <div>
+    <Wrapper>
       <p>Date</p>
       <h2>Entry Title</h2>
       <p>Tags</p>
@@ -10,6 +10,14 @@ export default function Summary() {
         adipisicing elit. Quisquam voluptatum, quia, quod, voluptates tempora
         doloremque quos dolorum.
       </p>
-    </div>
+    </Wrapper>
   );
 }
+
+/*******************
+ * Components
+ */
+
+const Wrapper = (props: { children: React.ReactNode }) => (
+  <div className="border border-slate-400 p-2">{props.children}</div>
+);

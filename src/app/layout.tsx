@@ -21,8 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="w-11/12 mx-auto pt-4 min-h-screen max-w-4xl flex flex-col justify-between">
-          {/* Header, Body, and SideBar here*/}
-          <div className="flex flex-col gap-6">
+          {/* Header - Body and SideBar here*/}
+          <div className="flex flex-col gap-8">
             <header className="col-span-7">
               <Header />
             </header>
