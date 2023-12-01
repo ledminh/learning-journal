@@ -3,7 +3,6 @@ import Footer from "@/layout/Footer";
 
 import "./globals.css";
 import { Inter } from "next/font/google";
-import SideBar from "@/layout/SideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,14 +26,7 @@ export default function RootLayout({
               <Header />
             </header>
             {/* Body and SideBar here*/}
-            <div className="grid grid-cols-7 gap-10">
-              <main className="col-span-7 order-2 sm:order-1 sm:col-span-5">
-                {children}
-              </main>
-              <aside className="col-span-7 order-1 sm:order-2 sm:col-span-2">
-                <SideBar />
-              </aside>
-            </div>
+            {children}
           </div>
           <footer>
             <Footer />
