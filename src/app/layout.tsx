@@ -20,15 +20,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="w-9/12 mx-auto my-4 grid grid-cols-4 gap-6">
-          <header className="col-span-4">
-            <Header />
-          </header>
-          <main className="col-span-3">{children}</main>
-          <aside>
-            <SideBar />
-          </aside>
-          <footer className="col-span-4">
+        <div className="w-11/12 mx-auto pt-4 min-h-screen max-w-4xl flex flex-col justify-between">
+          <div className="grid grid-cols-7 gap-10">
+            <header className="col-span-7">
+              <Header />
+            </header>
+            {/* @TODO: Make this responsive. In small screen, make aside on top of main */}
+            <main className="col-span-5">{children}</main>
+            <aside className="col-span-2">
+              <SideBar />
+            </aside>
+          </div>
+          <footer>
             <Footer />
           </footer>
         </div>

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <>
+    <div className="flex flex-col gap-3">
       <h1 className="text-4xl font-bold">LEARNING JOURNAL</h1>
       <p className="bg-slate-200 p-1 text-sm">
         I created this learning journal to practice writing and to document my
@@ -14,6 +14,6 @@ export default function Header() {
           Source code here
         </Link>
       </p>
-    </>
+    </div>
   );
 }
