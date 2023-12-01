@@ -1,3 +1,5 @@
+import Block from "@/layout/Block";
+
 export function DateBlock() {
-  return <div>DateBlock</div>;
+  return <Block title="Date">DateBlock</Block>;
 }
