@@ -1,7 +1,7 @@
-import { FilterBlock } from "@/filter";
-import { TagBlock } from "@/tag";
-import { DateBlock } from "@/date";
-import { SortBlock } from "@/sort";
+import { FilterBlock } from "@/ui/filter";
+import { TagBlock } from "@/ui/tag";
+import { DateBlock } from "@/ui/date";
+import { SortBlock } from "@/ui/sort";
 
 export default function SideBar() {
   return (
