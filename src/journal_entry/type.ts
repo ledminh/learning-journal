@@ -40,4 +40,4 @@ export type GetJournalEntriesFunction = (options?: {
     by?: "date" | "title";
     order?: "asc" | "desc";
   };
-}) => JournalEntry[];
+}) => Promise<JournalEntry[]>;

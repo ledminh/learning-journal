@@ -27,7 +27,7 @@ export type GetDateEntryFunction = (
       order?: "asc" | "desc";
     };
   }
-) => DateEntry;
+) => Promise<DateEntry>;
 
 export type GetDateEntriesFunction = (options?: {
   limit?: number;
@@ -42,4 +42,4 @@ export type GetDateEntriesFunction = (options?: {
     by?: "date" | "title";
     order?: "asc" | "desc";
   };
-}) => DateEntry[];
+}) => Promise<DateEntry[]>;

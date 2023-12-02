@@ -28,7 +28,7 @@ export type GetTagEntryFunction = (
       order?: "asc" | "desc";
     };
   }
-) => TagEntry;
+) => Promise<TagEntry>;
 
 export type GetTagEntriesFunction = (options?: {
   limit?: number;
@@ -43,4 +43,4 @@ export type GetTagEntriesFunction = (options?: {
     by?: "date" | "title";
     order?: "asc" | "desc";
   };
-}) => TagEntry[];
+}) => Promise<TagEntry[]>;
