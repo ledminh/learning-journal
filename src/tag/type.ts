@@ -33,6 +33,7 @@ export type GetTagEntryFunction = (
 export type GetTagEntriesFunction = (options?: {
   limit?: number;
   offset?: number;
+  includeJournalEntries?: boolean;
   filters?: {
     date?: string;
     materialType?: string;
