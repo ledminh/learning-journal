@@ -1,5 +1,5 @@
-import Header from "@/layout/Header";
-import Footer from "@/layout/Footer";
+import Header from "@/ui/layout/Header";
+import Footer from "@/ui/layout/Footer";
 
 import "./globals.css";
 import { Inter } from "next/font/google";

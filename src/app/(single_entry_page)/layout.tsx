@@ -1,5 +1,3 @@
-import SideBar from "@/layout/SideBar";
-
 export default function SingleEntryLayout({
   children,
 }: {

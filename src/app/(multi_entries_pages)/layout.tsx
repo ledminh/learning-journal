@@ -1,4 +1,4 @@
-import SideBar from "@/layout/SideBar";
+import SideBar from "@/ui/layout/SideBar";
 
 export default function MultiEntriesLayout({
   children,

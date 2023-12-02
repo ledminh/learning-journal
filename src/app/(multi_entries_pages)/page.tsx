@@ -1,4 +1,4 @@
-import JournalEntry from "@/journal_entry";
+import JournalEntry from "@/ui/journal_entry";
 import Link from "next/link";
 
 export default function Home() {

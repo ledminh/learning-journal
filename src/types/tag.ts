@@ -1,24 +1,25 @@
-import type { JournalEntry } from "@/journal_entry/type";
+import type { JournalEntry } from "@/types/journal_entry";
 
-/************************
+/***************
  * Data
  */
 
-export type DateEntry = {
-  date: string;
+export type TagEntry = {
+  tag: string;
   entries: JournalEntry[];
 };
 
-/***********************
+/****************
  * Functions
  */
-export type GetDateEntryFunction = (
-  date: string,
+
+export type GetTagEntryFunction = (
+  tag: string,
   options?: {
     limit?: number;
     offset?: number;
     filters?: {
-      tag?: string;
+      date?: string;
       materialType?: string;
       keyword?: string;
     };
@@ -27,14 +28,14 @@ export type GetDateEntryFunction = (
       order?: "asc" | "desc";
     };
   }
-) => Promise<DateEntry>;
+) => Promise<TagEntry>;
 
-export type GetDateEntriesFunction = (options?: {
+export type GetTagEntriesFunction = (options?: {
   limit?: number;
   offset?: number;
   includeJournalEntries?: boolean;
   filters?: {
-    tag?: string;
+    date?: string;
     materialType?: string;
     keyword?: string;
   };
@@ -42,4 +43,4 @@ export type GetDateEntriesFunction = (options?: {
     by?: "date" | "title";
     order?: "asc" | "desc";
   };
-}) => Promise<DateEntry[]>;
+}) => Promise<TagEntry[]>;

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import JournalEntry from "@/journal_entry";
+import JournalEntry from "@/ui/journal_entry";
 
 export default function DatePage(props: { params: { date: string } }) {
   return (

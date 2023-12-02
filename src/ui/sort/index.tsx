@@ -1,4 +1,4 @@
-import Block from "@/layout/Block";
+import Block from "@/ui/layout/Block";
 
 export function SortBlock() {
   return (

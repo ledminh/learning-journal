@@ -1,4 +1,4 @@
-import Entry from "@/journal_entry";
+import Entry from "@/ui/journal_entry";
 
 export default function EntryPage(props: { params: { slug: string } }) {
   return (

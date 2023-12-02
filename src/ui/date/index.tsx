@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Block from "@/layout/Block";
+import Block from "@/ui/layout/Block";
 
 export function DateBlock() {
   return (
