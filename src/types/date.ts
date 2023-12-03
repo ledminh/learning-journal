@@ -10,7 +10,7 @@ export type DateEntry = {
 };
 
 /***********************
- * Functions
+ * SERVER functions
  */
 export type GetDateEntryFunction = (
   date: string,

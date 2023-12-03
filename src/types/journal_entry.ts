@@ -2,6 +2,8 @@
  * Data
  */
 
+import { AsyncFunction } from ".";
+
 enum MaterialType {
   Link = "link",
   Quote = "quote",
@@ -23,21 +25,89 @@ export type JournalEntry = {
   content: string;
 };
 
-/***********************
- * Functions
- */
-export type GetJournalEntryFunction = (slug: string) => Promise<JournalEntry>;
+/************************************************
+ * SERVER and CLIENT functions: CRUD
+ ************************************************/
 
-export type GetJournalEntriesFunction = (options?: {
-  limit?: number;
-  offset?: number;
-  filters?: {
-    date?: string;
-    materialType?: MaterialType;
-    keyword?: string;
+/******** CREATE **********************/
+
+export type CreateJournalEntryFunction = AsyncFunction<
+  Omit<JournalEntry, "id" | "slug">,
+  JournalEntry
+>;
+
+/******** READ **********************/
+
+export type GetJournalEntryFunction = AsyncFunction<
+  { slug: string },
+  JournalEntry
+>;
+
+export type GetJournalEntriesFunction = AsyncFunction<
+  {
+    limit?: number;
+    offset?: number;
+    filters?: {
+      date?: string;
+      materialType?: MaterialType;
+      keyword?: string;
+    };
+    sort?: {
+      by?: "date" | "title";
+      order?: "asc" | "desc";
+    };
+  },
+  JournalEntry[]
+>;
+
+/******** UPDATE **********************/
+export type UpdateJournalEntryFunction = AsyncFunction<
+  JournalEntry,
+  JournalEntry
+>;
+
+/******** DELETE **********************/
+export type DeleteJournalEntryFunction = AsyncFunction<
+  { id: string },
+  JournalEntry
+>;
+
+/************************************************
+ * API functions
+ ************************************************/
+
+// UpoadImage
+export type UploadImageAPIResponse = {
+  url: string;
+};
+
+export type UploadImageFunction = AsyncFunction<
+  {
+    image: File;
+  },
+  UploadImageAPIResponse
+>;
+
+// GenerateJournalEntryDescription
+
+export type DataToGenerateJournalEntryDescription = {
+  title: string;
+  content: string;
+  material: {
+    type: MaterialType;
+    content: string;
   };
-  sort?: {
-    by?: "date" | "title";
-    order?: "asc" | "desc";
-  };
-}) => Promise<JournalEntry[]>;
+};
+
+export type GenerateJournalEntryDescriptionAPIResponse = {
+  description: string;
+};
+
+export type GenerateJournalEntryDescriptionFunction = AsyncFunction<
+  DataToGenerateJournalEntryDescription,
+  GenerateJournalEntryDescriptionAPIResponse
+>;
+
+/************************************************
+ * HOOKS
+ ************************************************/

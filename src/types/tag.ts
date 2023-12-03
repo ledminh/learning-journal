@@ -9,8 +9,8 @@ export type TagEntry = {
   entries: JournalEntry[];
 };
 
-/****************
- * Functions
+/*************************
+ * SERVER functions
  */
 
 export type GetTagEntryFunction = (
