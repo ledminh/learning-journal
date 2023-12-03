@@ -10,7 +10,7 @@ export type TagEntry = {
 };
 
 /*************************
- * SERVER functions
+ * Functions
  */
 
 export type GetTagEntryFunction = (
