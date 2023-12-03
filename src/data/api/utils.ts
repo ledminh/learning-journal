@@ -56,3 +56,26 @@ export async function post<R, P = {}>(params: PostParams<P>) {
 
   throw new Error("Invalid type");
 }
+
+type GetParams = {
+  url: string;
+  queryParams?: {
+    [key: string]: string;
+  };
+};
+
+export async function get<R>(params: GetParams) {
+  const { url, queryParams } = params;
+
+  const query = new URLSearchParams(queryParams).toString();
+
+  const response = await fetch(`${url}?${query}`);
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const retVal = (await response.json()) as R;
+
+  return retVal;
+}
