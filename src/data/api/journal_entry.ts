@@ -4,11 +4,15 @@ import {
   GenerateJournalEntryDescriptionFunction,
   GetJournalEntryFunction,
   GetJournalEntriesFunction,
-  UploadImageAPIResponse,
+  ImageAPIResponse,
   GenerateJournalEntryDescriptionAPIResponse,
   DataToGenerateJournalEntryDescription,
   CreateJournalEntryFunction,
+  UpdateJournalEntryFunction,
+  DeleteJournalEntryFunction,
+  DeleteImageFunction,
 } from "@/types/journal_entry";
+
 import { post, get } from "./utils";
 import generateID from "@/utils/generateID";
 import createSlug from "@/utils/createSlug";
@@ -18,7 +22,7 @@ import createSlug from "@/utils/createSlug";
  ************************************************/
 
 export const uploadImage: UploadImageFunction = async function (params) {
-  const payload = await post<UploadImageAPIResponse>({
+  const payload = await post<ImageAPIResponse>({
     url: "/api/upload-image",
     type: "file",
     payload: {
@@ -29,6 +33,30 @@ export const uploadImage: UploadImageFunction = async function (params) {
   if (!payload) {
     return {
       errorMessage: "Failed to upload image",
+      payload: null,
+    };
+  }
+
+  return {
+    errorMessage: null,
+    payload,
+  };
+};
+
+export const deleteImage: DeleteImageFunction = async function (params) {
+  const payload = await post<ImageAPIResponse>({
+    url: "/api/delete-image",
+    type: "json",
+    payload: {
+      json: {
+        url: params.url,
+      },
+    },
+  });
+
+  if (!payload) {
+    return {
+      errorMessage: "Failed to delete image",
       payload: null,
     };
   }
@@ -148,4 +176,54 @@ export const getJournalEntries: GetJournalEntriesFunction = async function (
 };
 
 /******** UPDATE **********************/
+export const updateJournalEntry: UpdateJournalEntryFunction = async function (
+  params
+) {
+  const payload = await post<JournalEntry, JournalEntry>({
+    url: `/api/update-journal-entry`,
+    type: "json",
+    payload: {
+      json: params,
+    },
+  });
+
+  if (!payload) {
+    return {
+      errorMessage: "Failed to update journal entry",
+      payload: null,
+    };
+  }
+
+  return {
+    errorMessage: null,
+    payload,
+  };
+};
+
 /******** DELETE **********************/
+
+export const deleteJournalEntry: DeleteJournalEntryFunction = async function (
+  params
+) {
+  const payload = await post<JournalEntry, { id: string }>({
+    url: `/api/delete-journal-entry`,
+    type: "json",
+    payload: {
+      json: {
+        id: params.id,
+      },
+    },
+  });
+
+  if (!payload) {
+    return {
+      errorMessage: "Failed to delete journal entry",
+      payload: null,
+    };
+  }
+
+  return {
+    errorMessage: null,
+    payload,
+  };
+};

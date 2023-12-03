@@ -77,7 +77,7 @@ export type DeleteJournalEntryFunction = AsyncFunction<
  ************************************************/
 
 // UpoadImage
-export type UploadImageAPIResponse = {
+export type ImageAPIResponse = {
   url: string;
 };
 
@@ -85,7 +85,14 @@ export type UploadImageFunction = AsyncFunction<
   {
     image: File;
   },
-  UploadImageAPIResponse
+  ImageAPIResponse
+>;
+
+export type DeleteImageFunction = AsyncFunction<
+  {
+    url: string;
+  },
+  ImageAPIResponse
 >;
 
 // GenerateJournalEntryDescription
