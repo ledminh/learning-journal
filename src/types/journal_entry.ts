@@ -26,13 +26,18 @@ export type JournalEntry = {
 };
 
 /************************************************
- * SERVER and CLIENT functions: CRUD
+ * CRUD
  ************************************************/
 
 /******** CREATE **********************/
 
+export type DataToCreateJournalEntry = Omit<
+  JournalEntry,
+  "id" | "slug" | "date"
+>;
+
 export type CreateJournalEntryFunction = AsyncFunction<
-  Omit<JournalEntry, "id" | "slug">,
+  DataToCreateJournalEntry,
   JournalEntry
 >;
 
@@ -73,7 +78,7 @@ export type DeleteJournalEntryFunction = AsyncFunction<
 >;
 
 /************************************************
- * API functions
+ * Preparing functions
  ************************************************/
 
 // UpoadImage

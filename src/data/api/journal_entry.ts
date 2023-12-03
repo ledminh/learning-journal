@@ -11,6 +11,7 @@ import {
   UpdateJournalEntryFunction,
   DeleteJournalEntryFunction,
   DeleteImageFunction,
+  DataToCreateJournalEntry,
 } from "@/types/journal_entry";
 
 import { post, get } from "./utils";
@@ -18,7 +19,7 @@ import generateID from "@/utils/generateID";
 import createSlug from "@/utils/createSlug";
 
 /************************************************
- * API functions
+ * Preparing functions
  ************************************************/
 
 export const uploadImage: UploadImageFunction = async function (params) {
@@ -105,14 +106,11 @@ export const generateJournalEntryDescription: GenerateJournalEntryDescriptionFun
 export const createJournalEntry: CreateJournalEntryFunction = async function (
   params
 ) {
-  const id = generateID();
-  const slug = createSlug(params.title);
-
-  const payload = await post<JournalEntry, JournalEntry>({
+  const payload = await post<JournalEntry, DataToCreateJournalEntry>({
     url: `/api/create-journal-entry`,
     type: "json",
     payload: {
-      json: { ...params, id, slug },
+      json: params,
     },
   });
 
