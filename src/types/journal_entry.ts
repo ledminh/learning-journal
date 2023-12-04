@@ -15,7 +15,7 @@ export type JournalEntry = {
   id: string;
   title: string;
   slug: string;
-  date: string;
+  date: Date;
   tags: string[];
   description: string;
   material: {
@@ -53,7 +53,7 @@ export type GetJournalEntriesFunction = AsyncFunction<
     limit?: number;
     offset?: number;
     filters?: {
-      date?: string;
+      date?: Date;
       materialType?: MaterialType;
       keyword?: string;
     };

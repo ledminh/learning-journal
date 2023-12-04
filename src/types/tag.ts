@@ -8,7 +8,7 @@ import type { AsyncFunction } from ".";
 export type TagEntry = {
   tag: string;
   entries: JournalEntry[];
-  dateCreated: string;
+  dateCreated: Date;
 };
 
 /************************************************
@@ -31,7 +31,7 @@ export type GetTagEntryFunction = AsyncFunction<
       limit?: number;
       offset?: number;
       filters?: {
-        date?: string;
+        date?: Date;
         materialType?: string;
         keyword?: string;
       };
@@ -51,7 +51,7 @@ export type GetTagEntriesFunction = AsyncFunction<
       limit?: number;
       offset?: number;
       filters?: {
-        date?: string;
+        date?: Date;
         keyword?: string;
       };
       sort?: {
@@ -67,7 +67,7 @@ export type GetTagEntriesFunction = AsyncFunction<
       | {
           includeJournalEntries: true;
           journalEntryFilters: {
-            date?: string;
+            date?: Date;
             materialType?: string;
             keyword?: string;
           };
