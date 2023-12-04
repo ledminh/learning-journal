@@ -8,6 +8,7 @@ import type { AsyncFunction } from ".";
 export type TagEntry = {
   tag: string;
   entries: JournalEntry[];
+  dateCreated: string;
 };
 
 /************************************************
@@ -22,35 +23,76 @@ export type CreateTagFunction = AsyncFunction<{ name: string }, TagEntry>;
 
 // Get a single tag entry with all of its journal entries.
 // The options are for filtering and sorting the journal entries.
-export type GetTagEntryFunction = (
-  tag: string,
-  options?: {
-    limit?: number;
-    offset?: number;
-    filters?: {
-      date?: string;
-      materialType?: string;
-      keyword?: string;
+
+export type GetTagEntryFunction = AsyncFunction<
+  {
+    tag: string;
+    options?: {
+      limit?: number;
+      offset?: number;
+      filters?: {
+        date?: string;
+        materialType?: string;
+        keyword?: string;
+      };
+      sort?: {
+        by?: "date" | "title";
+        order?: "asc" | "desc";
+      };
     };
-    sort?: {
-      by?: "date" | "title";
-      order?: "asc" | "desc";
-    };
-  }
-) => Promise<TagEntry>;
+  },
+  TagEntry
+>;
 
 // Get all tag entries with/without their journal entries.
-export type GetTagEntriesFunction = (options?: {
-  limit?: number;
-  offset?: number;
-  includeJournalEntries?: boolean;
-  filters?: {
-    date?: string;
-    materialType?: string;
-    keyword?: string;
-  };
-  sort?: {
-    by?: "date" | "title";
-    order?: "asc" | "desc";
-  };
-}) => Promise<TagEntry[]>;
+export type GetTagEntriesFunction = AsyncFunction<
+  {
+    options?: {
+      limit?: number;
+      offset?: number;
+      filters?: {
+        date?: string;
+        keyword?: string;
+      };
+      sort?: {
+        by?: "date" | "name";
+        order?: "asc" | "desc";
+      };
+    } & (
+      | {
+          includeJournalEntries?: false;
+          journalEntryFilters?: never;
+          journalEntrySort?: never;
+        }
+      | {
+          includeJournalEntries: true;
+          journalEntryFilters: {
+            date?: string;
+            materialType?: string;
+            keyword?: string;
+          };
+          journalEntrySort: {
+            by?: "date" | "title";
+            order?: "asc" | "desc";
+          };
+        }
+    );
+  },
+  TagEntry[]
+>;
+
+/******** UPDATE **********************/
+export type UpdateTagFunction = AsyncFunction<TagEntry, TagEntry>;
+export type AddJournalEntryToTagFunction = AsyncFunction<
+  { tag: string; journalEntry: JournalEntry },
+  TagEntry
+>;
+export type RemoveJournalEntryFromTagFunction = AsyncFunction<
+  { tag: string; journalEntry: JournalEntry },
+  TagEntry
+>;
+
+export type EmptyTagFunction = AsyncFunction<{ tag: string }, TagEntry>;
+
+/******** DELETE **********************/
+export type DeleteTagFunction = AsyncFunction<{ tag: string }, TagEntry>;
