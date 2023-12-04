@@ -13,9 +13,10 @@ enum MaterialType {
 
 export type JournalEntry = {
   id: string;
+  createdAt: Date;
+  updatedAt: Date;
   title: string;
   slug: string;
-  date: Date;
   tags: string[];
   description: string;
   material: {
@@ -33,7 +34,7 @@ export type JournalEntry = {
 
 export type DataToCreateJournalEntry = Omit<
   JournalEntry,
-  "id" | "slug" | "date"
+  "id" | "slug" | "createdAt" | "updatedAt"
 >;
 
 export type CreateJournalEntryFunction = AsyncFunction<

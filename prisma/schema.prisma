@@ -9,3 +9,48 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model JournalEntry {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
+  slug        String
+  tags        Tag[]
+  description String
+  material    Material @relation(fields: [materialId], references: [id])
+  materialId  String   @unique
+  content     String
+
+  Date   Date?   @relation(fields: [dateId], references: [id])
+  dateId String?
+}
+
+model Tag {
+  id        String         @id @default(uuid())
+  createdAt DateTime       @default(now())
+  name      String
+  slug      String
+  entries   JournalEntry[]
+}
+
+enum MaterialType {
+  LINK
+  QUOTE
+  CODE
+  IMAGE
+}
+
+model Material {
+  id        String        @id @default(uuid())
+  createdAt DateTime      @default(now())
+  type      MaterialType
+  content   String
+  entry     JournalEntry?
+}
+
+model Date {
+  id    String         @id @default(uuid())
+  date  DateTime @default(now())
+  entry JournalEntry[]
+}

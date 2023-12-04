@@ -6,7 +6,8 @@ import type { AsyncFunction } from ".";
  */
 
 export type TagEntry = {
-  tag: string;
+  name: string;
+  slug: string;
   entries: JournalEntry[];
   dateCreated: Date;
 };
@@ -26,7 +27,7 @@ export type CreateTagFunction = AsyncFunction<{ name: string }, TagEntry>;
 
 export type GetTagEntryFunction = AsyncFunction<
   {
-    tag: string;
+    name: string;
     options?: {
       limit?: number;
       offset?: number;
@@ -84,15 +85,15 @@ export type GetTagEntriesFunction = AsyncFunction<
 /******** UPDATE **********************/
 export type UpdateTagFunction = AsyncFunction<TagEntry, TagEntry>;
 export type AddJournalEntryToTagFunction = AsyncFunction<
-  { tag: string; journalEntry: JournalEntry },
+  { name: string; journalEntry: JournalEntry },
   TagEntry
 >;
 export type RemoveJournalEntryFromTagFunction = AsyncFunction<
-  { tag: string; journalEntry: JournalEntry },
+  { name: string; journalEntry: JournalEntry },
   TagEntry
 >;
 
-export type EmptyTagFunction = AsyncFunction<{ tag: string }, TagEntry>;
+export type EmptyTagFunction = AsyncFunction<{ name: string }, TagEntry>;
 
 /******** DELETE **********************/
-export type DeleteTagFunction = AsyncFunction<{ tag: string }, TagEntry>;
+export type DeleteTagFunction = AsyncFunction<{ name: string }, TagEntry>;

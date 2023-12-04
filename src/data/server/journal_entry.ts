@@ -59,7 +59,7 @@ export const createJournalEntry: CreateJournalEntryFunction = async function (
 ) {
   const dataToCreateJournalEntry = params;
 
-  // Do something with the dataToCreateJournalEntry (it doesn't have id, slug, and date)
+  // Do something with the dataToCreateJournalEntry (it doesn't have id, slug, createdAt, and updatedAt)
 
   return {
     errorMessage: "Not yet implemented",
