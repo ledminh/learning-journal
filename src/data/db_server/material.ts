@@ -8,6 +8,8 @@ import {
   DeleteMaterialFunction,
 } from "@/types/material";
 
+// Mapping
+
 const materialTypeMapToDB = {
   [MaterialType.Link]: DBMaterialType.LINK,
   [MaterialType.Quote]: DBMaterialType.QUOTE,
@@ -21,6 +23,8 @@ const materialTypeMapFromDB = {
   [DBMaterialType.CODE]: MaterialType.Code,
   [DBMaterialType.IMAGE]: MaterialType.Image,
 };
+
+// Functions
 
 export const addMaterial: AddMaterialFunction = async function (dataToAddMT) {
   const dbType = materialTypeMapToDB[dataToAddMT.type];

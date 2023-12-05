@@ -22,15 +22,25 @@ export type JournalEntry = {
  * CRUD
  ************************************************/
 
-/******** CREATE **********************/
+/******** CREATE and ADD to DB ******************/
 
 export type DataToCreateJournalEntry = Omit<
   JournalEntry,
   "id" | "slug" | "createdAt" | "updatedAt"
 >;
 
+export type DataToAddJournalEntry = Omit<
+  JournalEntry,
+  "id" | "createdAt" | "updatedAt"
+>;
+
 export type CreateJournalEntryFunction = AsyncFunction<
   DataToCreateJournalEntry,
+  DataToAddJournalEntry
+>;
+
+export type AddJournalEntryFunction = AsyncFunction<
+  DataToAddJournalEntry,
   JournalEntry
 >;
 

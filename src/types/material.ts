@@ -31,12 +31,12 @@ export type DataToCreateMaterial = Omit<
   "id"
 >;
 
+export type DataToAddMaterial = Omit<Material, "id">;
+
 export type CreateMaterialFunction = AsyncFunction<
   DataToCreateMaterial,
-  Material
+  DataToAddMaterial
 >;
-
-export type DataToAddMaterial = Omit<Material, "id">;
 
 export type AddMaterialFunction = AsyncFunction<DataToAddMaterial, Material>;
 
