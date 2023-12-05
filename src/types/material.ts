@@ -44,3 +44,11 @@ export type UpdateMaterialFunction = AsyncFunction<
   DataToCreateMaterial,
   Material
 >;
+
+/******** DELETE **********************/
+export type DeleteMaterialFunction = AsyncFunction<
+  {
+    id: string;
+  },
+  Material
+>;
