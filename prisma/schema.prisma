@@ -1,6 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -34,17 +36,12 @@ model Tag {
   entries   JournalEntry[]
 }
 
-enum MaterialType {
-  LINK
-  QUOTE
-  CODE
-  IMAGE
-}
+
 
 model Material {
   id        String        @id @default(uuid())
   createdAt DateTime      @default(now())
-  type      MaterialType
+  type      String
   content   String
   entry     JournalEntry?
 }

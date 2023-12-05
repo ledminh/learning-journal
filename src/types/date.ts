@@ -1,5 +1,6 @@
 import type { JournalEntry } from "@/types/journal_entry";
 import { AsyncFunction } from ".";
+import { MaterialType } from "./material";
 
 /************************
  * Data
@@ -36,7 +37,7 @@ export type GetDateEntryFunction = AsyncFunction<
       offset?: number;
       filters?: {
         tag?: string;
-        materialType?: string;
+        materialType?: MaterialType;
         keyword?: string;
       };
       sort?: {
@@ -67,7 +68,7 @@ export type GetDateEntriesFunction = AsyncFunction<
       | {
           includeJournalEntries: true;
           journalEntryFilters: {
-            materialType?: string;
+            materialType?: MaterialType;
             keyword?: string;
           };
           journalEntrySort: {

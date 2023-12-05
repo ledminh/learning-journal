@@ -8,6 +8,7 @@ import {
   DeleteJournalEntryFunction,
   DeleteImageFunction,
 } from "@/types/journal_entry";
+import prismaClient from "../db_server/prismaClient";
 
 /************************************************
  * Preparing functions
@@ -121,3 +122,9 @@ export const deleteJournalEntry: DeleteJournalEntryFunction = async function (
     payload: null,
   };
 };
+
+async function test() {
+  // get a list of available dates from journal entries
+
+  prismaClient.date.create({});
+}

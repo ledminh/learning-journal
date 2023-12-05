@@ -2,14 +2,9 @@
  * Data
  */
 
+import { Material } from "@prisma/client";
 import { AsyncFunction } from ".";
-
-enum MaterialType {
-  Link = "link",
-  Quote = "quote",
-  Code = "code",
-  Image = "image",
-}
+import { MaterialType } from "./material";
 
 export type JournalEntry = {
   id: string;
@@ -19,10 +14,7 @@ export type JournalEntry = {
   slug: string;
   tags: string[];
   description: string;
-  material: {
-    type: MaterialType;
-    content: string;
-  };
+  material: Material;
   content: string;
 };
 
@@ -106,10 +98,7 @@ export type DeleteImageFunction = AsyncFunction<
 export type DataToGenerateJournalEntryDescription = {
   title: string;
   content: string;
-  material: {
-    type: MaterialType;
-    content: string;
-  };
+  material: Material;
 };
 
 export type GenerateJournalEntryDescriptionAPIResponse = {
