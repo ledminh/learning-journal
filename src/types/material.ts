@@ -36,14 +36,16 @@ export type CreateMaterialFunction = AsyncFunction<
   Material
 >;
 
+export type DataToAddMaterial = Omit<Material, "id">;
+
+export type AddMaterialFunction = AsyncFunction<DataToAddMaterial, Material>;
+
 /******** READ **********************/
 // Material is always read together with journal entry.
 
 /******** UPDATE **********************/
-export type UpdateMaterialFunction = AsyncFunction<
-  DataToCreateMaterial,
-  Material
->;
+
+export type UpdateMaterialFunction = AsyncFunction<Material, Material>;
 
 /******** DELETE **********************/
 export type DeleteMaterialFunction = AsyncFunction<
