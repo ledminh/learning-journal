@@ -19,7 +19,12 @@ export type TagEntry = {
 
 /******** CREATE **********************/
 
-export type CreateTagFunction = AsyncFunction<{ name: string }, TagEntry>;
+export type DataToCreateTag = { name: string };
+
+export type DataToAddTag = Omit<TagEntry, "entries" | "dateCreated">;
+
+export type CreateTagFunction = AsyncFunction<DataToCreateTag, DataToAddTag>;
+export type AddTagFunction = AsyncFunction<DataToAddTag, TagEntry>;
 
 /******** READ **********************/
 
