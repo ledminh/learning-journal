@@ -1,9 +1,9 @@
-import { AddMaterialFunction } from "@/types/material";
 import prismaClient from "./prismaClient";
 
 import { MaterialType as DBMaterialType } from "@prisma/client";
 import {
   MaterialType,
+  AddMaterialFunction,
   UpdateMaterialFunction,
   DeleteMaterialFunction,
 } from "@/types/material";
