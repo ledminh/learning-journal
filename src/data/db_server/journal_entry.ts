@@ -5,6 +5,7 @@ import {
   GetJournalEntryFunction,
   GetJournalEntriesFunction,
   UpdateJournalEntryFunction,
+  DeleteJournalEntryFunction,
 } from "@/types/journal_entry";
 import { materialTypeMapToDB, materialTypeMapFromDB } from "@/types/material";
 
@@ -194,6 +195,41 @@ export const updateJournalEntry: UpdateJournalEntryFunction = async function (
         tags: {
           set: dataToUpdateJE.tagIDs.map((id) => ({ id })),
         },
+      },
+      include: {
+        material: true,
+        tags: true,
+        date: true,
+      },
+    });
+
+    return {
+      errorMessage: null,
+      payload: {
+        ...dbJournalEntry,
+        material: {
+          ...dbJournalEntry.material,
+          type: materialTypeMapFromDB[dbJournalEntry.material.type],
+        },
+        tags: dbJournalEntry.tags.map((tag) => tag.name),
+      },
+    };
+  } catch (e: any) {
+    return {
+      errorMessage: e.message,
+      payload: null,
+    };
+  }
+};
+
+/******** DELETE **********************/
+export const deleteJournalEntry: DeleteJournalEntryFunction = async function ({
+  id,
+}) {
+  try {
+    const dbJournalEntry = await prismaClient.journalEntry.delete({
+      where: {
+        id,
       },
       include: {
         material: true,
