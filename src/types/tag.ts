@@ -10,7 +10,7 @@ export type TagEntry = {
   id: string;
   name: string;
   slug: string;
-  entries: JournalEntry[];
+  journalEntries: JournalEntry[];
   createdAt: Date;
 };
 
@@ -20,12 +20,21 @@ export type TagEntry = {
 
 /******** CREATE **********************/
 
-export type DataToCreateTag = { name: string };
+export type DataToCreateTags = { name: string }[];
 
-export type DataToAddTag = Omit<TagEntry, "entries" | "dateCreated">;
+export type DataToAddOrGetTags = Omit<
+  TagEntry,
+  "id" | "entries" | "createdAt"
+>[];
 
-export type CreateTagFunction = AsyncFunction<DataToCreateTag, DataToAddTag>;
-export type AddTagFunction = AsyncFunction<DataToAddTag, TagEntry>;
+export type CreateTagFunction = AsyncFunction<
+  DataToCreateTags,
+  DataToAddOrGetTags
+>;
+export type AddOrGetTagsFunction = AsyncFunction<
+  DataToAddOrGetTags,
+  TagEntry[]
+>;
 
 /******** READ **********************/
 
