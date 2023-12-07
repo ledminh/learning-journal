@@ -1,22 +1,23 @@
 import prismaClient from "./prismaClient";
 
-import { CreateDateEntryFunction } from "@/types/date";
+import { CreateAndAddDateEntryFunction } from "@/types/date";
 
-export const createDate: CreateDateEntryFunction = async function () {
-  try {
-    const dbDate = await prismaClient.date.create({});
+export const createAndAddDate: CreateAndAddDateEntryFunction =
+  async function () {
+    try {
+      const dbDate = await prismaClient.date.create({});
 
-    return {
-      errorMessage: null,
-      payload: {
-        ...dbDate,
-        entries: [],
-      },
-    };
-  } catch (e: any) {
-    return {
-      errorMessage: e.message,
-      payload: null,
-    };
-  }
-};
+      return {
+        errorMessage: null,
+        payload: {
+          ...dbDate,
+          entries: [],
+        },
+      };
+    } catch (e: any) {
+      return {
+        errorMessage: e.message,
+        payload: null,
+      };
+    }
+  };

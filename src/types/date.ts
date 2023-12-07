@@ -17,7 +17,7 @@ export type DateEntry = {
 
 /******** CREATE **********************/
 
-export type CreateDateEntryFunction = AsyncFunction<undefined, DateEntry>;
+export type CreateAndAddDateEntryFunction = AsyncFunction<undefined, DateEntry>;
 
 /******** READ **********************/
 
