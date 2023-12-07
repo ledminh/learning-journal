@@ -11,6 +11,8 @@ import { materialTypeMapFromDB, materialTypeMapToDB } from "@/types/material";
 
 // Functions
 
+/******** ADD **********************/
+
 export const addMaterial: AddMaterialFunction = async function (dataToAddMT) {
   const dbType = materialTypeMapToDB[dataToAddMT.type];
 
@@ -36,6 +38,8 @@ export const addMaterial: AddMaterialFunction = async function (dataToAddMT) {
     };
   }
 };
+
+/******** UPDATE **********************/
 
 export const updateMaterial: UpdateMaterialFunction = async function (
   material
@@ -67,6 +71,8 @@ export const updateMaterial: UpdateMaterialFunction = async function (
     };
   }
 };
+
+/******** DELETE **********************/
 
 export const deleteMaterial: DeleteMaterialFunction = async function ({ id }) {
   try {

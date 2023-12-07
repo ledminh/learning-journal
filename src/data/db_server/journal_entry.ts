@@ -223,6 +223,7 @@ export const updateJournalEntry: UpdateJournalEntryFunction = async function (
 };
 
 /******** DELETE **********************/
+
 export const deleteJournalEntry: DeleteJournalEntryFunction = async function ({
   id,
 }) {
