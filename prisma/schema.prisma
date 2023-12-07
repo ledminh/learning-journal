@@ -17,15 +17,16 @@ model JournalEntry {
   materialId  String   @unique
   content     String
   dateId      String?
-  Date        Date?    @relation(fields: [dateId], references: [id])
+  date        Date?    @relation(fields: [dateId], references: [id])
   material    Material @relation(fields: [materialId], references: [id])
   tags        Tag[]    @relation("JournalEntryToTag")
+  
 }
 
 model Tag {
-  id        String         @id @default(uuid())
+  id       String         @id @default(uuid())  
+  name      String        @unique
   createdAt DateTime       @default(now())
-  name      String
   slug      String
   entries   JournalEntry[] @relation("JournalEntryToTag")
 }

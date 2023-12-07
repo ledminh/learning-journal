@@ -7,10 +7,11 @@ import { MaterialType } from "./material";
  */
 
 export type TagEntry = {
+  id: string;
   name: string;
   slug: string;
   entries: JournalEntry[];
-  dateCreated: Date;
+  createdAt: Date;
 };
 
 /************************************************

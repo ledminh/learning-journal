@@ -1,28 +1,13 @@
 import prismaClient from "./prismaClient";
 
-import { MaterialType as DBMaterialType } from "@prisma/client";
 import {
-  MaterialType,
   AddMaterialFunction,
   UpdateMaterialFunction,
   DeleteMaterialFunction,
 } from "@/types/material";
 
 // Mapping
-
-const materialTypeMapToDB = {
-  [MaterialType.Link]: DBMaterialType.LINK,
-  [MaterialType.Quote]: DBMaterialType.QUOTE,
-  [MaterialType.Code]: DBMaterialType.CODE,
-  [MaterialType.Image]: DBMaterialType.IMAGE,
-};
-
-const materialTypeMapFromDB = {
-  [DBMaterialType.LINK]: MaterialType.Link,
-  [DBMaterialType.QUOTE]: MaterialType.Quote,
-  [DBMaterialType.CODE]: MaterialType.Code,
-  [DBMaterialType.IMAGE]: MaterialType.Image,
-};
+import { materialTypeMapFromDB, materialTypeMapToDB } from "@/types/material";
 
 // Functions
 

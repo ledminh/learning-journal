@@ -1,3 +1,5 @@
+import { MaterialType as DBMaterialType } from "@prisma/client";
+
 import { AsyncFunction } from "./";
 
 export enum MaterialType {
@@ -6,6 +8,20 @@ export enum MaterialType {
   Code = "MaterialType/code",
   Image = "MaterialType/image",
 }
+
+export const materialTypeMapToDB = {
+  [MaterialType.Link]: DBMaterialType.LINK,
+  [MaterialType.Quote]: DBMaterialType.QUOTE,
+  [MaterialType.Code]: DBMaterialType.CODE,
+  [MaterialType.Image]: DBMaterialType.IMAGE,
+};
+
+export const materialTypeMapFromDB = {
+  [DBMaterialType.LINK]: MaterialType.Link,
+  [DBMaterialType.QUOTE]: MaterialType.Quote,
+  [DBMaterialType.CODE]: MaterialType.Code,
+  [DBMaterialType.IMAGE]: MaterialType.Image,
+};
 
 export type Material = {
   id: string;

@@ -2,9 +2,8 @@
  * Data
  */
 
-import { Material } from "@prisma/client";
 import { AsyncFunction } from ".";
-import { MaterialType } from "./material";
+import { Material, MaterialType } from "./material";
 
 export type JournalEntry = {
   id: string;
@@ -30,8 +29,8 @@ export type DataToCreateJournalEntry = Omit<
 >;
 
 export type DataToAddJournalEntry = Omit<
-  JournalEntry,
-  "id" | "createdAt" | "updatedAt"
+  JournalEntry & { date: { id: string }; tagIDs: string[] },
+  "id" | "tags" | "createdAt" | "updatedAt"
 >;
 
 export type CreateJournalEntryFunction = AsyncFunction<
@@ -108,7 +107,7 @@ export type DeleteImageFunction = AsyncFunction<
 export type DataToGenerateJournalEntryDescription = {
   title: string;
   content: string;
-  material: Material;
+  material: MaterialType;
 };
 
 export type GenerateJournalEntryDescriptionAPIResponse = {
