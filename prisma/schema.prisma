@@ -12,7 +12,7 @@ model JournalEntry {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   title       String
-  slug        String
+  slug        String  @unique
   description String
   materialId  String   @unique
   content     String
