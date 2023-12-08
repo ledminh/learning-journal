@@ -89,7 +89,7 @@ export type DeleteJournalEntryFunction = AsyncFunction<
  * Preparing functions
  ************************************************/
 
-// UpoadImage
+// Upload Image
 export type ImageAPIResponse = {
   url: string;
 };
