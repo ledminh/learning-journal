@@ -44,8 +44,6 @@ export const addMaterial: AddMaterialFunction = async function (dataToAddMT) {
 export const updateMaterial: UpdateMaterialFunction = async function (
   material
 ) {
-  const dbType = materialTypeMapToDB[material.type];
-
   try {
     const dbMaterial = await prismaClient.material.update({
       where: {
@@ -53,7 +51,7 @@ export const updateMaterial: UpdateMaterialFunction = async function (
       },
       data: {
         ...material,
-        type: dbType,
+        type: materialTypeMapToDB[material.type],
       },
     });
 

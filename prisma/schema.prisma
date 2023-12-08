@@ -28,7 +28,7 @@ model Tag {
   name      String        @unique
   createdAt DateTime       @default(now())
   slug      String
-  entries   JournalEntry[] @relation("JournalEntryToTag")
+  journalEntries   JournalEntry[] @relation("JournalEntryToTag")
 }
 
 model Material {

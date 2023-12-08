@@ -18,7 +18,7 @@ export type TagEntry = {
  * CRUD
  ************************************************/
 
-/******** CREATE **********************/
+/******** CREATE and ADD **********************/
 
 export type DataToCreateTags = { name: string }[];
 
@@ -78,8 +78,8 @@ export type GetTagEntriesFunction = AsyncFunction<
     } & (
       | {
           includeJournalEntries?: false;
-          journalEntryFilters?: never;
-          journalEntrySort?: never;
+          journalEntryFilters?: {};
+          journalEntrySort?: {};
         }
       | {
           includeJournalEntries: true;
