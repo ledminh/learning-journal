@@ -36,13 +36,13 @@ model Material {
   createdAt DateTime      @default(now())
   type      MaterialType
   content   String
-  entry     JournalEntry?
+  journalEntries     JournalEntry?
 }
 
 model Date {
   id    String         @id @default(uuid())
-  date  DateTime       @default(now())
-  entry JournalEntry[]
+  date  DateTime       @unique @default(now())
+  journalEntries JournalEntry[] 
 }
 
 enum MaterialType {

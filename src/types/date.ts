@@ -8,7 +8,7 @@ import { MaterialType } from "./material";
 
 export type DateEntry = {
   date: Date;
-  entries: JournalEntry[];
+  journalEntries: JournalEntry[];
 };
 
 /************************************************

@@ -421,7 +421,7 @@ export const emptyTag: EmptyTagFunction = async ({ name }) => {
 
 /******** DELETE **********************/
 
-const deleteTag: DeleteTagFunction = async ({ name }) => {
+export const deleteTag: DeleteTagFunction = async ({ name }) => {
   try {
     const tag = await prismaClient.tag.delete({
       where: {
