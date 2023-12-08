@@ -3,6 +3,7 @@ import prismaClient from "./prismaClient";
 
 import {
   AddOrGetTagsFunction,
+  DeleteTagFunction,
   EmptyTagFunction,
   GetTagEntriesFunction,
   GetTagEntryFunction,
@@ -385,6 +386,46 @@ export const emptyTag: EmptyTagFunction = async ({ name }) => {
             id: journalEntry.id,
           })),
         },
+      },
+      include: {
+        journalEntries: {
+          include: {
+            material: true,
+            tags: true,
+          },
+        },
+      },
+    });
+
+    return {
+      errorMessage: null,
+      payload: {
+        ...tag,
+        journalEntries: tag.journalEntries.map((journalEntry) => ({
+          ...journalEntry,
+          material: {
+            ...journalEntry.material,
+            type: materialTypeMapFromDB[journalEntry.material.type],
+          },
+          tags: journalEntry.tags.map((tag) => tag.name),
+        })),
+      },
+    };
+  } catch (error: any) {
+    return {
+      errorMessage: error.message,
+      payload: null,
+    };
+  }
+};
+
+/******** DELETE **********************/
+
+const deleteTag: DeleteTagFunction = async ({ name }) => {
+  try {
+    const tag = await prismaClient.tag.delete({
+      where: {
+        name,
       },
       include: {
         journalEntries: {
