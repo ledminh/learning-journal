@@ -3,8 +3,10 @@ import prismaClient from "./prismaClient";
 
 import {
   AddOrGetTagsFunction,
+  EmptyTagFunction,
   GetTagEntriesFunction,
   GetTagEntryFunction,
+  RemoveJournalEntryFromTagFunction,
   UpdateTagFunction,
 } from "@/types/tag";
 
@@ -280,6 +282,109 @@ export const updateTag: UpdateTagFunction = async (dataToUpdateTag) => {
       data: {
         name: dataToUpdateTag.name,
         slug: dataToUpdateTag.slug,
+      },
+      include: {
+        journalEntries: {
+          include: {
+            material: true,
+            tags: true,
+          },
+        },
+      },
+    });
+
+    return {
+      errorMessage: null,
+      payload: {
+        ...tag,
+        journalEntries: tag.journalEntries.map((journalEntry) => ({
+          ...journalEntry,
+          material: {
+            ...journalEntry.material,
+            type: materialTypeMapFromDB[journalEntry.material.type],
+          },
+          tags: journalEntry.tags.map((tag) => tag.name),
+        })),
+      },
+    };
+  } catch (error: any) {
+    return {
+      errorMessage: error.message,
+      payload: null,
+    };
+  }
+};
+
+const removeJournalEntryFromTag: RemoveJournalEntryFromTagFunction = async ({
+  name,
+  journalEntry,
+}) => {
+  try {
+    const tag = await prismaClient.tag.update({
+      where: {
+        name,
+      },
+      data: {
+        journalEntries: {
+          disconnect: {
+            id: journalEntry.id,
+          },
+        },
+      },
+      include: {
+        journalEntries: {
+          include: {
+            material: true,
+            tags: true,
+          },
+        },
+      },
+    });
+
+    return {
+      errorMessage: null,
+      payload: {
+        ...tag,
+        journalEntries: tag.journalEntries.map((journalEntry) => ({
+          ...journalEntry,
+          material: {
+            ...journalEntry.material,
+            type: materialTypeMapFromDB[journalEntry.material.type],
+          },
+          tags: journalEntry.tags.map((tag) => tag.name),
+        })),
+      },
+    };
+  } catch (error: any) {
+    return {
+      errorMessage: error.message,
+      payload: null,
+    };
+  }
+};
+
+export const emptyTag: EmptyTagFunction = async ({ name }) => {
+  try {
+    const jE = await prismaClient.journalEntry.findMany({
+      where: {
+        tags: {
+          some: {
+            name: name,
+          },
+        },
+      },
+    });
+
+    const tag = await prismaClient.tag.update({
+      where: {
+        name,
+      },
+      data: {
+        journalEntries: {
+          disconnect: jE.map((journalEntry) => ({
+            id: journalEntry.id,
+          })),
+        },
       },
       include: {
         journalEntries: {

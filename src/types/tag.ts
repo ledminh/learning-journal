@@ -104,6 +104,7 @@ export type AddJournalEntryToTagFunction = AsyncFunction<
   { name: string; journalEntry: JournalEntry },
   TagEntry
 >;
+
 export type RemoveJournalEntryFromTagFunction = AsyncFunction<
   { name: string; journalEntry: JournalEntry },
   TagEntry
