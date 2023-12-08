@@ -5,6 +5,7 @@ import {
   AddOrGetTagsFunction,
   GetTagEntriesFunction,
   GetTagEntryFunction,
+  UpdateTagFunction,
 } from "@/types/tag";
 
 /******** ADD or GET **********************/
@@ -260,6 +261,49 @@ export const getTags: GetTagEntriesFunction = async ({ options }) => {
           tags: journalEntry.tags.map((tag) => tag.name),
         })),
       })),
+    };
+  } catch (error: any) {
+    return {
+      errorMessage: error.message,
+      payload: null,
+    };
+  }
+};
+
+/******** UPDATE **********************/
+export const updateTag: UpdateTagFunction = async (dataToUpdateTag) => {
+  try {
+    const tag = await prismaClient.tag.update({
+      where: {
+        id: dataToUpdateTag.id,
+      },
+      data: {
+        name: dataToUpdateTag.name,
+        slug: dataToUpdateTag.slug,
+      },
+      include: {
+        journalEntries: {
+          include: {
+            material: true,
+            tags: true,
+          },
+        },
+      },
+    });
+
+    return {
+      errorMessage: null,
+      payload: {
+        ...tag,
+        journalEntries: tag.journalEntries.map((journalEntry) => ({
+          ...journalEntry,
+          material: {
+            ...journalEntry.material,
+            type: materialTypeMapFromDB[journalEntry.material.type],
+          },
+          tags: journalEntry.tags.map((tag) => tag.name),
+        })),
+      },
     };
   } catch (error: any) {
     return {
