@@ -76,23 +76,6 @@ export type GetDateEntriesFunction = AsyncFunction<
   DateEntry[]
 >;
 
-/******** UPDATE **********************/
-export type AddJournalEntryToDateFunction = AsyncFunction<
-  {
-    date: Date;
-    journalEntry: JournalEntry;
-  },
-  DateEntry
->;
-
-export type DeleteJournalEntryFromDateFunction = AsyncFunction<
-  {
-    date: Date;
-    journalEntry: JournalEntry;
-  },
-  DateEntry
->;
-
 /******** DELETE **********************/
 export type DeleteDateEntryFunction = AsyncFunction<
   {

@@ -5,6 +5,7 @@ import {
   CreateAndAddDateEntryFunction,
   GetDateEntriesFunction,
   GetDateEntryFunction,
+  DeleteDateEntryFunction,
 } from "@/types/date";
 
 /******** CREATE **********************/
@@ -208,6 +209,33 @@ export const getDates: GetDateEntriesFunction = async function ({ options }) {
           },
         })),
       })),
+    };
+  } catch (e: any) {
+    return {
+      errorMessage: e.message,
+      payload: null,
+    };
+  }
+};
+
+/******** DELETE **********************/
+
+export const deleteDate: DeleteDateEntryFunction = async function ({ date }) {
+  try {
+    const dbDate = await prismaClient.date.delete({
+      where: {
+        date: date,
+      },
+    });
+
+    if (!dbDate) throw new Error(`Date entry for ${date} not found.`);
+
+    return {
+      errorMessage: null,
+      payload: {
+        ...dbDate,
+        journalEntries: [],
+      },
     };
   } catch (e: any) {
     return {
