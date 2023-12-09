@@ -24,7 +24,7 @@ export type DataToCreateTags = { name: string }[];
 
 export type DataToAddOrGetTags = Omit<
   TagEntry,
-  "id" | "entries" | "createdAt"
+  "id" | "journalEntries" | "createdAt"
 >[];
 
 export type CreateTagFunction = AsyncFunction<
@@ -61,9 +61,10 @@ export type GetTagEntryFunction = AsyncFunction<
   TagEntry
 >;
 
-// Get all tag entries with/without their journal entries.
+// Get all/some tag entries with/without their journal entries.
 export type GetTagEntriesFunction = AsyncFunction<
   {
+    names?: string[];
     options?: {
       limit?: number;
       offset?: number;

@@ -154,12 +154,13 @@ export const getTag: GetTagEntryFunction = async ({ name, options }) => {
   }
 };
 
-export const getTags: GetTagEntriesFunction = async ({ options }) => {
+export const getTags: GetTagEntriesFunction = async ({ names, options }) => {
   try {
     const initFindManyOptions = {
       take: options?.limit,
       skip: options?.offset,
       where: {
+        ...(names?.length ? { name: { in: names } } : {}),
         AND: [
           options?.filters?.date
             ? {
@@ -316,53 +317,51 @@ export const updateTag: UpdateTagFunction = async (dataToUpdateTag) => {
   }
 };
 
-const removeJournalEntryFromTag: RemoveJournalEntryFromTagFunction = async ({
-  name,
-  journalEntry,
-}) => {
-  try {
-    const tag = await prismaClient.tag.update({
-      where: {
-        name,
-      },
-      data: {
-        journalEntries: {
-          disconnect: {
-            id: journalEntry.id,
+export const removeJournalEntryFromTag: RemoveJournalEntryFromTagFunction =
+  async ({ name, journalEntry }) => {
+    try {
+      const tag = await prismaClient.tag.update({
+        where: {
+          name,
+        },
+        data: {
+          journalEntries: {
+            disconnect: {
+              id: journalEntry.id,
+            },
           },
         },
-      },
-      include: {
-        journalEntries: {
-          include: {
-            material: true,
-            tags: true,
+        include: {
+          journalEntries: {
+            include: {
+              material: true,
+              tags: true,
+            },
           },
         },
-      },
-    });
+      });
 
-    return {
-      errorMessage: null,
-      payload: {
-        ...tag,
-        journalEntries: tag.journalEntries.map((journalEntry) => ({
-          ...journalEntry,
-          material: {
-            ...journalEntry.material,
-            type: materialTypeMapFromDB[journalEntry.material.type],
-          },
-          tags: journalEntry.tags.map((tag) => tag.name),
-        })),
-      },
-    };
-  } catch (error: any) {
-    return {
-      errorMessage: error.message,
-      payload: null,
-    };
-  }
-};
+      return {
+        errorMessage: null,
+        payload: {
+          ...tag,
+          journalEntries: tag.journalEntries.map((journalEntry) => ({
+            ...journalEntry,
+            material: {
+              ...journalEntry.material,
+              type: materialTypeMapFromDB[journalEntry.material.type],
+            },
+            tags: journalEntry.tags.map((tag) => tag.name),
+          })),
+        },
+      };
+    } catch (error: any) {
+      return {
+        errorMessage: error.message,
+        payload: null,
+      };
+    }
+  };
 
 export const emptyTag: EmptyTagFunction = async ({ name }) => {
   try {
