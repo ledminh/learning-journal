@@ -22,19 +22,13 @@ export type TagEntry = {
 
 export type DataToCreateTags = { name: string }[];
 
-export type DataToAddOrGetTags = Omit<
+export type DataToAddTags = Omit<
   TagEntry,
   "id" | "journalEntries" | "createdAt"
 >[];
 
-export type CreateTagFunction = AsyncFunction<
-  DataToCreateTags,
-  DataToAddOrGetTags
->;
-export type AddOrGetTagsFunction = AsyncFunction<
-  DataToAddOrGetTags,
-  TagEntry[]
->;
+export type CreateTagFunction = AsyncFunction<DataToCreateTags, DataToAddTags>;
+export type AddTagsFunction = AsyncFunction<DataToAddTags, TagEntry[]>;
 
 /******** READ **********************/
 

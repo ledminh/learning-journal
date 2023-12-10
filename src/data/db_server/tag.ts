@@ -2,7 +2,7 @@ import { materialTypeMapToDB, materialTypeMapFromDB } from "@/types/material";
 import prismaClient from "./prismaClient";
 
 import {
-  AddOrGetTagsFunction,
+  AddTagsFunction,
   DeleteTagFunction,
   EmptyTagFunction,
   GetTagEntriesFunction,
@@ -10,57 +10,48 @@ import {
   RemoveJournalEntryFromTagFunction,
   UpdateTagFunction,
 } from "@/types/tag";
+import { getEndOfDate, getStartOfDate } from "@/utils/dateFunctions";
 
 /******** ADD or GET **********************/
 
-export const addOrGetTags: AddOrGetTagsFunction = async (
-  dataToAddOrGetTags
-) => {
+export const addTags: AddTagsFunction = async (dataToAddTags) => {
   try {
-    const existingTags = await prismaClient.tag.findMany({
+    const { count } = await prismaClient.tag.createMany({
+      data: dataToAddTags,
+    });
+
+    if (count !== dataToAddTags.length) {
+      throw new Error("Error adding tags.");
+    }
+
+    const tags = await prismaClient.tag.findMany({
       where: {
-        OR: dataToAddOrGetTags.map((tag) => ({
+        OR: dataToAddTags.map((tag) => ({
           name: tag.name,
         })),
       },
-    });
-
-    if (existingTags.length === dataToAddOrGetTags.length) {
-      return {
-        errorMessage: null,
-        payload: existingTags.map((tag) => ({
-          ...tag,
-          journalEntries: [],
-        })),
-      };
-    }
-
-    const newTags = dataToAddOrGetTags.filter(
-      (tag) => !existingTags.map((t) => t.name).includes(tag.name)
-    );
-
-    const { count } = await prismaClient.tag.createMany({
-      data: newTags,
-      skipDuplicates: true,
-    });
-
-    if (count !== newTags.length) {
-      throw new Error("Not all tags were created.");
-    }
-
-    const createdTags = await prismaClient.tag.findMany({
-      where: {
-        OR: newTags.map((tag) => ({
-          name: tag.name,
-        })),
+      include: {
+        journalEntries: {
+          include: {
+            material: true,
+            tags: true,
+          },
+        },
       },
     });
 
     return {
       errorMessage: null,
-      payload: [...existingTags, ...createdTags].map((tag) => ({
+      payload: tags.map((tag) => ({
         ...tag,
-        journalEntries: [],
+        journalEntries: tag.journalEntries.map((journalEntry) => ({
+          ...journalEntry,
+          material: {
+            ...journalEntry.material,
+            type: materialTypeMapFromDB[journalEntry.material.type],
+          },
+          tags: journalEntry.tags.map((tag) => tag.name),
+        })),
       })),
     };
   } catch (error: any) {
@@ -117,11 +108,15 @@ export const getTag: GetTagEntryFunction = async ({ name, options }) => {
             material: true,
             tags: true,
           },
-          orderBy: {
-            createdAt:
-              options?.sort?.by === "date" ? options.sort.order : "asc",
-            title: options?.sort?.by === "title" ? options.sort.order : "asc",
-          },
+          orderBy: [
+            {
+              createdAt:
+                options?.sort?.by === "date" ? options.sort.order : "asc",
+            },
+            {
+              title: options?.sort?.by === "title" ? options.sort.order : "asc",
+            },
+          ],
           take: options?.limit,
           skip: options?.offset,
         },
@@ -165,7 +160,8 @@ export const getTags: GetTagEntriesFunction = async ({ names, options }) => {
           options?.filters?.date
             ? {
                 createdAt: {
-                  equals: options.filters.date,
+                  gt: getStartOfDate(options.filters.date),
+                  lt: getEndOfDate(options.filters.date),
                 },
               }
             : {},
@@ -178,6 +174,16 @@ export const getTags: GetTagEntriesFunction = async ({ names, options }) => {
             : {},
         ],
       },
+      orderBy:
+        options?.sort?.by === "name"
+          ? {
+              name: options.sort.order,
+            }
+          : options?.sort?.by === "date"
+          ? {
+              createdAt: options.sort.order,
+            }
+          : {},
     };
 
     // Not including journal entries.
