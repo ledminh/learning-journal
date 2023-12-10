@@ -16,8 +16,8 @@ model JournalEntry {
   description String
   materialId  String   @unique
   content     String
-  dateId      String?
-  date        Date?    @relation(fields: [dateId], references: [id])
+  dateEntryId      String?
+  date        DateEntry?    @relation(fields: [dateEntryId], references: [id])
   material    Material @relation(fields: [materialId], references: [id])
   tags        Tag[]    @relation("JournalEntryToTag")
   
@@ -39,7 +39,7 @@ model Material {
   journalEntries     JournalEntry?
 }
 
-model Date {
+model DateEntry {
   id    String         @id @default(uuid())
   date  DateTime       @unique @default(now())
   journalEntries JournalEntry[] 

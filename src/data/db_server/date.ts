@@ -7,28 +7,36 @@ import {
   GetDateEntryFunction,
   DeleteDateEntryFunction,
 } from "@/types/date";
+import { getStartOfDate } from "@/utils/dateFunctions";
 
 /******** CREATE **********************/
 
-export const createAndAddDate: CreateAndAddDateEntryFunction =
-  async function () {
-    try {
-      const dbDate = await prismaClient.date.create({});
+export const createAndAddDate: CreateAndAddDateEntryFunction = async function (
+  options
+) {
+  try {
+    const date = options?.date ?? new Date();
 
-      return {
-        errorMessage: null,
-        payload: {
-          ...dbDate,
-          journalEntries: [],
-        },
-      };
-    } catch (e: any) {
-      return {
-        errorMessage: e.message,
-        payload: null,
-      };
-    }
-  };
+    const dbDate = await prismaClient.dateEntry.create({
+      data: {
+        date: getStartOfDate(date),
+      },
+    });
+
+    return {
+      errorMessage: null,
+      payload: {
+        ...dbDate,
+        journalEntries: [],
+      },
+    };
+  } catch (e: any) {
+    return {
+      errorMessage: e.message,
+      payload: null,
+    };
+  }
+};
 
 /******** READ **********************/
 export const getDate: GetDateEntryFunction = async function ({
@@ -36,7 +44,7 @@ export const getDate: GetDateEntryFunction = async function ({
   options,
 }) {
   try {
-    const dbDate = await prismaClient.date.findUnique({
+    const dbDate = await prismaClient.dateEntry.findUnique({
       where: {
         date: date,
       },
@@ -135,7 +143,7 @@ export const getDates: GetDateEntriesFunction = async function ({ options }) {
 
     // Not including journal entries
     if (!options?.includeJournalEntries) {
-      const dbDates = await prismaClient.date.findMany(initOps);
+      const dbDates = await prismaClient.dateEntry.findMany(initOps);
 
       return {
         errorMessage: null,
@@ -147,7 +155,7 @@ export const getDates: GetDateEntriesFunction = async function ({ options }) {
     }
 
     // Including journal entries
-    const dbDates = await prismaClient.date.findMany({
+    const dbDates = await prismaClient.dateEntry.findMany({
       ...initOps,
       include: {
         journalEntries: {
@@ -222,7 +230,7 @@ export const getDates: GetDateEntriesFunction = async function ({ options }) {
 
 export const deleteDate: DeleteDateEntryFunction = async function ({ date }) {
   try {
-    const dbDate = await prismaClient.date.delete({
+    const dbDate = await prismaClient.dateEntry.delete({
       where: {
         date: date,
       },

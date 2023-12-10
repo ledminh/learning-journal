@@ -7,6 +7,7 @@ import { MaterialType } from "./material";
  */
 
 export type DateEntry = {
+  id: string;
   date: Date;
   journalEntries: JournalEntry[];
 };
@@ -17,7 +18,12 @@ export type DateEntry = {
 
 /******** CREATE **********************/
 
-export type CreateAndAddDateEntryFunction = AsyncFunction<undefined, DateEntry>;
+export type CreateAndAddDateEntryFunction = AsyncFunction<
+  {
+    date?: Date;
+  },
+  DateEntry
+>;
 
 /******** READ **********************/
 
