@@ -4,10 +4,9 @@ import {
   AddMaterialFunction,
   UpdateMaterialFunction,
   DeleteMaterialFunction,
+  materialTypeMapFromDB,
+  materialTypeMapToDB,
 } from "@/types/material";
-
-// Mapping
-import { materialTypeMapFromDB, materialTypeMapToDB } from "@/types/material";
 
 // Functions
 

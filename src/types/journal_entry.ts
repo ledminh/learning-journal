@@ -3,7 +3,7 @@
  */
 
 import { AsyncFunction } from ".";
-import { Material, MaterialType } from "./material";
+import { DataToAddMaterial, Material, MaterialType } from "./material";
 
 export type JournalEntry = {
   id: string;
@@ -29,9 +29,14 @@ export type DataToCreateJournalEntry = Omit<
 >;
 
 export type DataToAddJournalEntry = Omit<
-  JournalEntry & { date: { id: string }; tagIDs: string[] },
-  "id" | "tags" | "createdAt" | "updatedAt"
->;
+  JournalEntry & {
+    date: { id: string };
+    tagIDs: string[];
+  },
+  "id" | "tags" | "createdAt" | "updatedAt" | "material"
+> & {
+  material: DataToAddMaterial;
+};
 
 export type CreateJournalEntryFunction = AsyncFunction<
   DataToCreateJournalEntry,

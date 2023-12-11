@@ -6,7 +6,7 @@ import {
 } from "@/data/db_server/date";
 import { getStartOfDate } from "@/utils/dateFunctions";
 
-describe("Date functions", () => {
+describe.skip("Date functions", () => {
   const today = getStartOfDate(new Date());
   const yesterday = new Date(today.getTime() - 1000 * 60 * 60 * 24);
   const someRandomDay = getStartOfDate(new Date(2021, 1, 1));

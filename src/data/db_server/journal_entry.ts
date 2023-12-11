@@ -17,7 +17,11 @@ export const addJournalEntry: AddJournalEntryFunction = async function (
   try {
     const dbJournalEntry = await prismaClient.journalEntry.create({
       data: {
-        ...dataToAddJE,
+        title: dataToAddJE.title,
+        slug: dataToAddJE.slug,
+        description: dataToAddJE.description,
+        content: dataToAddJE.content,
+
         material: {
           create: {
             ...dataToAddJE.material,

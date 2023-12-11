@@ -4,7 +4,7 @@ import {
   deleteMaterial,
 } from "@/data/db_server/material"; // Update the path to your module
 
-import { MaterialType, materialTypeMapToDB } from "@/types/material";
+import { MaterialType } from "@/types/material";
 
 describe.skip("Material functions", () => {
   it("should add, update and delete  QUOTE material successfully", async () => {
@@ -26,6 +26,7 @@ describe.skip("Material functions", () => {
       id: result.payload?.id as string,
       type: MaterialType.Quote,
       content: "This is an updated quote.",
+      createdAt: result.payload?.createdAt as Date,
     };
 
     const updatedResult = await updateMaterial(updatedMaterial);
@@ -68,6 +69,7 @@ describe.skip("Material functions", () => {
       id: result.payload?.id as string,
       type: MaterialType.Link,
       content: "https://www.facebook.com",
+      createdAt: result.payload?.createdAt as Date,
     };
 
     const updatedResult = await updateMaterial(updatedMaterial);
@@ -110,6 +112,7 @@ describe.skip("Material functions", () => {
       id: result.payload?.id as string,
       type: MaterialType.Code,
       content: "console.log('Hello World! Updated')",
+      createdAt: result.payload?.createdAt as Date,
     };
 
     const updatedResult = await updateMaterial(updatedMaterial);
@@ -156,6 +159,7 @@ describe.skip("Material functions", () => {
       id: result.payload?.id as string,
       type: MaterialType.Image,
       content: "https://www.facebook.com",
+      createdAt: result.payload?.createdAt as Date,
     };
 
     const updatedResult = await updateMaterial(updatedMaterial);

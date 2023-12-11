@@ -27,6 +27,7 @@ export type Material = {
   id: string;
   type: MaterialType;
   content: string;
+  createdAt: Date;
 };
 
 /************************************************
@@ -47,7 +48,7 @@ export type DataToCreateMaterial = Omit<
   "id"
 >;
 
-export type DataToAddMaterial = Omit<Material, "id">;
+export type DataToAddMaterial = Omit<Material, "id" | "createdAt">;
 
 export type CreateMaterialFunction = AsyncFunction<
   DataToCreateMaterial,
