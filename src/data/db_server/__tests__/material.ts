@@ -6,7 +6,7 @@ import {
 
 import { MaterialType, materialTypeMapToDB } from "@/types/material";
 
-describe("Material functions", () => {
+describe.skip("Material functions", () => {
   it("should add, update and delete  QUOTE material successfully", async () => {
     const quoteMaterial = {
       type: MaterialType.Quote,

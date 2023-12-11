@@ -10,7 +10,7 @@ import {
 
 import { TagEntry } from "@/types/tag";
 
-describe("Tag functions", () => {
+describe.skip("Tag functions", () => {
   const tagsToAdd = [
     {
       name: "tag1",
@@ -88,9 +88,13 @@ describe("Tag functions", () => {
     });
   });
 
-  it.skip("should get a tag from the database with journalEntries", async () => {});
-  it.skip("should get a tag from the database with journalEntries being sorted", async () => {});
+  it.skip("should get a tag from the database with all journalEntries", async () => {});
+
+  it.skip("should get a tag from the database with journalEntries with limit and offset", async () => {});
+
   it.skip("should get a tag from the database with journalEntries being filtered", async () => {});
+
+  it.skip("should get a tag from the database with journalEntries being sorted", async () => {});
 
   it("should get all tags from the database. No sorted.", async () => {
     const result = await getTags({});

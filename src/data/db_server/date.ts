@@ -137,7 +137,7 @@ export const getDates: GetDateEntriesFunction = async function ({ options }) {
       take: options?.limit,
       skip: options?.offset,
       orderBy: {
-        date: options?.sort?.order,
+        date: options?.sort?.order ?? "asc",
       },
     };
 
