@@ -60,9 +60,9 @@ export type GetJournalEntriesFunction = AsyncFunction<
     limit?: number;
     offset?: number;
     filters?: {
+      keyword?: string;
       date?: Date;
       materialType?: MaterialType;
-      keyword?: string;
     };
     sort?: {
       by?: "date" | "title";

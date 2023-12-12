@@ -8,6 +8,7 @@ import {
   DeleteJournalEntryFunction,
 } from "@/types/journal_entry";
 import { materialTypeMapToDB, materialTypeMapFromDB } from "@/types/material";
+import { getDate } from "./date";
 
 /******** ADD ******************/
 
@@ -47,12 +48,20 @@ export const addJournalEntry: AddJournalEntryFunction = async function (
     return {
       errorMessage: null,
       payload: {
-        ...dbJournalEntry,
-        material: {
-          ...dbJournalEntry.material,
-          type: materialTypeMapFromDB[dbJournalEntry.material.type],
-        },
+        id: dbJournalEntry.id,
+        createdAt: dbJournalEntry.createdAt,
+        updatedAt: dbJournalEntry.updatedAt,
+        title: dbJournalEntry.title,
+        slug: dbJournalEntry.slug,
         tags: dbJournalEntry.tags.map((tag) => tag.name),
+        description: dbJournalEntry.description,
+        material: {
+          id: dbJournalEntry.material.id,
+          type: materialTypeMapFromDB[dbJournalEntry.material.type],
+          content: dbJournalEntry.material.content,
+          createdAt: dbJournalEntry.material.createdAt,
+        },
+        content: dbJournalEntry.content,
       },
     };
   } catch (e: any) {
@@ -87,12 +96,20 @@ export const getJournalEntry: GetJournalEntryFunction = async function ({
     return {
       errorMessage: null,
       payload: {
-        ...dbJournalEntry,
-        material: {
-          ...dbJournalEntry.material,
-          type: materialTypeMapFromDB[dbJournalEntry.material.type],
-        },
+        id: dbJournalEntry.id,
+        createdAt: dbJournalEntry.createdAt,
+        updatedAt: dbJournalEntry.updatedAt,
+        title: dbJournalEntry.title,
+        slug: dbJournalEntry.slug,
         tags: dbJournalEntry.tags.map((tag) => tag.name),
+        description: dbJournalEntry.description,
+        material: {
+          id: dbJournalEntry.material.id,
+          type: materialTypeMapFromDB[dbJournalEntry.material.type],
+          content: dbJournalEntry.material.content,
+          createdAt: dbJournalEntry.material.createdAt,
+        },
+        content: dbJournalEntry.content,
       },
     };
   } catch (e: any) {
@@ -110,48 +127,73 @@ export const getJournalEntries: GetJournalEntriesFunction = async function ({
   sort,
 }) {
   try {
+    let dateID: null | string = null;
+
+    if (filters?.date) {
+      const dbDate = await getDate({ date: filters.date });
+
+      if (dbDate.errorMessage) {
+        throw new Error(dbDate.errorMessage);
+      }
+
+      if (dbDate.payload === null) {
+        return {
+          errorMessage: null,
+          payload: [],
+        };
+      }
+
+      dateID = dbDate.payload.id;
+    }
+
     const dbJournalEntries = await prismaClient.journalEntry.findMany({
       take: limit,
       skip: offset,
       where: {
-        ...(filters?.date && {
-          createdAt: {
-            equals: filters.date,
-          },
-        }),
-        ...(filters?.materialType && {
-          material: {
-            type: materialTypeMapToDB[filters.materialType],
-          },
-        }),
-        ...(filters?.keyword && {
-          OR: [
-            {
-              title: {
-                contains: filters.keyword,
-              },
-            },
-            {
-              description: {
-                contains: filters.keyword,
-              },
-            },
-            {
-              content: {
-                contains: filters.keyword,
-              },
-            },
-          ],
-        }),
+        AND: [
+          filters?.date
+            ? {
+                dateEntryId: dateID,
+              }
+            : {},
+          filters?.materialType
+            ? {
+                material: {
+                  type: materialTypeMapToDB[filters.materialType],
+                },
+              }
+            : {},
+          filters?.keyword
+            ? {
+                OR: [
+                  {
+                    title: {
+                      contains: filters.keyword,
+                    },
+                  },
+                  {
+                    description: {
+                      contains: filters.keyword,
+                    },
+                  },
+                  {
+                    content: {
+                      contains: filters.keyword,
+                    },
+                  },
+                ],
+              }
+            : {},
+        ],
       },
-      orderBy: {
-        ...(sort?.by === "title" && {
-          title: sort.order,
-        }),
-        ...(sort?.by === "date" && {
-          dateCreated: sort.order,
-        }),
-      },
+      orderBy: !sort
+        ? [{ title: "asc" }, { createdAt: "asc" }]
+        : sort.by === "title"
+        ? { title: sort.order }
+        : sort.by === "date"
+        ? { createdAt: sort.order }
+        : {},
+
       include: {
         material: true,
         tags: true,
@@ -162,12 +204,20 @@ export const getJournalEntries: GetJournalEntriesFunction = async function ({
     return {
       errorMessage: null,
       payload: dbJournalEntries.map((dbJournalEntry) => ({
-        ...dbJournalEntry,
-        material: {
-          ...dbJournalEntry.material,
-          type: materialTypeMapFromDB[dbJournalEntry.material.type],
-        },
+        id: dbJournalEntry.id,
+        createdAt: dbJournalEntry.createdAt,
+        updatedAt: dbJournalEntry.updatedAt,
+        title: dbJournalEntry.title,
+        slug: dbJournalEntry.slug,
         tags: dbJournalEntry.tags.map((tag) => tag.name),
+        description: dbJournalEntry.description,
+        material: {
+          id: dbJournalEntry.material.id,
+          type: materialTypeMapFromDB[dbJournalEntry.material.type],
+          content: dbJournalEntry.material.content,
+          createdAt: dbJournalEntry.material.createdAt,
+        },
+        content: dbJournalEntry.content,
       })),
     };
   } catch (e: any) {
@@ -189,7 +239,11 @@ export const updateJournalEntry: UpdateJournalEntryFunction = async function (
         id: dataToUpdateJE.id,
       },
       data: {
-        ...dataToUpdateJE,
+        id: dataToUpdateJE.id,
+        title: dataToUpdateJE.title,
+        slug: dataToUpdateJE.slug,
+        description: dataToUpdateJE.description,
+        content: dataToUpdateJE.content,
         material: {
           update: {
             ...dataToUpdateJE.material,
@@ -210,12 +264,20 @@ export const updateJournalEntry: UpdateJournalEntryFunction = async function (
     return {
       errorMessage: null,
       payload: {
-        ...dbJournalEntry,
-        material: {
-          ...dbJournalEntry.material,
-          type: materialTypeMapFromDB[dbJournalEntry.material.type],
-        },
+        id: dbJournalEntry.id,
+        createdAt: dbJournalEntry.createdAt,
+        updatedAt: dbJournalEntry.updatedAt,
+        title: dbJournalEntry.title,
+        slug: dbJournalEntry.slug,
         tags: dbJournalEntry.tags.map((tag) => tag.name),
+        description: dbJournalEntry.description,
+        material: {
+          id: dbJournalEntry.material.id,
+          type: materialTypeMapFromDB[dbJournalEntry.material.type],
+          content: dbJournalEntry.material.content,
+          createdAt: dbJournalEntry.material.createdAt,
+        },
+        content: dbJournalEntry.content,
       },
     };
   } catch (e: any) {

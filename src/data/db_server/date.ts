@@ -46,7 +46,7 @@ export const getDate: GetDateEntryFunction = async function ({
   try {
     const dbDate = await prismaClient.dateEntry.findUnique({
       where: {
-        date: date,
+        date: getStartOfDate(date),
       },
       include: {
         journalEntries: {
@@ -106,7 +106,10 @@ export const getDate: GetDateEntryFunction = async function ({
     });
 
     if (!dbDate) {
-      throw new Error(`Date entry for ${date} not found.`);
+      return {
+        errorMessage: null,
+        payload: null,
+      };
     }
 
     return {
@@ -232,7 +235,7 @@ export const deleteDate: DeleteDateEntryFunction = async function ({ date }) {
   try {
     const dbDate = await prismaClient.dateEntry.delete({
       where: {
-        date: date,
+        date: getStartOfDate(date),
       },
     });
 
