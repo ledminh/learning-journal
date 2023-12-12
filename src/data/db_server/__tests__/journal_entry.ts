@@ -728,6 +728,26 @@ describe("Journal Entry functions", () => {
 
     expect(tags.errorMessage).toBeNull();
 
+    const newTags = await addTags([
+      {
+        name: "New Tag 1",
+        slug: "new-tag-1",
+      },
+      {
+        name: "New Tag 2",
+        slug: "new-tag-2",
+      },
+    ]);
+
+    expect(newTags.errorMessage).toBeNull();
+
+    const newTagIDs = newTags.payload?.map((tag) => tag.id) as string[];
+
+    const tagIDs = [
+      ...(tags.payload?.map((tag) => tag.id) as string[]).slice(0, 2),
+      ...newTagIDs,
+    ];
+
     const updatedLinkJE = await updateJournalEntry({
       id: dbLinkJE.payload?.id as string,
       title: "Updated Journal Entry Title",
@@ -740,7 +760,7 @@ describe("Journal Entry functions", () => {
         content: "https://www.google.com",
         createdAt: dbLinkJE.payload?.material.createdAt as Date,
       },
-      tagIDs: tags.payload?.map((tag) => tag.id) as string[],
+      tagIDs,
     });
 
     expect(updatedLinkJE.errorMessage).toBeNull();
@@ -759,9 +779,22 @@ describe("Journal Entry functions", () => {
         createdAt: expect.any(Date),
       },
       content: "Updated Content",
-      tags: data.tags.map((tag) => tag.name),
+      tags: [
+        data.tags[0].name,
+        data.tags[1].name,
+        newTags.payload?.[0].name as string,
+        newTags.payload?.[1].name as string,
+      ],
     });
-  });
+
+    const deleteTags = await Promise.all(
+      newTagIDs.map((tagID, i) =>
+        deleteTag({ name: newTags.payload?.[i].name as string })
+      )
+    );
+
+    expect(deleteTags.every((result) => result.payload)).toBeTruthy();
+  }, 20000);
 
   it("should delete journal entries", async () => {
     const journalEntries = await getJournalEntries({});
