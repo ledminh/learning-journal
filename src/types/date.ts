@@ -68,11 +68,11 @@ export type GetDateEntriesFunction = AsyncFunction<
         }
       | {
           includeJournalEntries: true;
-          journalEntryFilters: {
+          journalEntryFilters?: {
             materialType?: MaterialType;
             keyword?: string;
           };
-          journalEntrySort: {
+          journalEntrySort?: {
             by: "title";
             order?: "asc" | "desc";
           };

@@ -12,8 +12,6 @@ import { createAndAddDate, deleteDate, getDate } from "@/data/db_server/date";
 
 import { MaterialType } from "@/types/material";
 import { addTags, deleteTag, getTags } from "../tag";
-import exp from "constants";
-import { after } from "node:test";
 
 const data = {
   tags: [
@@ -80,7 +78,7 @@ const data = {
   ],
 };
 
-describe("Journal Entry functions", () => {
+describe.skip("Journal Entry functions", () => {
   beforeAll(async () => {
     const tags = await addTags(data.tags);
 

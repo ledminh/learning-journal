@@ -1,4 +1,4 @@
-import { materialTypeMapToDB } from "@/types/material";
+import { materialTypeMapToDB, materialTypeMapFromDB } from "@/types/material";
 import prismaClient from "./prismaClient";
 
 import {
@@ -54,9 +54,13 @@ export const getDate: GetDateEntryFunction = async function ({
             tags: true,
             material: true,
           },
-          orderBy: {
-            title: options?.sort?.order,
-          },
+          orderBy: options?.sort
+            ? {
+                title: options?.sort?.order,
+              }
+            : {
+                title: "asc",
+              },
           take: options?.limit,
           skip: options?.offset,
           where: {
@@ -115,13 +119,22 @@ export const getDate: GetDateEntryFunction = async function ({
     return {
       errorMessage: null,
       payload: {
-        ...dbDate,
+        id: dbDate.id,
+        date: dbDate.date,
         journalEntries: dbDate?.journalEntries.map((entry) => ({
-          ...entry,
+          id: entry.id,
+          createdAt: entry.createdAt,
+          updatedAt: entry.updatedAt,
+          title: entry.title,
+          slug: entry.slug,
+          description: entry.description,
+          content: entry.content,
           tags: entry.tags.map((tag) => tag.name),
           material: {
-            ...entry.material,
-            type: entry.material.type as any,
+            id: entry.material.id,
+            createdAt: entry.material.createdAt,
+            type: materialTypeMapFromDB[entry.material.type],
+            content: entry.material.content,
           },
         })),
       },
@@ -200,9 +213,13 @@ export const getDates: GetDateEntriesFunction = async function ({ options }) {
             tags: true,
             material: true,
           },
-          orderBy: {
-            title: options?.sort?.order,
-          },
+          orderBy: options?.journalEntrySort
+            ? {
+                title: options?.journalEntrySort?.order,
+              }
+            : {
+                title: "asc",
+              },
         },
       },
     });
@@ -212,11 +229,17 @@ export const getDates: GetDateEntriesFunction = async function ({ options }) {
       payload: dbDates.map((dbDate) => ({
         ...dbDate,
         journalEntries: dbDate?.journalEntries.map((entry) => ({
-          ...entry,
+          id: entry.id,
+          createdAt: entry.createdAt,
+          updatedAt: entry.updatedAt,
+          title: entry.title,
+          slug: entry.slug,
+          description: entry.description,
+          content: entry.content,
           tags: entry.tags.map((tag) => tag.name),
           material: {
             ...entry.material,
-            type: entry.material.type as any,
+            type: materialTypeMapFromDB[entry.material.type],
           },
         })),
       })),
