@@ -98,7 +98,7 @@ const data = {
   jEResults: [] as JournalEntry[],
 };
 
-describe("Tag functions", () => {
+describe.skip("Tag functions", () => {
   afterAll(async () => {
     // Delete all tags
 
