@@ -74,8 +74,8 @@ export const getTag: GetTagEntryFunction = async ({ name, options }) => {
             AND: [
               options?.filters?.date
                 ? {
-                    createdAt: {
-                      equals: options.filters.date,
+                    date: {
+                      date: getStartOfDate(options.filters.date),
                     },
                   }
                 : {},
@@ -108,15 +108,33 @@ export const getTag: GetTagEntryFunction = async ({ name, options }) => {
             material: true,
             tags: true,
           },
-          orderBy: [
-            {
-              createdAt:
-                options?.sort?.by === "date" ? options.sort.order : "asc",
-            },
-            {
-              title: options?.sort?.by === "title" ? options.sort.order : "asc",
-            },
-          ],
+          orderBy: !options?.sort
+            ? [
+                {
+                  title: "asc",
+                },
+                {
+                  createdAt: "asc",
+                },
+              ]
+            : options.sort.by === "title"
+            ? [
+                {
+                  title: options.sort.order,
+                },
+                {
+                  createdAt: "asc",
+                },
+              ]
+            : [
+                {
+                  createdAt: options.sort.order,
+                },
+                {
+                  title: "asc",
+                },
+              ],
+
           take: options?.limit,
           skip: options?.offset,
         },
@@ -132,10 +150,18 @@ export const getTag: GetTagEntryFunction = async ({ name, options }) => {
       payload: {
         ...tag,
         journalEntries: tag.journalEntries.map((journalEntry) => ({
-          ...journalEntry,
+          id: journalEntry.id,
+          title: journalEntry.title,
+          slug: journalEntry.slug,
+          content: journalEntry.content,
+          description: journalEntry.description,
+          createdAt: journalEntry.createdAt,
+          updatedAt: journalEntry.updatedAt,
           material: {
-            ...journalEntry.material,
+            id: journalEntry.material.id,
+            content: journalEntry.material.content,
             type: materialTypeMapFromDB[journalEntry.material.type],
+            createdAt: journalEntry.material.createdAt,
           },
           tags: journalEntry.tags.map((tag) => tag.name),
         })),
@@ -155,16 +181,8 @@ export const getTags: GetTagEntriesFunction = async ({ names, options }) => {
       take: options?.limit,
       skip: options?.offset,
       where: {
-        ...(names?.length ? { name: { in: names } } : {}),
         AND: [
-          options?.filters?.date
-            ? {
-                createdAt: {
-                  gt: getStartOfDate(options.filters.date),
-                  lt: getEndOfDate(options.filters.date),
-                },
-              }
-            : {},
+          names?.length ? { name: { in: names } } : {},
           options?.filters?.keyword
             ? {
                 name: {
@@ -174,16 +192,12 @@ export const getTags: GetTagEntriesFunction = async ({ names, options }) => {
             : {},
         ],
       },
-      orderBy:
-        options?.sort?.by === "name"
-          ? {
-              name: options.sort.order,
-            }
-          : options?.sort?.by === "date"
-          ? {
-              createdAt: options.sort.order,
-            }
-          : {},
+      ...(options &&
+        options.sort && {
+          orderBy: {
+            name: options.sort.order || "asc",
+          },
+        }),
     };
 
     // Not including journal entries.
@@ -295,8 +309,20 @@ export const updateTag: UpdateTagFunction = async (dataToUpdateTag) => {
         journalEntries: {
           include: {
             material: true,
-            tags: true,
+            tags: {
+              orderBy: {
+                name: "asc",
+              },
+            },
           },
+          orderBy: [
+            {
+              title: "asc",
+            },
+            {
+              createdAt: "asc",
+            },
+          ],
         },
       },
     });
@@ -304,9 +330,18 @@ export const updateTag: UpdateTagFunction = async (dataToUpdateTag) => {
     return {
       errorMessage: null,
       payload: {
-        ...tag,
+        id: tag.id,
+        name: tag.name,
+        slug: tag.slug,
+        createdAt: tag.createdAt,
         journalEntries: tag.journalEntries.map((journalEntry) => ({
-          ...journalEntry,
+          id: journalEntry.id,
+          title: journalEntry.title,
+          slug: journalEntry.slug,
+          content: journalEntry.content,
+          description: journalEntry.description,
+          createdAt: journalEntry.createdAt,
+          updatedAt: journalEntry.updatedAt,
           material: {
             ...journalEntry.material,
             type: materialTypeMapFromDB[journalEntry.material.type],
@@ -324,7 +359,7 @@ export const updateTag: UpdateTagFunction = async (dataToUpdateTag) => {
 };
 
 export const removeJournalEntryFromTag: RemoveJournalEntryFromTagFunction =
-  async ({ name, journalEntry }) => {
+  async ({ name, journalEntryID }) => {
     try {
       const tag = await prismaClient.tag.update({
         where: {
@@ -333,7 +368,7 @@ export const removeJournalEntryFromTag: RemoveJournalEntryFromTagFunction =
         data: {
           journalEntries: {
             disconnect: {
-              id: journalEntry.id,
+              id: journalEntryID,
             },
           },
         },
@@ -341,7 +376,11 @@ export const removeJournalEntryFromTag: RemoveJournalEntryFromTagFunction =
           journalEntries: {
             include: {
               material: true,
-              tags: true,
+              tags: {
+                orderBy: {
+                  name: "asc",
+                },
+              },
             },
           },
         },
@@ -350,9 +389,18 @@ export const removeJournalEntryFromTag: RemoveJournalEntryFromTagFunction =
       return {
         errorMessage: null,
         payload: {
-          ...tag,
+          id: tag.id,
+          name: tag.name,
+          slug: tag.slug,
+          createdAt: tag.createdAt,
           journalEntries: tag.journalEntries.map((journalEntry) => ({
-            ...journalEntry,
+            id: journalEntry.id,
+            title: journalEntry.title,
+            slug: journalEntry.slug,
+            content: journalEntry.content,
+            description: journalEntry.description,
+            createdAt: journalEntry.createdAt,
+            updatedAt: journalEntry.updatedAt,
             material: {
               ...journalEntry.material,
               type: materialTypeMapFromDB[journalEntry.material.type],

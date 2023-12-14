@@ -63,11 +63,10 @@ export type GetTagEntriesFunction = AsyncFunction<
       limit?: number;
       offset?: number;
       filters?: {
-        date?: Date;
         keyword?: string;
       };
       sort?: {
-        by?: "date" | "name";
+        by?: "name";
         order?: "asc" | "desc";
       };
     } & (
@@ -101,7 +100,7 @@ export type AddJournalEntryToTagFunction = AsyncFunction<
 >;
 
 export type RemoveJournalEntryFromTagFunction = AsyncFunction<
-  { name: string; journalEntry: JournalEntry },
+  { name: string; journalEntryID: string },
   TagEntry
 >;
 
