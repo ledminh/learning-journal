@@ -23,11 +23,6 @@ export type JournalEntry = {
 
 /******** CREATE and ADD to DB ******************/
 
-export type DataToCreateJournalEntry = Omit<
-  JournalEntry,
-  "id" | "slug" | "createdAt" | "updatedAt"
->;
-
 export type DataToAddJournalEntry = Omit<
   JournalEntry & {
     date: { id: string };
@@ -37,11 +32,6 @@ export type DataToAddJournalEntry = Omit<
 > & {
   material: DataToAddMaterial;
 };
-
-export type CreateJournalEntryFunction = AsyncFunction<
-  DataToCreateJournalEntry,
-  DataToAddJournalEntry
->;
 
 export type AddJournalEntryFunction = AsyncFunction<
   DataToAddJournalEntry,
@@ -129,7 +119,3 @@ export type GenerateJournalEntryDescriptionFunction = AsyncFunction<
   DataToGenerateJournalEntryDescription,
   GenerateJournalEntryDescriptionAPIResponse
 >;
-
-/************************************************
- * HOOKS
- ************************************************/

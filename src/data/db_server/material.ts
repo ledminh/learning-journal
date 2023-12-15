@@ -1,7 +1,6 @@
 import prismaClient from "./prismaClient";
 
 import {
-  AddMaterialFunction,
   UpdateMaterialFunction,
   DeleteMaterialFunction,
   materialTypeMapFromDB,
@@ -9,34 +8,6 @@ import {
 } from "@/data/db_server/types/material";
 
 // Functions
-
-/******** ADD **********************/
-
-export const addMaterial: AddMaterialFunction = async function (dataToAddMT) {
-  const dbType = materialTypeMapToDB[dataToAddMT.type];
-
-  try {
-    const dbMaterial = await prismaClient.material.create({
-      data: {
-        ...dataToAddMT,
-        type: dbType,
-      },
-    });
-
-    return {
-      errorMessage: null,
-      payload: {
-        ...dbMaterial,
-        type: materialTypeMapFromDB[dbMaterial.type],
-      },
-    };
-  } catch (error: any) {
-    return {
-      errorMessage: error.message,
-      payload: null,
-    };
-  }
-};
 
 /******** UPDATE **********************/
 
