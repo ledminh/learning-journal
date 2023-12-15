@@ -1,4 +1,8 @@
-import { materialTypeMapToDB, materialTypeMapFromDB } from "@/types/material";
+import {
+  materialTypeMapToDB,
+  materialTypeMapFromDB,
+} from "@/data/db_server/types/material";
+
 import prismaClient from "./prismaClient";
 
 import {
@@ -6,7 +10,7 @@ import {
   GetDateEntriesFunction,
   GetDateEntryFunction,
   DeleteDateEntryFunction,
-} from "@/types/date";
+} from "@/data/db_server/types/date";
 import { getStartOfDate } from "@/utils/dateFunctions";
 
 /******** CREATE **********************/

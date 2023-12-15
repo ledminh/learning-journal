@@ -7,7 +7,7 @@ import {
   UpdateJournalEntryFunction,
   DeleteJournalEntryFunction,
   DeleteImageFunction,
-} from "@/types/journal_entry";
+} from "@/data/db_server/types/journal_entry";
 import prismaClient from "../db_server/prismaClient";
 
 /************************************************

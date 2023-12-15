@@ -4,7 +4,7 @@ import {
   getDates,
   deleteDate,
 } from "@/data/db_server/date";
-import { MaterialType } from "@/types/material";
+import { MaterialType } from "@/data/db_server/types/material";
 import { getStartOfDate } from "@/utils/dateFunctions";
 import {
   addJournalEntry,
@@ -14,7 +14,7 @@ import {
 } from "../journal_entry";
 import { deleteMaterial } from "../material";
 import { addTags, deleteTag, getTags } from "../tag";
-import { TagEntry } from "@/types/tag";
+import { TagEntry } from "@/data/db_server/types/tag";
 
 const data = {
   tags: [

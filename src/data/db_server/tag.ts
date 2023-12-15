@@ -1,4 +1,7 @@
-import { materialTypeMapToDB, materialTypeMapFromDB } from "@/types/material";
+import {
+  materialTypeMapToDB,
+  materialTypeMapFromDB,
+} from "@/data/db_server/types/material";
 import prismaClient from "./prismaClient";
 
 import {
@@ -9,8 +12,8 @@ import {
   GetTagEntryFunction,
   RemoveJournalEntryFromTagFunction,
   UpdateTagFunction,
-} from "@/types/tag";
-import { getEndOfDate, getStartOfDate } from "@/utils/dateFunctions";
+} from "@/data/db_server/types/tag";
+import { getStartOfDate } from "@/utils/dateFunctions";
 
 /******** ADD or GET **********************/
 

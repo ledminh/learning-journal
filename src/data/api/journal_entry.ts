@@ -12,7 +12,7 @@ import {
   DeleteJournalEntryFunction,
   DeleteImageFunction,
   DataToCreateJournalEntry,
-} from "@/types/journal_entry";
+} from "@/data/db_server/types/journal_entry";
 
 import { post, get } from "./utils";
 import generateID from "@/utils/generateID";

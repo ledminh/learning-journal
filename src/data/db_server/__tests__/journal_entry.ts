@@ -8,9 +8,9 @@ import {
 
 import { deleteMaterial } from "@/data/db_server/material";
 
-import { createAndAddDate, deleteDate, getDate } from "@/data/db_server/date";
+import { createAndAddDate, deleteDate } from "@/data/db_server/date";
 
-import { MaterialType } from "@/types/material";
+import { MaterialType } from "@/data/db_server/types/material";
 import { addTags, deleteTag, getTags } from "../tag";
 
 const data = {

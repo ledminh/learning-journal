@@ -6,7 +6,7 @@ import {
   DeleteMaterialFunction,
   materialTypeMapFromDB,
   materialTypeMapToDB,
-} from "@/types/material";
+} from "@/data/db_server/types/material";
 
 // Functions
 

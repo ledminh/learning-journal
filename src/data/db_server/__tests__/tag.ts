@@ -18,10 +18,10 @@ import {
 
 import { deleteMaterial } from "@/data/db_server/material";
 
-import { TagEntry } from "@/types/tag";
+import { TagEntry } from "@/data/db_server/types/tag";
 
-import { MaterialType } from "@/types/material";
-import { JournalEntry } from "@/types/journal_entry";
+import { MaterialType } from "@/data/db_server/types/material";
+import { JournalEntry } from "@/data/db_server/types/journal_entry";
 import { createAndAddDate, deleteDate } from "../date";
 
 const data = {

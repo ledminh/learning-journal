@@ -4,7 +4,7 @@ import {
   deleteMaterial,
 } from "@/data/db_server/material"; // Update the path to your module
 
-import { MaterialType } from "@/types/material";
+import { MaterialType } from "@/data/db_server/types/material";
 
 describe.skip("Material functions", () => {
   it("should add, update and delete  QUOTE material successfully", async () => {

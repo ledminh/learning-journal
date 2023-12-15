@@ -6,8 +6,11 @@ import {
   GetJournalEntriesFunction,
   UpdateJournalEntryFunction,
   DeleteJournalEntryFunction,
-} from "@/types/journal_entry";
-import { materialTypeMapToDB, materialTypeMapFromDB } from "@/types/material";
+} from "@/data/db_server/types/journal_entry";
+import {
+  materialTypeMapToDB,
+  materialTypeMapFromDB,
+} from "@/data/db_server/types/material";
 import { getDate } from "./date";
 
 /******** ADD ******************/
