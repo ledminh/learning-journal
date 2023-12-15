@@ -1,5 +1,5 @@
 import type { JournalEntry } from "@/data/db_server/types/journal_entry";
-import { AsyncFunction } from ".";
+import { AsyncFunction } from "@/data/types";
 import { MaterialType } from "./material";
 
 /************************
