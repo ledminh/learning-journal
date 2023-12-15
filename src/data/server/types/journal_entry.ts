@@ -55,8 +55,13 @@ export type GetJournalEntriesFunction = AsyncFunction<
 >;
 
 /******** UPDATE **********************/
+export type DataToUpdateJournalEntry = Omit<
+  JournalEntry & { tagIDs: string[] },
+  "tags" | "createdAt" | "updatedAt"
+>;
+
 export type UpdateJournalEntryFunction = AsyncFunction<
-  JournalEntry,
+  DataToUpdateJournalEntry,
   JournalEntry
 >;
 
