@@ -69,7 +69,19 @@ export type CreateMaterialFunction = AsyncFunction<
   dbServerType.DataToAddMaterial
 >;
 
-export type DeleteMaterialFunction = AsyncFunction<
-  { materialID: string },
-  { success: boolean }
+export type GenerateMaterialLinkContentFunction = AsyncFunction<
+  { url: string },
+  MaterialLinkContent
+>;
+
+export type UploadImageFunction = AsyncFunction<
+  { imageFile: File },
+  { imageUrl: string }
+>;
+
+export type DeleteImageFunction = AsyncFunction<
+  { imageUrl: string },
+  {
+    success: boolean;
+  }
 >;

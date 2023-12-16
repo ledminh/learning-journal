@@ -1,6 +1,8 @@
 import { DataToCreateMaterial, Material, MaterialType } from "./material";
 import { AsyncFunction } from "@/data/types";
 
+import * as dbServer from "@/data/db_server/types";
+
 /*****************************
  * Data
  */
@@ -28,45 +30,11 @@ export type JournalEntry = Omit<DataToCreateJournalEntry, "material"> & {
 /******** CREATE ******************/
 export type CreateJournalEntryFunction = AsyncFunction<
   DataToCreateJournalEntry,
-  JournalEntry
+  dbServer.JournalEntry
 >;
 
-/******** READ **********************/
-export type GetJournalEntryFunction = AsyncFunction<
-  { slug: string },
-  JournalEntry
->;
-
-export type GetJournalEntriesFunction = AsyncFunction<
-  {
-    limit?: number;
-    offset?: number;
-    filters?: {
-      keyword?: string;
-      date?: Date;
-      materialType?: MaterialType;
-    };
-    sort?: {
-      by?: "date" | "title";
-      order?: "asc" | "desc";
-    };
-  },
-  JournalEntry[]
->;
-
-/******** UPDATE **********************/
-export type DataToUpdateJournalEntry = Omit<
-  JournalEntry & { tagIDs: string[] },
-  "tags" | "createdAt" | "updatedAt"
->;
-
-export type UpdateJournalEntryFunction = AsyncFunction<
-  DataToUpdateJournalEntry,
-  JournalEntry
->;
-
-/******** DELETE **********************/
-export type DeleteJournalEntryFunction = AsyncFunction<
-  { id: string },
+/******** HELPERS **********************/
+export type ConvertJournalEntryFromDBServerFunction = AsyncFunction<
+  dbServer.JournalEntry,
   JournalEntry
 >;
