@@ -6,10 +6,13 @@ import { MaterialType } from "./material";
  * Data
  */
 
-export type TagEntry = {
-  id: string;
+export type DataToAddTag = {
   name: string;
   slug: string;
+};
+
+export type TagEntry = DataToAddTag & {
+  id: string;
   journalEntries: JournalEntry[];
   createdAt: Date;
 };
@@ -20,15 +23,7 @@ export type TagEntry = {
 
 /******** CREATE and ADD **********************/
 
-export type DataToCreateTags = { name: string }[];
-
-export type DataToAddTags = Omit<
-  TagEntry,
-  "id" | "journalEntries" | "createdAt"
->[];
-
-export type CreateTagFunction = AsyncFunction<DataToCreateTags, DataToAddTags>;
-export type AddTagsFunction = AsyncFunction<DataToAddTags, TagEntry[]>;
+export type AddTagsFunction = AsyncFunction<DataToAddTag[], TagEntry[]>;
 
 /******** READ **********************/
 

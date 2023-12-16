@@ -7,7 +7,6 @@ import { AsyncFunction } from "@/data/types";
 
 export type DataToCreateJournalEntry = {
   title: string;
-  slug: string;
   tags: string[];
   description: string;
   material: DataToCreateMaterial;
@@ -16,6 +15,7 @@ export type DataToCreateJournalEntry = {
 
 export type JournalEntry = Omit<DataToCreateJournalEntry, "material"> & {
   id: string;
+  slug: string;
   createdAt: Date;
   updatedAt: Date;
   material: Material;

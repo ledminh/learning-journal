@@ -69,7 +69,7 @@ export type CreateMaterialFunction = AsyncFunction<
   dbServerType.DataToAddMaterial
 >;
 
-export type UpdateMaterialFunction = AsyncFunction<
-  DataToCreateMaterial & { id: string },
-  Material
+export type DeleteMaterialFunction = AsyncFunction<
+  { materialID: string },
+  { success: boolean }
 >;
