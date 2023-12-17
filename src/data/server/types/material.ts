@@ -16,7 +16,6 @@ export type MaterialLinkContent = {
   url: string;
   title: string;
   description: string;
-  imageURL: string;
 };
 
 export type Material = {

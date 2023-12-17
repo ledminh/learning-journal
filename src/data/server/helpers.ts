@@ -29,7 +29,7 @@ export const generateJournalEntryDescription: GenerateJournalEntryDescriptionFun
           material.content.url;
       }
 
-      const question = `Summarize the following journal entry into one sentence for description: 
+      const question = `A journal entry has 3 section: title, content, and material. Rewrite the following journal entry into a one sentence description.
       Title: ${title}
       Content: ${content}
       Material: ${materialContent}`;
