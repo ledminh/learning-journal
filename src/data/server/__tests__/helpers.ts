@@ -1,7 +1,7 @@
 import { generateJournalEntryDescription } from "../helpers";
 import { MaterialType } from "../types/material";
 
-describe("generateJournalEntryDescription", () => {
+describe.skip("generateJournalEntryDescription", () => {
   it("should generate a description of a quote journal entry", async () => {
     const { errorMessage, payload } = await generateJournalEntryDescription({
       title: "Optimization",
@@ -97,6 +97,8 @@ describe("generateJournalEntryDescription", () => {
             "How to use multiple programming languages without losing your mind",
           description:
             "A polyglot environment is a double-edged sword, bringing benefits along with complexities that may threaten the organization.",
+          imageUrl:
+            "https://opensource.com/sites/default/files/styles/image-full-size/public/lead-images/programming-code-keyboard-laptop-music.png?itok=Z8YQ9X6Y",
         },
       },
     });

@@ -16,6 +16,7 @@ export type MaterialLinkContent = {
   url: string;
   title: string;
   description: string;
+  imageUrl: string;
 };
 
 export type Material = {
@@ -68,9 +69,9 @@ export type CreateMaterialFunction = AsyncFunction<
   dbServerType.DataToAddMaterial
 >;
 
-export type GenerateMaterialLinkContentFunction = AsyncFunction<
+export type GenerateDataForMaterialLinkContentFunction = AsyncFunction<
   { url: string },
-  MaterialLinkContent
+  Omit<MaterialLinkContent, "imageUrl"> & { imageUrls: string[] }
 >;
 
 export type UploadImageFunction = AsyncFunction<
