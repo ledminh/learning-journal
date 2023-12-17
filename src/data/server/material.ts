@@ -1,6 +1,9 @@
 import axios from "axios";
 import { load } from "cheerio";
 
+import { createClient } from "@supabase/supabase-js";
+import { FileOptions } from "@supabase/storage-js";
+
 import {
   CreateMaterialFunction,
   GenerateDataForMaterialLinkContentFunction,
@@ -99,16 +102,85 @@ export const generateDataForMaterialLinkContent: GenerateDataForMaterialLinkCont
     };
   };
 
-export const uploadImage: UploadImageFunction = async (data) => {
+export const uploadImage: UploadImageFunction = async ({ imageFile }) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL as string,
+    process.env.SUPABASE_API_KEY as string,
+    {
+      auth: { persistSession: false },
+    }
+  );
+
+  const fileName = imageFile.name.split(".")[0] + "_" + Date.now();
+  const fileType = imageFile.name.split(".")[1];
+
+  const filePath = `${fileName}.${fileType === "jpeg" ? "jpg" : fileType}`;
+
+  const fileOptions: FileOptions = {
+    contentType: imageFile.type || "image/jpeg",
+    cacheControl: "3600",
+    upsert: true,
+  };
+
+  const { data, error } = await supabase.storage
+    .from("images")
+    .upload(filePath, imageFile, fileOptions);
+
+  if (error) {
+    return {
+      errorMessage: error.message,
+      payload: null,
+    };
+  }
+
   return {
-    errorMessage: "Not implemented",
-    payload: null,
+    errorMessage: null,
+    payload: {
+      imageUrl:
+        process.env.SUPABASE_URL + "/storage/v1/object/public/" + data.path,
+    },
   };
 };
 
 export const deleteImage: DeleteImageFunction = async (data) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL as string,
+    process.env.SUPABASE_API_KEY as string,
+    {
+      auth: { persistSession: false },
+    }
+  );
+
+  const { imageUrl } = data;
+
+  const fileName = imageUrl.split("/").pop();
+
+  if (!fileName) {
+    return {
+      errorMessage: "Unable to delete image. Invalid image url.",
+      payload: null,
+    };
+  }
+
+  const nameArr = fileName.split(".");
+
+  const type = nameArr[1];
+  const name = nameArr[0];
+  const filePaths = [`${name}.${type === "jpeg" ? "jpg" : type}`];
+
+  const { error } = await supabase.storage.from("images").remove(filePaths);
+
+  if (error) {
+    return {
+      errorMessage: error.message,
+      payload: null,
+    };
+  }
+
   return {
-    errorMessage: "Not implemented",
-    payload: null,
+    errorMessage: null,
+    payload: {
+      success: true,
+    },
   };
 };

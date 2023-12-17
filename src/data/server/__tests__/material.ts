@@ -1,6 +1,8 @@
 import {
   createMaterial,
   generateDataForMaterialLinkContent,
+  uploadImage,
+  deleteImage,
 } from "../material";
 
 describe("server/material", () => {
