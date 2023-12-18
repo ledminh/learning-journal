@@ -5,8 +5,36 @@ import {
   deleteImage,
 } from "../material";
 
+import { MaterialType } from "../types/material";
+import * as dbServerType from "@/data/db_server/types";
+
 describe("server/material", () => {
-  it.skip("should create new material", () => {});
+  it("should create new material", async () => {
+    const { errorMessage, payload } = await createMaterial({
+      type: MaterialType.QUOTE,
+      content: "This is a quote",
+    });
+
+    expect(errorMessage).toBeNull();
+
+    expect(payload).toEqual({
+      type: dbServerType.MaterialType.Quote,
+      content: "This is a quote",
+    });
+
+    const { errorMessage: errorMessage2, payload: payload2 } =
+      await createMaterial({
+        type: MaterialType.CODE,
+        content: "console.log('Hello World!')",
+      });
+
+    expect(errorMessage2).toBeNull();
+
+    expect(payload2).toEqual({
+      type: dbServerType.MaterialType.Code,
+      content: "console.log('Hello World!')",
+    });
+  });
 
   it("should generate data for material link content", async () => {
     const { errorMessage, payload } = await generateDataForMaterialLinkContent({
