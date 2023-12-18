@@ -21,7 +21,7 @@ export const createMaterial: CreateMaterialFunction = async (data) => {
   const { type, content } = data;
 
   switch (type) {
-    case MaterialType.LINK:
+    case MaterialType.LINK: {
       const { url, title, description, imageUrl } = content;
 
       return {
@@ -31,6 +31,7 @@ export const createMaterial: CreateMaterialFunction = async (data) => {
           content: JSON.stringify({ url, title, description, imageUrl }),
         },
       };
+    }
 
     case MaterialType.QUOTE:
     case MaterialType.CODE:
@@ -137,7 +138,9 @@ export const uploadImage: UploadImageFunction = async ({ imageFile }) => {
     errorMessage: null,
     payload: {
       imageUrl:
-        process.env.SUPABASE_URL + "/storage/v1/object/public/" + data.path,
+        process.env.SUPABASE_URL +
+        "/storage/v1/object/public/images/" +
+        data.path,
     },
   };
 };
