@@ -1,36 +1,37 @@
+import { MaterialType as DBMaterialType } from "../db_server/types";
+
 import {
-  CreateJournalEntryFunction,
   ConvertJournalEntryFromDBServerFunction,
+  JournalEntry,
 } from "./types/journal_entry";
 
-export const createJournalEntry: CreateJournalEntryFunction = async ({
-  title,
-  tags,
-  description,
-  material,
-  content,
-}) => {
-  return {
-    errorMessage: "Not implemented",
-    payload: null,
-  };
-};
-
-/******** HELPERS **********************/
+import { materialTypeMapFromDBServer } from "./types/material";
 
 export const convertJournalEntryFromDBServerFunction: ConvertJournalEntryFromDBServerFunction =
-  async ({
-    id,
-    title,
-    slug,
-    createdAt,
-    updatedAt,
-    material,
-    description,
-    content,
-  }) => {
+  async (dbJournalEntry) => {
+    const materialContent =
+      dbJournalEntry.material.type === DBMaterialType.Link
+        ? JSON.parse(dbJournalEntry.material.content)
+        : dbJournalEntry.material.content;
+
+    const journalEntry: JournalEntry = {
+      id: dbJournalEntry.id,
+      slug: dbJournalEntry.slug,
+      createdAt: dbJournalEntry.createdAt,
+      updatedAt: dbJournalEntry.updatedAt,
+      title: dbJournalEntry.title,
+      description: dbJournalEntry.description,
+      material: {
+        id: dbJournalEntry.material.id,
+        type: materialTypeMapFromDBServer[dbJournalEntry.material.type],
+        content: materialContent,
+      },
+      content: dbJournalEntry.content,
+      tags: dbJournalEntry.tags,
+    };
+
     return {
-      errorMessage: "Not implemented",
-      payload: null,
+      errorMessage: null,
+      payload: journalEntry,
     };
   };

@@ -23,17 +23,10 @@ export type JournalEntry = Omit<DataToCreateJournalEntry, "material"> & {
   material: Material;
 };
 
-/************************************************
- * CRUD
- ************************************************/
+/*****************************
+ * Functions
+ */
 
-/******** CREATE ******************/
-export type CreateJournalEntryFunction = AsyncFunction<
-  DataToCreateJournalEntry,
-  dbServer.JournalEntry
->;
-
-/******** HELPERS **********************/
 export type ConvertJournalEntryFromDBServerFunction = AsyncFunction<
   dbServer.JournalEntry,
   JournalEntry
