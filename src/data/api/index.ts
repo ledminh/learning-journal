@@ -16,7 +16,7 @@ export namespace index {
   }
 
   function getDates() {
-    // dates in the last 2 months
+    // last 5 dates (using limit and offset)
     // count of journal entries for each date
   }
 }
@@ -125,8 +125,3 @@ export namespace admin_edit_journal {
     // Delete a journal entry
   }
 }
-
-function getJournalEntries() {}
-function getTags() {}
-function getDates() {}
-function getTag() {}
