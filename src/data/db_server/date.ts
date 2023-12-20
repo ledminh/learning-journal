@@ -11,7 +11,8 @@ import {
   GetDateEntryFunction,
   DeleteDateEntryFunction,
 } from "@/data/db_server/types/date";
-import { getStartOfDate } from "@/utils/dateFunctions";
+
+import { getStartOfDate, getEndOfDate } from "@/utils/dateFunctions";
 
 /******** CREATE **********************/
 
@@ -156,6 +157,12 @@ export const getDates: GetDateEntriesFunction = async function ({ options }) {
     const initOps = {
       take: options?.limit,
       skip: options?.offset,
+      where: {
+        date: {
+          gte: options?.from ? getStartOfDate(options?.from) : undefined,
+          lte: options?.to ? getEndOfDate(options?.to) : undefined,
+        },
+      },
       orderBy: {
         date: options?.sort?.order ?? "asc",
       },

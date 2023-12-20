@@ -50,13 +50,13 @@ export type GetDateEntryFunction = AsyncFunction<
   DateEntry
 >;
 
-// Get all date entries with/without their journal entries.
-
 export type GetDateEntriesFunction = AsyncFunction<
   {
     options?: {
       limit?: number;
       offset?: number;
+      from?: Date;
+      to?: Date;
       sort?: {
         order?: "asc" | "desc";
       };

@@ -42,7 +42,19 @@ export namespace tag {
 
 export namespace dates {
   function getDates() {
-    // Last 10 dates with journal entries
+    // Using to and from to get dates from the last 3 months
+  }
+}
+
+export namespace date {
+  function getDate() {
+    // Date with journal entries
+    // DEFAULT VALUES:
+    // limit: 10
+    // offset: 0
+    // filters: null
+    // sortBy: title
+    // sortOrder: asc
   }
 }
 
@@ -113,3 +125,8 @@ export namespace admin_edit_journal {
     // Delete a journal entry
   }
 }
+
+function getJournalEntries() {}
+function getTags() {}
+function getDates() {}
+function getTag() {}
