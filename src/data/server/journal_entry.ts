@@ -7,8 +7,8 @@ import {
 
 import { materialTypeMapFromDBServer } from "./types/material";
 
-export const convertJournalEntryFromDBServerFunction: ConvertJournalEntryFromDBServerFunction =
-  async (dbJournalEntry) => {
+export const convertJournalEntryFromDBServer: ConvertJournalEntryFromDBServerFunction =
+  (dbJournalEntry) => {
     const materialContent =
       dbJournalEntry.material.type === DBMaterialType.Link
         ? JSON.parse(dbJournalEntry.material.content)
@@ -30,8 +30,5 @@ export const convertJournalEntryFromDBServerFunction: ConvertJournalEntryFromDBS
       tags: dbJournalEntry.tags,
     };
 
-    return {
-      errorMessage: null,
-      payload: journalEntry,
-    };
+    return journalEntry;
   };

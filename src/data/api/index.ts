@@ -11,32 +11,9 @@ export namespace index {
     // sortOrder: desc
   }
 
-  function getTags() {
-    // Last 10 tags
-  }
-
   function getDates() {
     // last 5 dates (using limit and offset)
     // count of journal entries for each date
-  }
-}
-
-export namespace tags {
-  function getTags() {
-    // All tags.
-    // No Journal Entries.
-  }
-}
-
-export namespace tag {
-  function getTag() {
-    // Tag with journal entries
-    // DEFAULT VALUES:
-    // limit: 5
-    // offset: 0
-    // filters: null
-    // sortBy: date
-    // sortOrder: desc
   }
 }
 
@@ -61,16 +38,6 @@ export namespace date {
 // admin cp
 
 export namespace admin_index {
-  function getTags() {
-    // All tags.
-    // Sort by title, asc.
-    // No Journal Entries.
-  }
-
-  function addTag() {
-    // Add a tag
-  }
-
   function getJournalEntries() {
     // Get 10 journal entries
     // DEFAULT VALUES:
@@ -83,16 +50,6 @@ export namespace admin_index {
 }
 
 export namespace admin_tag {
-  function getTag() {
-    // Tag with journal entries
-    // DEFAULT VALUES:
-    // limit: 10
-    // offset: 0
-    // sortBy: date
-    // sortOrder: desc
-    // filters: null
-  }
-
   function updateTag() {
     // Update a tag
   }
