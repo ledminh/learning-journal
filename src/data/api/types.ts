@@ -1,7 +1,22 @@
 import { MaterialType } from "@/data/server/types/material";
 import { Tag } from "@/data/server/types/tag";
 import { AsyncFunction } from "@/data/types";
+import { DateEntry } from "../server/types/date";
 
+/**************************
+ * Date API
+ */
+
+export type GetDateFunction = AsyncFunction<
+  {
+    date: Date;
+  },
+  DateEntry
+>;
+
+/**************************
+ * Tag API
+ */
 export type GetTagsFunction = AsyncFunction<
   {
     limit?: number;
