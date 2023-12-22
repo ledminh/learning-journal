@@ -23,12 +23,16 @@ export type DataToCreateJournalEntry = {
   content: string;
 };
 
-export type JournalEntry = Omit<DataToCreateJournalEntry, "material"> & {
+export type JournalEntry = Omit<
+  DataToCreateJournalEntry,
+  "material" | "tags"
+> & {
   id: string;
   slug: string;
   createdAt: Date;
   updatedAt: Date;
   material: Material;
+  tags: string[];
 };
 
 /*****************************
