@@ -36,6 +36,17 @@ export type DataToAddMaterial = Omit<Material, "id" | "createdAt">;
  * CRUD
  ************************************************/
 
+/******** CREATE ******************/
+export type CreateMaterialFunction = AsyncFunction<DataToAddMaterial, Material>;
+
+/******** READ ******************/
+export type GetMaterialFunction = AsyncFunction<
+  {
+    id: string;
+  },
+  Material
+>;
+
 /******** UPDATE **********************/
 
 export type UpdateMaterialFunction = AsyncFunction<Material, Material>;

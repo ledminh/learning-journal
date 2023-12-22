@@ -1,4 +1,7 @@
-import { MaterialType } from "@/data/server/types/material";
+import {
+  MaterialLinkContent,
+  MaterialType,
+} from "@/data/server/types/material";
 import { Tag } from "@/data/server/types/tag";
 import { AsyncFunction } from "@/data/types";
 import { DateEntry } from "../server/types/date";
@@ -35,6 +38,47 @@ export type GetJournalEntryFunction = AsyncFunction<
 
 export type AddJournalEntryFunction = AsyncFunction<
   DataToCreateJournalEntry,
+  JournalEntry
+>;
+
+export type UpdateJournalEntryFunction = AsyncFunction<
+  {
+    id: string;
+    title: string;
+    description: string;
+    content: string;
+    slug: string;
+    tags: (
+      | {
+          name: null;
+          id: string;
+        }
+      | {
+          name: string;
+          id: null;
+        }
+    )[];
+
+    material:
+      | { id: string; type: MaterialType; content: string }
+      | (
+          | {
+              id: null;
+              type: MaterialType.CODE | MaterialType.QUOTE;
+              content: string;
+            }
+          | {
+              id: null;
+              type: MaterialType.LINK;
+              content: MaterialLinkContent;
+            }
+          | {
+              id: null;
+              type: MaterialType.IMAGE;
+              content: File;
+            }
+        );
+  },
   JournalEntry
 >;
 

@@ -5,13 +5,19 @@ import {
   AddJournalEntryFunction,
   GetJournalEntriesFunction,
   GetJournalEntryFunction,
+  UpdateJournalEntryFunction,
 } from "./types";
 import * as dbJournalEntry from "@/data/db_server/journal_entry";
 import createSlug from "@/utils/createSlug";
 import { addTags } from "./tag";
 import { createMaterial } from "../server/material";
-import { DataToAddMaterial } from "@/data/db_server/types";
+import { DataToAddMaterial, Material } from "@/data/db_server/types";
 import { createAndAddDate, getDate } from "../db_server/date";
+
+import { getMaterial } from "../db_server/material";
+
+import { MaterialType } from "../server/types/material";
+import { deleteImage } from "../server/material";
 
 export const getJournalEntries: GetJournalEntriesFunction = async ({
   limit,
@@ -67,6 +73,7 @@ export const getJournalEntry: GetJournalEntryFunction = async ({ slug }) => {
 };
 
 export const addJournalEntry: AddJournalEntryFunction = async (data) => {
+  // Prepare tags
   const names = (
     data.tags.filter((tag) => tag.name !== null) as {
       name: string;
@@ -93,6 +100,7 @@ export const addJournalEntry: AddJournalEntryFunction = async (data) => {
     }
   });
 
+  // Prepare material
   const { errorMessage: errorMessage2, payload: material } =
     await createMaterial(data.material);
 
@@ -103,6 +111,7 @@ export const addJournalEntry: AddJournalEntryFunction = async (data) => {
     };
   }
 
+  // Prepare date
   const { errorMessage: errorMessage3, payload: date } = await getDate({
     date: new Date(),
   });
@@ -153,5 +162,119 @@ export const addJournalEntry: AddJournalEntryFunction = async (data) => {
   };
 };
 
-function updateJournalEntry() {}
+export const updateJournalEntry: UpdateJournalEntryFunction = async function (
+  data
+) {
+  const { errorMessage: errorMessageOJE, payload: oldJournalEntry } =
+    await dbJournalEntry.getJournalEntry({ slug: data.slug });
+
+  if (errorMessageOJE) {
+    return {
+      errorMessage: errorMessageOJE,
+      payload: null,
+    };
+  }
+
+  // Prepare material
+
+  let material: Material | null = null;
+
+  if (data.material.id !== null) {
+    const { errorMessage: errorMessageOMT, payload: oldMaterial } =
+      await getMaterial({ id: data.material.id });
+
+    if (errorMessageOMT) {
+      return {
+        errorMessage: errorMessageOMT,
+        payload: null,
+      };
+    }
+    material = oldMaterial as Material;
+  } else {
+    const { errorMessage: errorMessageCM, payload: newMaterial } =
+      await createMaterial(data.material);
+
+    if (errorMessageCM) {
+      return {
+        errorMessage: errorMessageCM,
+        payload: null,
+      };
+    }
+
+    material = {
+      ...(newMaterial as DataToAddMaterial),
+      id: oldJournalEntry!.material.id,
+      createdAt: oldJournalEntry!.material.createdAt,
+    };
+
+    if (
+      oldJournalEntry!.material.type ===
+      materialTypeMapToDBServer[MaterialType.IMAGE]
+    ) {
+      const { errorMessage: errorMessageDI } = await deleteImage({
+        imageUrl: oldJournalEntry!.material.content,
+      });
+
+      if (errorMessageDI) {
+        return {
+          errorMessage: errorMessageDI,
+          payload: null,
+        };
+      }
+    }
+  }
+
+  // Prepare tags
+  const names = (
+    data.tags.filter((tag) => tag.name !== null) as {
+      name: string;
+      id: null;
+    }[]
+  ).map((tag) => tag.name);
+
+  const { errorMessage: errorMessageAT, payload: newTags } = await addTags({
+    names,
+  });
+
+  if (errorMessageAT) {
+    return {
+      errorMessage: errorMessageAT,
+      payload: null,
+    };
+  }
+
+  const tagIDs = data.tags.map((tag) => {
+    if (tag.name) {
+      return newTags!.find((newTag) => newTag.name === tag.name)!.id;
+    } else {
+      return tag.id as string;
+    }
+  });
+
+  // Prepare material
+
+  const { errorMessage: errorMessageJE, payload } =
+    await dbJournalEntry.updateJournalEntry({
+      id: data.id,
+      title: data.title,
+      slug: data.slug,
+      description: data.description,
+      content: data.content,
+      material: material,
+      tagIDs,
+    });
+
+  if (errorMessageJE) {
+    return {
+      errorMessage: errorMessageJE,
+      payload: null,
+    };
+  }
+
+  return {
+    errorMessage: null,
+    payload: convertJournalEntryFromDBServer(payload!),
+  };
+};
+
 function deleteJournalEntry() {}
