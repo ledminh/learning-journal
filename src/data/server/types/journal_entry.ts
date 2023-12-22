@@ -1,5 +1,4 @@
-import { DataToCreateMaterial, Material, MaterialType } from "./material";
-import { AsyncFunction } from "@/data/types";
+import { DataToCreateMaterial, Material } from "./material";
 
 import * as dbServer from "@/data/db_server/types";
 
@@ -9,7 +8,16 @@ import * as dbServer from "@/data/db_server/types";
 
 export type DataToCreateJournalEntry = {
   title: string;
-  tags: string[];
+  tags: (
+    | {
+        name: string;
+        id: null;
+      }
+    | {
+        name: null;
+        id: string;
+      }
+  )[];
   description: string;
   material: DataToCreateMaterial;
   content: string;
