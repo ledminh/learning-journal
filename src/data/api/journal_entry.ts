@@ -6,6 +6,7 @@ import {
   GetJournalEntriesFunction,
   GetJournalEntryFunction,
   UpdateJournalEntryFunction,
+  DeleteJournalEntryFunction,
 } from "./types";
 import * as dbJournalEntry from "@/data/db_server/journal_entry";
 import createSlug from "@/utils/createSlug";
@@ -277,4 +278,37 @@ export const updateJournalEntry: UpdateJournalEntryFunction = async function (
   };
 };
 
-function deleteJournalEntry() {}
+export const deleteJournalEntry: DeleteJournalEntryFunction = async function (
+  data
+) {
+  const { errorMessage } = await dbJournalEntry.deleteJournalEntry({
+    id: data.id,
+  });
+
+  if (errorMessage) {
+    return {
+      errorMessage,
+      payload: null,
+    };
+  }
+
+  if (data.material.type === MaterialType.IMAGE) {
+    const { errorMessage: errorMessageDI } = await deleteImage({
+      imageUrl: data.material.content,
+    });
+
+    if (errorMessageDI) {
+      return {
+        errorMessage: errorMessageDI,
+        payload: null,
+      };
+    }
+  }
+
+  return {
+    errorMessage: null,
+    payload: {
+      success: true,
+    },
+  };
+};

@@ -82,6 +82,13 @@ export type UpdateJournalEntryFunction = AsyncFunction<
   JournalEntry
 >;
 
+export type DeleteJournalEntryFunction = AsyncFunction<
+  JournalEntry,
+  {
+    success: boolean;
+  }
+>;
+
 /**************************
  * Date API
  */
