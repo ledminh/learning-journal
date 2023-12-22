@@ -1,8 +1,8 @@
 import axios from "axios";
 import { load } from "cheerio";
 
-import { createClient } from "@supabase/supabase-js";
 import { FileOptions } from "@supabase/storage-js";
+import supabase from "./supabase";
 
 import {
   CreateMaterialFunction,
@@ -104,14 +104,6 @@ export const generateDataForMaterialLinkContent: GenerateDataForMaterialLinkCont
   };
 
 export const uploadImage: UploadImageFunction = async ({ imageFile }) => {
-  const supabase = createClient(
-    process.env.SUPABASE_URL as string,
-    process.env.SUPABASE_API_KEY as string,
-    {
-      auth: { persistSession: false },
-    }
-  );
-
   const fileName = imageFile.name.split(".")[0] + "_" + Date.now();
   const fileType = imageFile.name.split(".")[1];
 
@@ -146,14 +138,6 @@ export const uploadImage: UploadImageFunction = async ({ imageFile }) => {
 };
 
 export const deleteImage: DeleteImageFunction = async (data) => {
-  const supabase = createClient(
-    process.env.SUPABASE_URL as string,
-    process.env.SUPABASE_API_KEY as string,
-    {
-      auth: { persistSession: false },
-    }
-  );
-
   const { imageUrl } = data;
 
   const fileName = imageUrl.split("/").pop();

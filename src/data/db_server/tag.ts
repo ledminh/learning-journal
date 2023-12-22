@@ -195,12 +195,11 @@ export const getTags: GetTagEntriesFunction = async ({ names, options }) => {
             : {},
         ],
       },
-      ...(options &&
-        options.sort && {
-          orderBy: {
-            name: options.sort.order || "asc",
-          },
-        }),
+      ...(options?.sort && {
+        orderBy: {
+          name: options.sort.order ?? "asc",
+        },
+      }),
     };
 
     // Not including journal entries.
