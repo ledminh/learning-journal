@@ -38,7 +38,9 @@ export const getTags: GetTagsFunction = async function ({ limit }) {
   return {
     errorMessage: null,
     payload: payload?.map((tag) => ({
-      ...tag,
+      id: tag.id,
+      name: tag.name,
+      slug: tag.slug,
       journalEntries: tag.journalEntries.map(convertJournalEntryFromDBServer),
     })) as Tag[],
   };
@@ -107,7 +109,9 @@ export const addTags: AddTagsFunction = async function ({ names }) {
   return {
     errorMessage: null,
     payload: payload?.map((tag) => ({
-      ...tag,
+      id: tag.id,
+      name: tag.name,
+      slug: tag.slug,
       journalEntries: tag.journalEntries.map(convertJournalEntryFromDBServer),
     })) as Tag[],
   };

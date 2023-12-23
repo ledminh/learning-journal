@@ -60,7 +60,7 @@ export type UpdateJournalEntryFunction = AsyncFunction<
     )[];
 
     material:
-      | { id: string; type: MaterialType; content: string }
+      | { id: string }
       | (
           | {
               id: null;

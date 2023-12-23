@@ -20,6 +20,24 @@ import { getMaterial } from "../db_server/material";
 import { MaterialType } from "../server/types/material";
 import { deleteImage } from "../server/material";
 
+export const getJournalEntry: GetJournalEntryFunction = async ({ slug }) => {
+  const { errorMessage, payload } = await dbJournalEntry.getJournalEntry({
+    slug,
+  });
+
+  if (errorMessage) {
+    return {
+      errorMessage,
+      payload: null,
+    };
+  }
+
+  return {
+    errorMessage: null,
+    payload: convertJournalEntryFromDBServer(payload!),
+  };
+};
+
 export const getJournalEntries: GetJournalEntriesFunction = async ({
   limit,
   offset,
@@ -52,24 +70,6 @@ export const getJournalEntries: GetJournalEntriesFunction = async ({
   return {
     errorMessage: null,
     payload: payload?.map(convertJournalEntryFromDBServer) as JournalEntry[],
-  };
-};
-
-export const getJournalEntry: GetJournalEntryFunction = async ({ slug }) => {
-  const { errorMessage, payload } = await dbJournalEntry.getJournalEntry({
-    slug,
-  });
-
-  if (errorMessage) {
-    return {
-      errorMessage,
-      payload: null,
-    };
-  }
-
-  return {
-    errorMessage: null,
-    payload: convertJournalEntryFromDBServer(payload!),
   };
 };
 
@@ -258,7 +258,7 @@ export const updateJournalEntry: UpdateJournalEntryFunction = async function (
     await dbJournalEntry.updateJournalEntry({
       id: data.id,
       title: data.title,
-      slug: data.slug,
+      slug: createSlug(data.title),
       description: data.description,
       content: data.content,
       material: material,
