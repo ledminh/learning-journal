@@ -10,6 +10,7 @@ import {
   GetDateEntriesFunction,
   GetDateEntryFunction,
   DeleteDateEntryFunction,
+  DateEntry,
 } from "@/data/db_server/types/date";
 
 import { getStartOfDate, getEndOfDate } from "@/utils/dateFunctions";
@@ -121,34 +122,42 @@ export const getDate: GetDateEntryFunction = async function ({
       };
     }
 
+    const result: DateEntry = {
+      id: dbDate.id,
+      date: dbDate.date,
+      journalEntries: dbDate?.journalEntries.map((entry) => ({
+        id: entry.id,
+        createdAt: entry.createdAt,
+        updatedAt: entry.updatedAt,
+        title: entry.title,
+        slug: entry.slug,
+        description: entry.description,
+        content: entry.content,
+        tags: entry.tags.map((tag) => tag.name),
+        material: {
+          id: entry.material.id,
+          createdAt: entry.material.createdAt,
+          type: materialTypeMapFromDB[entry.material.type],
+          content: entry.material.content,
+        },
+      })),
+    };
     return {
       errorMessage: null,
-      payload: {
-        id: dbDate.id,
-        date: dbDate.date,
-        journalEntries: dbDate?.journalEntries.map((entry) => ({
-          id: entry.id,
-          createdAt: entry.createdAt,
-          updatedAt: entry.updatedAt,
-          title: entry.title,
-          slug: entry.slug,
-          description: entry.description,
-          content: entry.content,
-          tags: entry.tags.map((tag) => tag.name),
-          material: {
-            id: entry.material.id,
-            createdAt: entry.material.createdAt,
-            type: materialTypeMapFromDB[entry.material.type],
-            content: entry.material.content,
-          },
-        })),
-      },
+      payload: result,
     };
-  } catch (e: any) {
-    return {
-      errorMessage: e.message,
-      payload: null,
-    };
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      return {
+        errorMessage: e.message,
+        payload: null,
+      };
+    } else {
+      return {
+        errorMessage: "Unknown error",
+        payload: null,
+      };
+    }
   }
 };
 
@@ -164,7 +173,7 @@ export const getDates: GetDateEntriesFunction = async function ({ options }) {
         },
       },
       orderBy: {
-        date: options?.sort?.order ?? "asc",
+        date: options?.sort?.order ?? "desc",
       },
     };
 

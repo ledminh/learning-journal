@@ -3,5 +3,10 @@ export function getStartOfDate(date: Date) {
 }
 
 export function getEndOfDate(date: Date) {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+  const nextDay = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate() + 1
+  );
+  return new Date(nextDay.getTime() - 1);
 }
