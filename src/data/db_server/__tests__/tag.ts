@@ -185,7 +185,7 @@ describe.skip("Tag functions", () => {
   }, 20000);
 
   it("should get a tag from the database with empty journalEntries", async () => {
-    const { payload: tag1 } = await getTag({ name: "Test Tag 1" });
+    const { payload: tag1 } = await getTag({ slug: "test-tag-1" });
 
     if (!tag1) throw new Error("tag1 not found");
 
@@ -197,7 +197,7 @@ describe.skip("Tag functions", () => {
       createdAt: expect.any(Date),
     });
 
-    const { payload: tag2 } = await getTag({ name: "Test Tag 2" });
+    const { payload: tag2 } = await getTag({ slug: "test-tag-2" });
 
     if (!tag2) throw new Error("tag2 not found");
 
@@ -209,7 +209,7 @@ describe.skip("Tag functions", () => {
       createdAt: expect.any(Date),
     });
 
-    const { payload: tag3 } = await getTag({ name: "Test Tag 3" });
+    const { payload: tag3 } = await getTag({ slug: "test-tag-3" });
 
     if (!tag3) throw new Error("tag3 not found");
 
@@ -221,7 +221,7 @@ describe.skip("Tag functions", () => {
       createdAt: expect.any(Date),
     });
 
-    const { payload: tag4 } = await getTag({ name: "Test Tag 4" });
+    const { payload: tag4 } = await getTag({ slug: "test-tag-4" });
 
     if (!tag4) throw new Error("tag4 not found");
 
@@ -233,7 +233,7 @@ describe.skip("Tag functions", () => {
       createdAt: expect.any(Date),
     });
 
-    const { payload: tag5 } = await getTag({ name: "Test Tag 5" });
+    const { payload: tag5 } = await getTag({ slug: "test-tag-5" });
 
     expect(tag5).toEqual(null);
   });
@@ -271,7 +271,7 @@ describe.skip("Tag functions", () => {
     await new Promise((resolve) => setTimeout(resolve, 10000));
 
     const { errorMessage, payload: tag1 } = await getTag({
-      name: "Test Tag 1",
+      slug: "test-tag-1",
     });
 
     expect(errorMessage).toEqual(null);
@@ -284,7 +284,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage2, payload: tag2 } = await getTag({
-      name: "Test Tag 2",
+      slug: "test-tag-2",
     });
 
     expect(errorMessage2).toEqual(null);
@@ -298,7 +298,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage3, payload: tag3 } = await getTag({
-      name: "Test Tag 3",
+      slug: "test-tag-3",
     });
 
     expect(errorMessage3).toEqual(null);
@@ -312,7 +312,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage4, payload: tag4 } = await getTag({
-      name: "Test Tag 4",
+      slug: "test-tag-4",
     });
 
     expect(errorMessage4).toEqual(null);
@@ -349,7 +349,7 @@ describe.skip("Tag functions", () => {
     data.jEResults = jEs.payload as JournalEntry[];
 
     const { errorMessage: errorMessage5, payload: tag5 } = await getTag({
-      name: "Test Tag 4",
+      slug: "test-tag-4",
     });
 
     expect(errorMessage5).toEqual(null);
@@ -363,7 +363,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage6, payload: tag6 } = await getTag({
-      name: "Test Tag 3",
+      slug: "test-tag-3",
     });
 
     expect(errorMessage6).toEqual(null);
@@ -377,7 +377,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage7, payload: tag7 } = await getTag({
-      name: "Test Tag 2",
+      slug: "test-tag-2",
     });
 
     expect(errorMessage7).toEqual(null);
@@ -391,7 +391,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage8, payload: tag8 } = await getTag({
-      name: "Test Tag 1",
+      slug: "test-tag-1",
     });
 
     expect(errorMessage8).toEqual(null);
@@ -431,7 +431,7 @@ describe.skip("Tag functions", () => {
     data.jEResults = jEs2.payload as JournalEntry[];
 
     const { errorMessage: errorMessage9, payload: tag9 } = await getTag({
-      name: "Test Tag 4",
+      slug: "test-tag-4",
     });
 
     expect(errorMessage9).toEqual(null);
@@ -445,7 +445,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage10, payload: tag10 } = await getTag({
-      name: "Test Tag 3",
+      slug: "test-tag-3",
     });
 
     expect(errorMessage10).toEqual(null);
@@ -459,7 +459,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage11, payload: tag11 } = await getTag({
-      name: "Test Tag 2",
+      slug: "test-tag-2",
     });
 
     expect(errorMessage11).toEqual(null);
@@ -473,7 +473,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage12, payload: tag12 } = await getTag({
-      name: "Test Tag 1",
+      slug: "test-tag-1",
     });
 
     expect(errorMessage12).toEqual(null);
@@ -489,7 +489,7 @@ describe.skip("Tag functions", () => {
 
   it("should get a tag from the database with journalEntries with limit and offset", async () => {
     const { errorMessage, payload: tag1 } = await getTag({
-      name: "Test Tag 1",
+      slug: "test-tag-1",
       options: {
         limit: 2,
         offset: 1,
@@ -507,7 +507,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage2, payload: tag2 } = await getTag({
-      name: "Test Tag 2",
+      slug: "test-tag-2",
       options: {
         limit: 3,
         offset: 1,
@@ -525,7 +525,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage3, payload: tag3 } = await getTag({
-      name: "Test Tag 3",
+      slug: "test-tag-3",
       options: {
         limit: 3,
         offset: 2,
@@ -543,7 +543,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage4, payload: tag4 } = await getTag({
-      name: "Test Tag 4",
+      slug: "test-tag-4",
       options: {
         limit: 2,
         offset: 3,
@@ -561,7 +561,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage5, payload: tag5 } = await getTag({
-      name: "Test Tag 4",
+      slug: "test-tag-4",
       options: {
         limit: 2,
         offset: 4,
@@ -629,7 +629,7 @@ describe.skip("Tag functions", () => {
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
     const { errorMessage, payload: tag1 } = await getTag({
-      name: "Test Tag 1",
+      slug: "test-tag-1",
       options: {
         filters: {
           date: data.yesterday,
@@ -648,7 +648,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage2, payload: tag2 } = await getTag({
-      name: "Test Tag 2",
+      slug: "test-tag-2",
       options: {
         filters: {
           date: data.yesterday,
@@ -667,7 +667,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage3, payload: tag3 } = await getTag({
-      name: "Test Tag 3",
+      slug: "test-tag-3",
       options: {
         filters: {
           date: data.yesterday,
@@ -686,7 +686,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage4, payload: tag4 } = await getTag({
-      name: "Test Tag 4",
+      slug: "test-tag-4",
       options: {
         filters: {
           date: data.randomDate,
@@ -705,7 +705,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage5, payload: tag5 } = await getTag({
-      name: "Test Tag 4",
+      slug: "test-tag-4",
       options: {
         filters: {
           date: data.today,
@@ -726,7 +726,7 @@ describe.skip("Tag functions", () => {
 
   it("should get a tag from the database with journalEntries being filtered by materialType", async () => {
     const { errorMessage, payload: tag1 } = await getTag({
-      name: "Test Tag 1",
+      slug: "test-tag-1",
       options: {
         filters: {
           materialType: MaterialType.Link,
@@ -745,7 +745,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage2, payload: tag2 } = await getTag({
-      name: "Test Tag 2",
+      slug: "test-tag-2",
       options: {
         filters: {
           materialType: MaterialType.Quote,
@@ -764,7 +764,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage3, payload: tag3 } = await getTag({
-      name: "Test Tag 3",
+      slug: "test-tag-3",
       options: {
         filters: {
           materialType: MaterialType.Image,
@@ -783,7 +783,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage4, payload: tag4 } = await getTag({
-      name: "Test Tag 4",
+      slug: "test-tag-4",
       options: {
         filters: {
           materialType: MaterialType.Code,
@@ -804,7 +804,7 @@ describe.skip("Tag functions", () => {
 
   it("should get a tag from the database with journalEntries being filtered by keyword", async () => {
     const { errorMessage, payload: tag1 } = await getTag({
-      name: "Test Tag 1",
+      slug: "test-tag-1",
       options: {
         filters: {
           keyword: "1",
@@ -823,7 +823,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage2, payload: tag2 } = await getTag({
-      name: "Test Tag 2",
+      slug: "test-tag-2",
       options: {
         filters: {
           keyword: "2",
@@ -842,7 +842,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage3, payload: tag3 } = await getTag({
-      name: "Test Tag 3",
+      slug: "test-tag-3",
       options: {
         filters: {
           keyword: "3",
@@ -861,7 +861,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage4, payload: tag4 } = await getTag({
-      name: "Test Tag 4",
+      slug: "test-tag-4",
       options: {
         filters: {
           keyword: "4",
@@ -882,7 +882,7 @@ describe.skip("Tag functions", () => {
 
   it("should get a tag from the database with journalEntries being sorted", async () => {
     const { errorMessage, payload: tag1 } = await getTag({
-      name: "Test Tag 1",
+      slug: "test-tag-1",
       options: {
         sort: {
           by: "title",
@@ -906,7 +906,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage2, payload: tag2 } = await getTag({
-      name: "Test Tag 2",
+      slug: "test-tag-2",
       options: {
         sort: {
           by: "title",
@@ -930,7 +930,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage3, payload: tag3 } = await getTag({
-      name: "Test Tag 3",
+      slug: "test-tag-3",
       options: {
         sort: {
           by: "date",
@@ -950,7 +950,7 @@ describe.skip("Tag functions", () => {
     });
 
     const { errorMessage: errorMessage4, payload: tag4 } = await getTag({
-      name: "Test Tag 4",
+      slug: "test-tag-4",
       options: {
         sort: {
           by: "date",
@@ -1197,7 +1197,7 @@ describe.skip("Tag functions", () => {
   });
 
   it("should update a tag in the database", async () => {
-    const { payload: tag1 } = await getTag({ name: "Test Tag 1" });
+    const { payload: tag1 } = await getTag({ slug: "test-tag-1" });
 
     if (!tag1) throw new Error("tag1 not found");
 
@@ -1239,11 +1239,11 @@ describe.skip("Tag functions", () => {
       createdAt: tag1.createdAt,
     });
 
-    const { payload: tag2 } = await getTag({ name: "Test Tag 1" });
+    const { payload: tag2 } = await getTag({ slug: "test-tag-1" });
 
     expect(tag2).toEqual(null);
 
-    const { payload: tag3 } = await getTag({ name: "updatedTag1" });
+    const { payload: tag3 } = await getTag({ slug: "updatedtag1" });
 
     if (!tag3) throw new Error("tag3 not found");
 
@@ -1291,7 +1291,7 @@ describe.skip("Tag functions", () => {
     ]);
 
     const { errorMessage: errorMessage } = await getTag({
-      name: "Test Tag 1",
+      slug: "test-tag-1",
     });
 
     expect(errorMessage).toEqual("Tag not found.");
@@ -1326,7 +1326,7 @@ describe.skip("Tag functions", () => {
   });
 
   it("should remove a journal entry from a tag", async () => {
-    const { payload: tag1 } = await getTag({ name: "Test Tag 1" });
+    const { payload: tag1 } = await getTag({ slug: "test-tag-1" });
 
     if (!tag1) throw new Error("tag1 not found");
 
@@ -1356,7 +1356,7 @@ describe.skip("Tag functions", () => {
   });
 
   it("should empty a tag", async () => {
-    const { payload: tag1 } = await getTag({ name: "Test Tag 1" });
+    const { payload: tag1 } = await getTag({ slug: "test-tag-1" });
 
     if (!tag1) throw new Error("tag1 not found");
 
@@ -1421,7 +1421,7 @@ describe.skip("Tag functions", () => {
   }, 120000);
 
   it("should delete a tag from the database", async () => {
-    const { payload: tag1 } = await getTag({ name: "Test Tag 1" });
+    const { payload: tag1 } = await getTag({ slug: "test-tag-1" });
 
     if (!tag1) throw new Error("tag1 not found");
 
@@ -1430,11 +1430,11 @@ describe.skip("Tag functions", () => {
     expect(result.errorMessage).toEqual(null);
     expect(result.payload).toEqual(tag1);
 
-    const { payload: tag1Confirm } = await getTag({ name: "Test Tag 1" });
+    const { payload: tag1Confirm } = await getTag({ slug: "test-tag-1" });
 
     expect(tag1Confirm).toEqual(null);
 
-    const { payload: tag2 } = await getTag({ name: "Test Tag 2" });
+    const { payload: tag2 } = await getTag({ slug: "test-tag-2" });
 
     if (!tag2) throw new Error("tag2 not found");
 
@@ -1442,7 +1442,7 @@ describe.skip("Tag functions", () => {
 
     expect(result2.errorMessage).toEqual(null);
 
-    const { payload: tag2Confirm } = await getTag({ name: "Test Tag 2" });
+    const { payload: tag2Confirm } = await getTag({ slug: "test-tag-2" });
 
     expect(tag2Confirm).toEqual(null);
 

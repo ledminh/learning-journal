@@ -64,7 +64,7 @@ export type UpdateJournalEntryFunction = AsyncFunction<
       | (
           | {
               id: null;
-              type: MaterialType.CODE | MaterialType.QUOTE;
+              type: MaterialType.QUOTE | MaterialType.CODE;
               content: string;
             }
           | {
@@ -112,7 +112,7 @@ export type GetTagsFunction = AsyncFunction<
 
 export type GetTagFunction = AsyncFunction<
   {
-    name: string;
+    slug: string;
     limit?: number;
     offset?: number;
     sort?: {

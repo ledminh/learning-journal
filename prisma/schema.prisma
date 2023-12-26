@@ -27,7 +27,7 @@ model Tag {
   id       String         @id @default(uuid())  
   name      String        @unique
   createdAt DateTime       @default(now())
-  slug      String
+  slug      String      @unique 
   journalEntries   JournalEntry[] @relation("JournalEntryToTag")
 }
 

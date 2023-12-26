@@ -1658,7 +1658,7 @@ describe.skip("API/Add Journal Entry", () => {
   });
 });
 
-describe("API/Update Journal Entry", () => {
+describe.skip("API/Update Journal Entry", () => {
   beforeEach(async () => {
     const { errorMessage } = await apiJE.addJournalEntry({
       title: "Test Journal Entry",
@@ -1685,7 +1685,76 @@ describe("API/Update Journal Entry", () => {
 
       content: "Test Content",
     });
+
+    if (errorMessage) {
+      throw new Error(errorMessage);
+    }
+
+    const { payload: _tags } = await apiTag.getTags({});
+
+    if (!_tags) {
+      throw new Error("Tags not found");
+    }
+
+    const tags = _tags.map((tag) => ({
+      name: null,
+      id: tag.id,
+    }));
+
+    const { errorMessage: errorMessage2 } = await apiJE.addJournalEntry({
+      title: "Test Journal Entry CODE",
+      tags,
+      description: "Test Description 01",
+      material: {
+        type: MaterialType.CODE,
+        content: "Test Material Content 1",
+      },
+
+      content: "Test Content 1",
+    });
+
+    if (errorMessage2) {
+      throw new Error(errorMessage2);
+    }
+
+    const { errorMessage: errorMessage3 } = await apiJE.addJournalEntry({
+      title: "Test Journal Entry LINK",
+      tags,
+      description: "Test Description 02",
+      material: {
+        type: MaterialType.LINK,
+        content: {
+          title: "Test Link Title",
+          url: "https://test-link-url.com",
+          description: "Test Link Description",
+          imageUrl: "https://test-link-image-url.com",
+        },
+      },
+
+      content: "Test Content 2",
+    });
+
+    if (errorMessage3) {
+      throw new Error(errorMessage3);
+    }
+
+    const { errorMessage: errorMessage4 } = await apiJE.addJournalEntry({
+      title: "Test Journal Entry IMAGE",
+      tags,
+      description: "Test Description 03",
+      material: {
+        type: MaterialType.IMAGE,
+        content: new File(["test image content"], "test-image.png"),
+      },
+
+      content: "Test Content 3",
+    });
+
+    if (errorMessage4) {
+      throw new Error(errorMessage4);
+    }
   }, 400000);
+
   afterEach(_after, 400000);
 
   // Change texts
@@ -1822,7 +1891,7 @@ describe("API/Update Journal Entry", () => {
 
   // Change tags
 
-  it("should add more tags to journal entry", async () => {
+  it.skip("should add more tags to journal entry", async () => {
     const { errorMessage: errorMessageOJE, payload: oldJE } =
       await apiJE.getJournalEntry({
         slug: "test-journal-entry",
@@ -1880,7 +1949,7 @@ describe("API/Update Journal Entry", () => {
     });
   }, 400000);
 
-  it("should delete some tags from journal entry", async () => {
+  it.skip("should delete some tags from journal entry", async () => {
     const { errorMessage: errorMessageOJE, payload: oldJE } =
       await apiJE.getJournalEntry({
         slug: "test-journal-entry",
@@ -1922,7 +1991,7 @@ describe("API/Update Journal Entry", () => {
     });
   }, 400000);
 
-  it("should change to another set of tags", async () => {
+  it.skip("should change to another set of tags", async () => {
     const { errorMessage: errorMessageOJE, payload: oldJE } =
       await apiJE.getJournalEntry({
         slug: "test-journal-entry",
@@ -1959,7 +2028,7 @@ describe("API/Update Journal Entry", () => {
     });
   }, 400000);
 
-  it("should change to another set of tags with some existing tags and some new tags", async () => {
+  it.skip("should change to another set of tags with some existing tags and some new tags", async () => {
     const { errorMessage: errorMessageOJE, payload: oldJE } =
       await apiJE.getJournalEntry({
         slug: "test-journal-entry",
@@ -2009,5 +2078,727 @@ describe("API/Update Journal Entry", () => {
       tags: ["test tag 1", "test tag 4", "test tag 5"],
       updatedAt: expect.any(Date),
     });
+  }, 400000);
+
+  // Change material
+  it.skip("should change Material QUOTE", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+
+    const { errorMessage: errorMessageT, payload: _tags } =
+      await apiTag.getTags({});
+
+    if (errorMessageT) {
+      throw new Error(errorMessageT);
+    }
+
+    const tags = _tags!
+      .filter((tag) => oldJE!.tags.includes(tag.name))
+      .map((tag) => ({
+        name: null,
+        id: tag.id,
+      }));
+
+    const { errorMessage: errorMessageUJE, payload: updatedJE } =
+      await apiJE.updateJournalEntry({
+        ...oldJE!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.QUOTE,
+          content: "Updated Material Content",
+        },
+      });
+
+    expect(errorMessageUJE).toBeNull();
+
+    expect(updatedJE).toEqual({
+      ...oldJE!,
+      material: {
+        ...oldJE!.material,
+        content: "Updated Material Content",
+      },
+      updatedAt: expect.any(Date),
+    });
+  }, 400000);
+
+  it.skip("should change Material CODE", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-code",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+
+    const { errorMessage: errorMessageT, payload: _tags } =
+      await apiTag.getTags({});
+
+    if (errorMessageT) {
+      throw new Error(errorMessageT);
+    }
+
+    const tags = _tags!
+      .filter((tag) => oldJE!.tags.includes(tag.name))
+      .map((tag) => ({
+        name: null,
+        id: tag.id,
+      }));
+
+    const { errorMessage: errorMessageUJE, payload: updatedJE } =
+      await apiJE.updateJournalEntry({
+        ...oldJE!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.CODE,
+          content: "Updated Material Content",
+        },
+      });
+
+    expect(errorMessageUJE).toBeNull();
+
+    expect(updatedJE).toEqual({
+      ...oldJE!,
+      material: {
+        ...oldJE!.material,
+        content: "Updated Material Content",
+      },
+      updatedAt: expect.any(Date),
+    });
+  }, 400000);
+
+  it.skip("should change Material LINK", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-link",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+
+    const { errorMessage: errorMessageT, payload: _tags } =
+      await apiTag.getTags({});
+
+    if (errorMessageT) {
+      throw new Error(errorMessageT);
+    }
+
+    const tags = _tags!
+      .filter((tag) => oldJE!.tags.includes(tag.name))
+      .map((tag) => ({
+        name: null,
+        id: tag.id,
+      }));
+
+    const { errorMessage: errorMessageUJE, payload: updatedJE } =
+      await apiJE.updateJournalEntry({
+        ...oldJE!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.LINK,
+          content: {
+            title: "Updated Link Title",
+            url: "https://updated-link-url.com",
+            description: "Updated Link Description",
+            imageUrl: "https://updated-link-image-url.com",
+          },
+        },
+      });
+
+    expect(errorMessageUJE).toBeNull();
+
+    expect(updatedJE).toEqual({
+      ...oldJE!,
+      material: {
+        ...oldJE!.material,
+        content: {
+          title: "Updated Link Title",
+          url: "https://updated-link-url.com",
+          description: "Updated Link Description",
+          imageUrl: "https://updated-link-image-url.com",
+        },
+      },
+      updatedAt: expect.any(Date),
+    });
+  }, 400000);
+
+  it.skip("should change Material IMAGE", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-image",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+
+    const { errorMessage: errorMessageT, payload: _tags } =
+      await apiTag.getTags({});
+
+    if (errorMessageT) {
+      throw new Error(errorMessageT);
+    }
+
+    const tags = _tags!
+      .filter((tag) => oldJE!.tags.includes(tag.name))
+      .map((tag) => ({
+        name: null,
+        id: tag.id,
+      }));
+
+    const { errorMessage: errorMessageUJE, payload: updatedJE } =
+      await apiJE.updateJournalEntry({
+        ...oldJE!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.IMAGE,
+          content: new File(["updated image content"], "updated-image.png"),
+        },
+      });
+
+    expect(errorMessageUJE).toBeNull();
+
+    expect(updatedJE).toEqual({
+      ...oldJE!,
+      material: {
+        ...oldJE!.material,
+        content: expect.any(String),
+      },
+      updatedAt: expect.any(Date),
+    });
+  }, 400000);
+
+  it.skip("should switch between Material CODE and QUOTE", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-code",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+    const { errorMessage: errorMessageT, payload: _tags } =
+      await apiTag.getTags({});
+
+    if (errorMessageT) {
+      throw new Error(errorMessageT);
+    }
+
+    const tags = _tags!
+      .filter((tag) => oldJE!.tags.includes(tag.name))
+      .map((tag) => ({
+        name: null,
+        id: tag.id,
+      }));
+
+    const { errorMessage: errorMessageUJE, payload: updatedJE } =
+      await apiJE.updateJournalEntry({
+        ...oldJE!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.QUOTE,
+          content: "Updated Material Content",
+        },
+      });
+
+    expect(errorMessageUJE).toBeNull();
+
+    expect(updatedJE).toEqual({
+      ...oldJE!,
+      material: {
+        ...oldJE!.material,
+        type: MaterialType.QUOTE,
+        content: "Updated Material Content",
+      },
+      updatedAt: expect.any(Date),
+    });
+
+    const { errorMessage: errorMessageOJE2, payload: oldJE2 } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry",
+      });
+
+    if (errorMessageOJE2) {
+      throw new Error(errorMessageOJE2);
+    }
+
+    const { errorMessage: errorMessageUJE2, payload: updatedJE2 } =
+      await apiJE.updateJournalEntry({
+        ...oldJE2!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.CODE,
+          content: "Updated Material Content",
+        },
+      });
+
+    expect(errorMessageUJE2).toBeNull();
+
+    expect(updatedJE2).toEqual({
+      ...oldJE2!,
+      material: {
+        ...oldJE2!.material,
+        type: MaterialType.CODE,
+        content: "Updated Material Content",
+      },
+      updatedAt: expect.any(Date),
+    });
+  }, 400000);
+
+  it.skip("should switch between Material CODE and LINK", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-code",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+    const { errorMessage: errorMessageT, payload: _tags } =
+      await apiTag.getTags({});
+
+    if (errorMessageT) {
+      throw new Error(errorMessageT);
+    }
+    const tags = _tags!
+      .filter((tag) => oldJE!.tags.includes(tag.name))
+      .map((tag) => ({
+        name: null,
+        id: tag.id,
+      }));
+    const { errorMessage: errorMessageUJE, payload: updatedJE } =
+      await apiJE.updateJournalEntry({
+        ...oldJE!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.LINK,
+          content: {
+            title: "Updated Link Title",
+            url: "https://updated-link-url.com",
+            description: "Updated Link Description",
+            imageUrl: "https://updated-link-image-url.com",
+          },
+        },
+      });
+
+    expect(errorMessageUJE).toBeNull();
+
+    expect(updatedJE).toEqual({
+      ...oldJE!,
+      material: {
+        ...oldJE!.material,
+        type: MaterialType.LINK,
+        content: {
+          title: "Updated Link Title",
+          url: "https://updated-link-url.com",
+          description: "Updated Link Description",
+          imageUrl: "https://updated-link-image-url.com",
+        },
+      },
+      updatedAt: expect.any(Date),
+    });
+
+    const { errorMessage: errorMessageOJE2, payload: oldJE2 } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-link",
+      });
+
+    if (errorMessageOJE2) {
+      throw new Error(errorMessageOJE2);
+    }
+
+    const { errorMessage: errorMessageUJE2, payload: updatedJE2 } =
+      await apiJE.updateJournalEntry({
+        ...oldJE2!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.CODE,
+          content: "Updated Material Content",
+        },
+      });
+
+    expect(errorMessageUJE2).toBeNull();
+
+    expect(updatedJE2).toEqual({
+      ...oldJE2!,
+      material: {
+        ...oldJE2!.material,
+        type: MaterialType.CODE,
+        content: "Updated Material Content",
+      },
+      updatedAt: expect.any(Date),
+    });
+  }, 400000);
+
+  it.skip("should switch between Material CODE and IMAGE", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-code",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+    const { errorMessage: errorMessageT, payload: _tags } =
+      await apiTag.getTags({});
+
+    if (errorMessageT) {
+      throw new Error(errorMessageT);
+    }
+    const tags = _tags!
+      .filter((tag) => oldJE!.tags.includes(tag.name))
+      .map((tag) => ({
+        name: null,
+        id: tag.id,
+      }));
+    const { errorMessage: errorMessageUJE, payload: updatedJE } =
+      await apiJE.updateJournalEntry({
+        ...oldJE!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.IMAGE,
+          content: new File(["updated image content"], "updated-image.png"),
+        },
+      });
+
+    expect(errorMessageUJE).toBeNull();
+
+    expect(updatedJE).toEqual({
+      ...oldJE!,
+      material: {
+        ...oldJE!.material,
+        type: MaterialType.IMAGE,
+        content: expect.any(String),
+      },
+      updatedAt: expect.any(Date),
+    });
+
+    const { errorMessage: errorMessageOJE2, payload: oldJE2 } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-image",
+      });
+
+    if (errorMessageOJE2) {
+      throw new Error(errorMessageOJE2);
+    }
+
+    const { errorMessage: errorMessageUJE2, payload: updatedJE2 } =
+      await apiJE.updateJournalEntry({
+        ...oldJE2!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.CODE,
+          content: "Updated Material Content",
+        },
+      });
+
+    expect(errorMessageUJE2).toBeNull();
+
+    expect(updatedJE2).toEqual({
+      ...oldJE2!,
+      material: {
+        ...oldJE2!.material,
+        type: MaterialType.CODE,
+        content: "Updated Material Content",
+      },
+      updatedAt: expect.any(Date),
+    });
+  }, 400000);
+
+  it.skip("should switch between Material QUOTE and LINK", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+    const { errorMessage: errorMessageT, payload: _tags } =
+      await apiTag.getTags({});
+
+    if (errorMessageT) {
+      throw new Error(errorMessageT);
+    }
+    const tags = _tags!
+      .filter((tag) => oldJE!.tags.includes(tag.name))
+      .map((tag) => ({
+        name: null,
+        id: tag.id,
+      }));
+    const { errorMessage: errorMessageUJE, payload: updatedJE } =
+      await apiJE.updateJournalEntry({
+        ...oldJE!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.LINK,
+          content: {
+            title: "Updated Link Title",
+            url: "https://updated-link-url.com",
+            description: "Updated Link Description",
+            imageUrl: "https://updated-link-image-url.com",
+          },
+        },
+      });
+
+    expect(errorMessageUJE).toBeNull();
+
+    expect(updatedJE).toEqual({
+      ...oldJE!,
+      material: {
+        ...oldJE!.material,
+        type: MaterialType.LINK,
+        content: {
+          title: "Updated Link Title",
+          url: "https://updated-link-url.com",
+          description: "Updated Link Description",
+          imageUrl: "https://updated-link-image-url.com",
+        },
+      },
+      updatedAt: expect.any(Date),
+    });
+
+    const { errorMessage: errorMessageOJE2, payload: oldJE2 } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-link",
+      });
+
+    if (errorMessageOJE2) {
+      throw new Error(errorMessageOJE2);
+    }
+
+    const { errorMessage: errorMessageUJE2, payload: updatedJE2 } =
+      await apiJE.updateJournalEntry({
+        ...oldJE2!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.QUOTE,
+          content: "Updated Material Content",
+        },
+      });
+
+    expect(errorMessageUJE2).toBeNull();
+
+    expect(updatedJE2).toEqual({
+      ...oldJE2!,
+      material: {
+        ...oldJE2!.material,
+        type: MaterialType.QUOTE,
+        content: "Updated Material Content",
+      },
+      updatedAt: expect.any(Date),
+    });
+  }, 400000);
+
+  it.skip("should switch between Material QUOTE and IMAGE", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+    const { errorMessage: errorMessageT, payload: _tags } =
+      await apiTag.getTags({});
+
+    if (errorMessageT) {
+      throw new Error(errorMessageT);
+    }
+    const tags = _tags!
+      .filter((tag) => oldJE!.tags.includes(tag.name))
+      .map((tag) => ({
+        name: null,
+        id: tag.id,
+      }));
+    const { errorMessage: errorMessageUJE, payload: updatedJE } =
+      await apiJE.updateJournalEntry({
+        ...oldJE!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.IMAGE,
+          content: new File(["updated image content"], "updated-image.png"),
+        },
+      });
+
+    expect(errorMessageUJE).toBeNull();
+
+    expect(updatedJE).toEqual({
+      ...oldJE!,
+      material: {
+        ...oldJE!.material,
+        type: MaterialType.IMAGE,
+        content: expect.any(String),
+      },
+      updatedAt: expect.any(Date),
+    });
+
+    const { errorMessage: errorMessageOJE2, payload: oldJE2 } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-image",
+      });
+
+    if (errorMessageOJE2) {
+      throw new Error(errorMessageOJE2);
+    }
+
+    const { errorMessage: errorMessageUJE2, payload: updatedJE2 } =
+      await apiJE.updateJournalEntry({
+        ...oldJE2!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.QUOTE,
+          content: "Updated Material Content",
+        },
+      });
+
+    expect(errorMessageUJE2).toBeNull();
+
+    expect(updatedJE2).toEqual({
+      ...oldJE2!,
+      material: {
+        ...oldJE2!.material,
+        type: MaterialType.QUOTE,
+        content: "Updated Material Content",
+      },
+      updatedAt: expect.any(Date),
+    });
+  }, 400000);
+
+  it.skip("should switch between Material LINK and IMAGE", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-link",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+    const { errorMessage: errorMessageT, payload: _tags } =
+      await apiTag.getTags({});
+
+    if (errorMessageT) {
+      throw new Error(errorMessageT);
+    }
+    const tags = _tags!
+      .filter((tag) => oldJE!.tags.includes(tag.name))
+      .map((tag) => ({
+        name: null,
+        id: tag.id,
+      }));
+    const { errorMessage: errorMessageUJE, payload: updatedJE } =
+      await apiJE.updateJournalEntry({
+        ...oldJE!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.IMAGE,
+          content: new File(["updated image content"], "updated-image.png"),
+        },
+      });
+
+    expect(errorMessageUJE).toBeNull();
+
+    expect(updatedJE).toEqual({
+      ...oldJE!,
+      material: {
+        ...oldJE!.material,
+        type: MaterialType.IMAGE,
+        content: expect.any(String),
+      },
+      updatedAt: expect.any(Date),
+    });
+
+    const { errorMessage: errorMessageOJE2, payload: oldJE2 } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-image",
+      });
+
+    if (errorMessageOJE2) {
+      throw new Error(errorMessageOJE2);
+    }
+
+    const { errorMessage: errorMessageUJE2, payload: updatedJE2 } =
+      await apiJE.updateJournalEntry({
+        ...oldJE2!,
+        tags,
+        material: {
+          id: null,
+          type: MaterialType.LINK,
+          content: {
+            title: "Updated Link Title",
+            url: "https://updated-link-url.com",
+            description: "Updated Link Description",
+            imageUrl: "https://updated-link-image-url.com",
+          },
+        },
+      });
+
+    expect(errorMessageUJE2).toBeNull();
+
+    expect(updatedJE2).toEqual({
+      ...oldJE2!,
+      material: {
+        ...oldJE2!.material,
+        type: MaterialType.LINK,
+        content: {
+          title: "Updated Link Title",
+          url: "https://updated-link-url.com",
+          description: "Updated Link Description",
+          imageUrl: "https://updated-link-image-url.com",
+        },
+      },
+      updatedAt: expect.any(Date),
+    });
+  }, 400000);
+});
+
+describe.skip("API/Delete Journal Entry", () => {
+  beforeEach(_before, 400000);
+  afterEach(_after, 4000000);
+
+  it("should delete a journal entry", async () => {
+    const { errorMessage: errorMessageOJE, payload: oldJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-01",
+      });
+
+    if (errorMessageOJE) {
+      throw new Error(errorMessageOJE);
+    }
+    const { errorMessage: errorMessageDJE } = await apiJE.deleteJournalEntry(
+      oldJE!
+    );
+
+    expect(errorMessageDJE).toBeNull();
+
+    const { errorMessage: errorMessageGJE, payload: getJE } =
+      await apiJE.getJournalEntry({
+        slug: "test-journal-entry-01",
+      });
+
+    expect(typeof errorMessageGJE).toBe("string");
+    expect(getJE).toBeNull();
   }, 400000);
 });

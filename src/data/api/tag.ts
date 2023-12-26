@@ -58,7 +58,7 @@ export const getTag: GetTagFunction = async function (params) {
     : undefined;
 
   const { errorMessage, payload } = await dbServer.Tag.getTag({
-    name: params.name,
+    slug: params.slug,
     options: {
       limit: params.limit,
       offset: params.offset,
@@ -119,7 +119,7 @@ export const addTags: AddTagsFunction = async function ({ names }) {
 
 export const updateTag: UpdateTagFunction = async function ({ name, newName }) {
   const { errorMessage, payload } = await dbServer.Tag.getTag({
-    name,
+    slug: createSlug(name),
   });
 
   if (errorMessage) {
@@ -130,7 +130,11 @@ export const updateTag: UpdateTagFunction = async function ({ name, newName }) {
   }
 
   const { errorMessage: errorMessage2, payload: payload2 } =
-    await dbServer.Tag.updateTag(payload as TagEntry);
+    await dbServer.Tag.updateTag({
+      ...(payload as TagEntry),
+      name: newName,
+      slug: createSlug(newName),
+    });
 
   if (errorMessage2) {
     return {
@@ -142,7 +146,9 @@ export const updateTag: UpdateTagFunction = async function ({ name, newName }) {
   return {
     errorMessage: null,
     payload: {
-      ...payload2,
+      id: payload2!.id,
+      name: payload2!.name,
+      slug: payload2!.slug,
       journalEntries: payload2?.journalEntries.map(
         convertJournalEntryFromDBServer
       ),
@@ -164,11 +170,13 @@ export const emptyTag: EmptyTagFunction = async function ({ name }) {
   return {
     errorMessage: null,
     payload: {
-      ...payload,
-      journalEntries: payload?.journalEntries.map(
+      id: payload!.id,
+      name: payload!.name,
+      slug: payload!.slug,
+      journalEntries: payload!.journalEntries.map(
         convertJournalEntryFromDBServer
       ),
-    } as Tag,
+    },
   };
 };
 
@@ -187,10 +195,10 @@ export const deleteTag: DeleteTagFunction = async function ({ name }) {
   return {
     errorMessage: null,
     payload: {
-      ...payload,
-      journalEntries: payload?.journalEntries.map(
-        convertJournalEntryFromDBServer
-      ),
-    } as Tag,
+      id: payload!.id,
+      name: payload!.name,
+      slug: payload!.slug,
+      journalEntries: [],
+    },
   };
 };

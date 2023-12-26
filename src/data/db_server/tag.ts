@@ -65,11 +65,11 @@ export const addTags: AddTagsFunction = async (dataToAddTags) => {
   }
 };
 
-export const getTag: GetTagEntryFunction = async ({ name, options }) => {
+export const getTag: GetTagEntryFunction = async ({ slug, options }) => {
   try {
     const tag = await prismaClient.tag.findUnique({
       where: {
-        name,
+        slug,
       },
       include: {
         journalEntries: {

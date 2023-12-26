@@ -32,7 +32,7 @@ export type AddTagsFunction = AsyncFunction<DataToAddTag[], TagEntry[]>;
 
 export type GetTagEntryFunction = AsyncFunction<
   {
-    name: string;
+    slug: string;
     options?: {
       limit?: number;
       offset?: number;
