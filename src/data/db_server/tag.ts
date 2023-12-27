@@ -28,11 +28,6 @@ export const addTags: AddTagsFunction = async (dataToAddTags) => {
     }
 
     const tags = await prismaClient.tag.findMany({
-      where: {
-        OR: dataToAddTags.map((tag) => ({
-          name: tag.name,
-        })),
-      },
       include: {
         journalEntries: {
           include: {
