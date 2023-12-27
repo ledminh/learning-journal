@@ -6,6 +6,7 @@ import { Tag } from "@/data/server/types/tag";
 import { AsyncFunction } from "@/data/types";
 import { DateEntry } from "../server/types/date";
 import {
+  DataToConnectTag,
   DataToCreateJournalEntry,
   JournalEntry,
 } from "@/data/server/types/journal_entry";
@@ -48,16 +49,7 @@ export type UpdateJournalEntryFunction = AsyncFunction<
     description: string;
     content: string;
     slug: string;
-    tags: (
-      | {
-          name: null;
-          id: string;
-        }
-      | {
-          name: string;
-          id: null;
-        }
-    )[];
+    tags: DataToConnectTag[];
 
     material:
       | { id: string }

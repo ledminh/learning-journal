@@ -6,18 +6,19 @@ import * as dbServer from "@/data/db_server/types";
  * Data
  */
 
+export type DataToConnectTag =
+  | {
+      name: string;
+      id: null;
+    }
+  | {
+      name: null;
+      id: string;
+    };
+
 export type DataToCreateJournalEntry = {
   title: string;
-  tags: (
-    | {
-        name: string;
-        id: null;
-      }
-    | {
-        name: null;
-        id: string;
-      }
-  )[];
+  tags: DataToConnectTag[];
   description: string;
   material: DataToCreateMaterial;
   content: string;
