@@ -3,24 +3,28 @@ import createSlug from "@/utils/createSlug";
 
 export default function JournalList() {
   return (
-    <div className="flex flex-col gap-4 items-start border border-neutral-700 p-4 shadow-lg rounded-lg">
-      <section className="flex gap-2">
-        <Link
-          href="/admin/add-journal"
-          className="border border-neutral-700 p-2 hover:bg-blue-300 inline-block"
-        >
-          <span>Add New Journal</span>
-        </Link>
-        <input
-          type="text"
-          className="border border-neutral-700 p-2"
-          placeholder="Search ..."
-        />
-        <div className="flex gap-2">
-          <button className="bg-neutral-500 p-2 text-white">
+    <div className="flex flex-col items-start gap-4 p-4 border rounded-lg shadow-lg border-neutral-700">
+      <section className="flex flex-col items-center justify-between w-full gap-2 lg:flex-row">
+        <div className="flex flex-col w-full gap-2 lg:basis-1/2 sm:flex-row">
+          <Link
+            href="/admin/add-journal"
+            className="inline-block p-2 border border-neutral-700 hover:bg-blue-300 basis-1/2"
+          >
+            <span>Add New Journal</span>
+          </Link>
+          <input
+            type="text"
+            className="p-2 border border-neutral-700 basis-1/2"
+            placeholder="Search ..."
+          />
+        </div>
+        <div className="flex flex-col w-full gap-2 lg:basis-1/2 sm:flex-row">
+          <button className="p-2 text-white bg-neutral-500 basis-1/2">
             sort by: date - desc
           </button>
-          <button className="bg-neutral-500 p-2 text-white">filter</button>
+          <button className="p-2 text-white bg-neutral-500 basis-1/2">
+            filter
+          </button>
         </div>
       </section>
       <section className="w-full">
@@ -29,11 +33,11 @@ export default function JournalList() {
             return (
               <li
                 key={journal.slug}
-                className="border-b border-neutral-700 pb-2"
+                className="pb-2 border-b border-neutral-700"
               >
                 <Link
                   href={`/admin/edit-journal/${journal.slug}`}
-                  className="block hover:bg-blue-100 p-2"
+                  className="block p-2 hover:bg-blue-100"
                 >
                   <p className="font-bold text-blue-700">{journal.title}</p>
                   <p className="text-sm italic">
@@ -46,7 +50,7 @@ export default function JournalList() {
             );
           })}
           <li className="flex justify-end">
-            <button className="bg-neutral-500 p-1 text-white">more ...</button>
+            <button className="p-1 text-white bg-neutral-500">more ...</button>
           </li>
         </ul>
       </section>
