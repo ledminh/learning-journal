@@ -1,8 +1,7 @@
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  //   apiKey: process.env.OPENAI_API_KEY,
-  apiKey: "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",
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 export async function askGPT(question: string) {

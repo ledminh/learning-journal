@@ -4,12 +4,14 @@ import { useState, FC } from "react";
 import AddTags from "./AddTags";
 import { Tag } from "@/data/server/types/tag";
 import { DataToConnectTag } from "@/data/server/types/journal_entry";
+import Description from "./Description";
 
 const JournalForm: FC<{
   dbTags: Tag[];
 }> = function ({ dbTags }) {
   const [title, setTitle] = useState("");
   const [dtaCTags, setDtaCTags] = useState<DataToConnectTag[]>([]);
+  const [description, setDescription] = useState("");
 
   return (
     <form
@@ -35,15 +37,10 @@ const JournalForm: FC<{
       </label>
       <label className="flex flex-col gap-2">
         <span className="font-semibold">Description</span>
-        <textarea
-          className="p-2 text-sm bg-gray-300 border border-black resize-none"
-          rows={5}
+        <Description
+          description={description}
+          setDescription={setDescription}
         />
-        <div className="flex justify-end">
-          <button className="px-2 py-1 text-white bg-gray-700 rounded-md shadow-md hover:bg-gray-900">
-            GENERATE DESCRIPTION
-          </button>
-        </div>
       </label>
       <label className="flex flex-col gap-4 p-2 border-2 border-black rounded-lg shadow-lg">
         <span className="font-semibold border-b-2 border-b-black">
