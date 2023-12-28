@@ -12,7 +12,7 @@ type AddTagFunction = AsyncFunction<
 
 export const addTags: AddTagFunction = async function ({ names }) {
   const { errorMessage, payload } = await post({
-    url: "api/tag/add",
+    url: "/api/tag/add",
     body: {
       names,
     },
