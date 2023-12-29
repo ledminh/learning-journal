@@ -1,11 +1,11 @@
 import { AsyncFunction } from "@/data/types";
-import { Material } from "./material";
+import { DataToCreateMaterial, Material } from "./material";
 
 export type GenerateJournalEntryDescriptionFunction = AsyncFunction<
   {
     title: string;
     content: string;
-    material: Material;
+    material: DataToCreateMaterial;
   },
   {
     description: string;

@@ -1,4 +1,7 @@
-import { MaterialType } from "@/data/server/types/material";
+import {
+  DataToCreateMaterial,
+  MaterialType,
+} from "@/data/server/types/material";
 import generateDescription from "./utils/generateDescription";
 
 import { useState } from "react";
@@ -6,17 +9,19 @@ import { useState } from "react";
 const Description: React.FC<{
   description: string;
   setDescription: (description: string) => void;
-}> = function ({ description, setDescription }) {
+  title: string;
+  content: string;
+  material: DataToCreateMaterial | null;
+}> = function ({ title, content, material, description, setDescription }) {
   const [loading, setLoading] = useState(false);
 
   const generateDesc = () => {
     generateDescription({
-      title: "This is a title",
-      content: "This is a content",
-      material: {
-        id: "1234",
+      title,
+      content,
+      material: material || {
         type: MaterialType.QUOTE,
-        content: "This is a material content",
+        content: "This is a placeholder quote because there is no material.",
       },
       setDescription,
       setLoading,

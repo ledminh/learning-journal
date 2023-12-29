@@ -90,6 +90,9 @@ const JournalForm: FC<{
         <Description
           description={description}
           setDescription={setDescription}
+          title={title}
+          content={content}
+          material={material}
         />
       </label>
       <label className="flex flex-col gap-4 p-2 border-2 border-black rounded-lg shadow-lg">

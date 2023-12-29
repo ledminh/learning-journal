@@ -1,9 +1,13 @@
 import { generateJournalEntryDescription } from "@/data/server/helpers";
-import { Material } from "@/data/server/types/material";
+import { DataToCreateMaterial } from "@/data/server/types/material";
 
 export async function POST(request: Request) {
   if (request.headers.get("content-type") !== "application/json") {
-    return new Response("Bad request", { status: 400 });
+    return new Response(
+      `Bad request. The content-type should be "application/json".
+      It is ${request.headers.get("content-type")} now`,
+      { status: 400 }
+    );
   }
 
   const reqBody = (await request.json()) as unknown;
@@ -15,10 +19,10 @@ export async function POST(request: Request) {
   const { title, content, material } = reqBody as {
     title: string;
     content: string;
-    material: Material;
+    material: DataToCreateMaterial;
   };
 
-  if (!title || !content || !material) {
+  if (title === undefined || content === undefined || material === undefined) {
     return new Response(
       `Request body should has ${
         !title ? "title" : !content ? "content" : "material"
