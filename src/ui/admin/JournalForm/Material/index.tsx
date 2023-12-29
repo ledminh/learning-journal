@@ -7,8 +7,7 @@ import { useState } from "react";
 
 const MaterialComponent: React.FC<{
   setMaterial: (material: DataToCreateMaterial | null) => void;
-  material: DataToCreateMaterial | null;
-}> = ({ setMaterial, material }) => {
+}> = ({ setMaterial }) => {
   const [currentType, setCurrentType] = useState<MaterialType>(
     MaterialType.LINK
   );
@@ -30,11 +29,7 @@ const MaterialComponent: React.FC<{
         ))}
       </ul>
       <div className="p-2 border border-black rounded-md">
-        <MaterialForm
-          type={currentType}
-          setMaterial={setMaterial}
-          material={material}
-        />
+        <MaterialForm type={currentType} setMaterial={setMaterial} />
       </div>
     </>
   );

@@ -26,6 +26,17 @@ const LinkForm: React.FC<{
   const [imageUrls, setImageUrls] = useState<string[] | null>(null);
 
   useEffect(() => {
+    setMaterial(null);
+    setStatus("unInit");
+    setCurrentUrl("");
+    setErrorMessage(null);
+    setCurrentTitle(null);
+    setCurrentDescription(null);
+    setCurrentImageUrl(null);
+    setImageUrls(null);
+  }, []);
+
+  useEffect(() => {
     if (status === "loaded") {
       const material: DataToCreateMaterial = {
         type: MaterialType.LINK,
