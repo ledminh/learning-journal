@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, FC } from "react";
+import { useState, FC, useEffect } from "react";
 import AddTags from "./AddTags";
 import { Tag } from "@/data/server/types/tag";
 import { DataToConnectTag } from "@/data/server/types/journal_entry";
 import Description from "./Description";
-import Material from "./Material";
+import MaterialComponent from "./Material";
+
+import { DataToCreateMaterial } from "@/data/server/types/material";
 
 const JournalForm: FC<{
   dbTags: Tag[];
@@ -13,6 +15,7 @@ const JournalForm: FC<{
   const [title, setTitle] = useState("");
   const [dtaCTags, setDtaCTags] = useState<DataToConnectTag[]>([]);
   const [description, setDescription] = useState("");
+  const [material, setMaterial] = useState<DataToCreateMaterial | null>(null);
 
   return (
     <form
@@ -47,7 +50,7 @@ const JournalForm: FC<{
         <span className="font-semibold border-b-2 border-b-black">
           Material
         </span>
-        <Material />
+        <MaterialComponent setMaterial={setMaterial} material={material} />
       </label>
       <label className="flex flex-col gap-1">
         <span className="font-semibold">Content</span>

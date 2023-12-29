@@ -1,12 +1,20 @@
-import { MaterialType } from "@/data/server/types/material";
+import {
+  MaterialType,
+  Material,
+  DataToCreateMaterial,
+} from "@/data/server/types/material";
 import LinkForm from "./LinkForm";
 
-const MaterialForm: React.FC<{ type: MaterialType }> = ({ type }) => (
+const MaterialForm: React.FC<{
+  type: MaterialType;
+  setMaterial: (material: DataToCreateMaterial | null) => void;
+  material: DataToCreateMaterial | null;
+}> = ({ type, setMaterial, material }) => (
   <div className="flex flex-col gap-2">
     {(() => {
       switch (type) {
         case MaterialType.LINK:
-          return <LinkForm />;
+          return <LinkForm setMaterial={setMaterial} />;
         case MaterialType.CODE:
           return <CodeForm />;
         case MaterialType.IMAGE:

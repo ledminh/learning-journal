@@ -23,7 +23,7 @@ const getLinkInfo = async ({
   setStatus("loading");
 
   const { errorMessage, payload } = await apiGetLinkInfo({
-    url: currentUrl,
+    url: processUrl(currentUrl),
   });
 
   if (errorMessage) {
@@ -42,3 +42,15 @@ const getLinkInfo = async ({
 };
 
 export default getLinkInfo;
+
+/*****************************
+ * Process url
+ */
+
+export const processUrl = (url: string) => {
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  } else {
+    return `https://${url}`;
+  }
+};

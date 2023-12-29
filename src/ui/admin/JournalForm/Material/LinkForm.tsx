@@ -1,20 +1,44 @@
 import getLinkInfo from "../utils/getLinkInfo";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const LinkForm: React.FC = () => {
+import {
+  DataToCreateMaterial,
+  MaterialType,
+} from "@/data/server/types/material";
+
+const LinkForm: React.FC<{
+  setMaterial: (material: DataToCreateMaterial | null) => void;
+}> = ({ setMaterial }) => {
   const [status, setStatus] = useState<"unInit" | "loading" | "loaded">(
     "unInit"
   );
 
   const [currentUrl, setCurrentUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [currentTitle, setCurrentTitle] = useState("");
-  const [currentDescription, setCurrentDescription] = useState("");
+  const [currentTitle, setCurrentTitle] = useState<string | null>(null);
+  const [currentDescription, setCurrentDescription] = useState<string | null>(
+    null
+  );
 
-  const [currentImageUrl, setCurrentImageUrl] = useState(""); // "" means no image selected
+  const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
 
   const [imageUrls, setImageUrls] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    if (status === "loaded") {
+      const material: DataToCreateMaterial = {
+        type: MaterialType.LINK,
+        content: {
+          title: currentTitle!,
+          description: currentDescription!,
+          url: currentUrl,
+          imageUrl: currentImageUrl!,
+        },
+      };
+      setMaterial(material);
+    }
+  }, [status, currentTitle, currentDescription, currentUrl, currentImageUrl]);
 
   const _getLinkInfo = async () =>
     await getLinkInfo({
@@ -65,7 +89,7 @@ const LinkForm: React.FC = () => {
               type="text"
               className="p-2 border border-black rounded-md"
               placeholder="Type a title"
-              value={currentTitle}
+              value={currentTitle || ""}
               onChange={(e) => setCurrentTitle(e.target.value)}
             />
           </label>
@@ -75,7 +99,7 @@ const LinkForm: React.FC = () => {
               className="p-2 border border-black rounded-md resize-none"
               placeholder="Type a description"
               rows={5}
-              value={currentDescription}
+              value={currentDescription || ""}
               onChange={(e) => setCurrentDescription(e.target.value)}
             />
           </label>
@@ -83,7 +107,7 @@ const LinkForm: React.FC = () => {
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-center bg-gray-200 border-4 border-gray-600 w-60 h-60">
                 <Image
-                  src={currentImageUrl}
+                  src={currentImageUrl || ""}
                   alt="image"
                   width={200}
                   height={200}

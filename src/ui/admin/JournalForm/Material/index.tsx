@@ -1,8 +1,14 @@
-import { MaterialType } from "@/data/server/types/material";
+import {
+  MaterialType,
+  DataToCreateMaterial,
+} from "@/data/server/types/material";
 import MaterialForm from "./MaterialForm";
 import { useState } from "react";
 
-const MaterialComponent: React.FC = () => {
+const MaterialComponent: React.FC<{
+  setMaterial: (material: DataToCreateMaterial | null) => void;
+  material: DataToCreateMaterial | null;
+}> = ({ setMaterial, material }) => {
   const [currentType, setCurrentType] = useState<MaterialType>(
     MaterialType.LINK
   );
@@ -24,7 +30,11 @@ const MaterialComponent: React.FC = () => {
         ))}
       </ul>
       <div className="p-2 border border-black rounded-md">
-        <MaterialForm type={currentType} />
+        <MaterialForm
+          type={currentType}
+          setMaterial={setMaterial}
+          material={material}
+        />
       </div>
     </>
   );
