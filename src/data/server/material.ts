@@ -2,7 +2,6 @@ import axios from "axios";
 import { load } from "cheerio";
 
 import { FileOptions } from "@supabase/storage-js";
-import supabase from "./supabase";
 
 import {
   CreateMaterialFunction,
@@ -12,6 +11,7 @@ import {
   MaterialType,
   materialTypeMapToDBServer,
 } from "./types/material";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 /***************************
  * Function(s)
@@ -79,18 +79,17 @@ export const generateDataForMaterialLinkContent: GenerateDataForMaterialLinkCont
     const response = await axios.get(url);
 
     const $ = load(response.data);
-    const title = $("title").text();
-    const description = $('meta[name="description"]').attr("content");
+    const title = $("title").text() ?? "";
+    const description = $('meta[name="description"]').attr("content") ?? "";
+
     const imageUrls = $("img")
       .map((i, el) => $(el).attr("src"))
-      .get();
+      .get()
+      .map((imgUrl) => processImageUrl(imgUrl, url));
 
-    if (!title || !description || !imageUrls.length) {
-      return {
-        errorMessage: "Unable to generate link content",
-        payload: null,
-      };
-    }
+    // make each item of imageUrls unique
+    const imageUrlsSet = new Set(imageUrls);
+    const imageUrlsUnique = Array.from(imageUrlsSet);
 
     return {
       errorMessage: null,
@@ -98,12 +97,14 @@ export const generateDataForMaterialLinkContent: GenerateDataForMaterialLinkCont
         url,
         title,
         description,
-        imageUrls,
+        imageUrls: imageUrlsUnique,
       },
     };
   };
 
 export const uploadImage: UploadImageFunction = async ({ imageFile }) => {
+  const supabase = (await import("./supabase")) as unknown as SupabaseClient;
+
   const fileName = imageFile.name.split(".")[0] + "_" + Date.now();
   const fileType = imageFile.name.split(".")[1];
 
@@ -138,6 +139,8 @@ export const uploadImage: UploadImageFunction = async ({ imageFile }) => {
 };
 
 export const deleteImage: DeleteImageFunction = async (data) => {
+  const supabase = (await import("./supabase")) as unknown as SupabaseClient;
+
   const { imageUrl } = data;
 
   const fileName = imageUrl.split("/").pop();
@@ -170,4 +173,14 @@ export const deleteImage: DeleteImageFunction = async (data) => {
       success: true,
     },
   };
+};
+
+/**********************************
+ * Helpers
+ */
+const processImageUrl = (imgUrl: string, rootUrl: string) => {
+  if (imgUrl.startsWith("https")) return imgUrl;
+  else if (imgUrl.startsWith("http:")) return imgUrl.replace("http:", "https:");
+  else if (!imgUrl.startsWith("http")) return `${rootUrl}/${imgUrl}`;
+  else return imgUrl;
 };

@@ -17,8 +17,6 @@ const post: PostFunction = async function ({ url, body }) {
     body: JSON.stringify(body),
   });
 
-  console.log(response);
-
   if (!response.ok) {
     return {
       errorMessage: response.statusText,

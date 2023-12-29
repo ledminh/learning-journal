@@ -5,6 +5,7 @@ import AddTags from "./AddTags";
 import { Tag } from "@/data/server/types/tag";
 import { DataToConnectTag } from "@/data/server/types/journal_entry";
 import Description from "./Description";
+import Material from "./Material";
 
 const JournalForm: FC<{
   dbTags: Tag[];
@@ -46,17 +47,7 @@ const JournalForm: FC<{
         <span className="font-semibold border-b-2 border-b-black">
           Material
         </span>
-        <ul className="flex gap-2">
-          {["QUOTE", "CODE", "LINK", "IMAGE"].map((type, i) => (
-            <li
-              key={i}
-              className="px-2 border border-black rounded-md hover:bg-slate-600 hover:text-gray-200"
-            >
-              <button>{type}</button>
-            </li>
-          ))}
-        </ul>
-        <input type="file" className="border border-black" />
+        <Material />
       </label>
       <label className="flex flex-col gap-1">
         <span className="font-semibold">Content</span>
