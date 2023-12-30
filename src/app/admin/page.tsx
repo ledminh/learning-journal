@@ -1,11 +1,19 @@
 import JournalList from "@/ui/admin/JournalList";
 import TagSection from "@/ui/admin/TagSection";
 
-export default function AdminPage() {
+interface Props {
+  searchParams: {
+    offset?: number;
+    limit?: number;
+    keyword?: string;
+  };
+}
+
+export default function AdminPage({ searchParams }: Props) {
   return (
     <div className="flex flex-col gap-8">
       <TagSection />
-      <JournalList />
+      <JournalList {...searchParams} />
     </div>
   );
 }

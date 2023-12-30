@@ -1,0 +1,53 @@
+import Link from "next/link";
+import { getJournalEntries } from "@/data/api/journal_entry";
+import SearchBar from "./SearchBar";
+
+import List from "./List";
+
+interface Props {
+  offset?: number;
+  limit?: number;
+  keyword?: string;
+}
+
+export default async function JournalList({ offset, limit, keyword }: Props) {
+  const { errorMessage, payload } = await getJournalEntries({
+    offset: offset ?? 0,
+    limit: limit ?? 10,
+    filters: {
+      keyword,
+    },
+  });
+
+  return (
+    <div className="flex flex-col items-start gap-4 p-4 border rounded-lg shadow-lg border-neutral-700">
+      <section className="flex flex-col items-center justify-between w-full gap-2 lg:flex-row">
+        <div className="flex flex-col w-full gap-2 lg:basis-1/2 sm:flex-row">
+          <Link
+            href="/admin/add-journal"
+            className="inline-block p-2 border border-neutral-700 hover:bg-blue-300 basis-1/2"
+          >
+            <span>Add New Journal</span>
+          </Link>
+          <SearchBar />
+        </div>
+        <div className="flex flex-col w-full gap-2 lg:basis-1/2 sm:flex-row">
+          <button className="p-2 text-white bg-neutral-500 basis-1/2">
+            sort by: date - desc
+          </button>
+          <button className="p-2 text-white bg-neutral-500 basis-1/2">
+            filter
+          </button>
+        </div>
+      </section>
+      <section className="w-full">
+        {errorMessage && (
+          <p className="p-2 text-red-700 bg-red-200 border border-red-700 rounded-lg">
+            {errorMessage}
+          </p>
+        )}
+        {payload && <List journalEntries={payload} />}
+      </section>
+    </div>
+  );
+}

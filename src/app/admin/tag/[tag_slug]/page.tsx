@@ -1,4 +1,4 @@
-import JournalList from "@/ui/admin/JournalList";
+import JournalList from "@/ui/admin/JournalList/JournalList";
 
 export default function TagPage() {
   return (

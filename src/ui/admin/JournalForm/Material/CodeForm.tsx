@@ -33,7 +33,6 @@ const CodeForm: React.FC<{
         language="js"
         placeholder="Enter your JS code here ..."
         onChange={(evn) => setValue(evn.target.value)}
-        disabled
         padding={15}
         style={{
           backgroundColor: "#000",

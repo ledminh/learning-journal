@@ -11,6 +11,7 @@ import Content from "./Content";
 import { DataToCreateMaterial } from "@/data/server/types/material";
 import { addJournalEntry } from "@/data/api_call/addJournalEntry";
 import { useRouter } from "next/navigation";
+import Spinner from "@/ui/spinner";
 
 const JournalForm: FC<{
   dbTags: Tag[];
@@ -113,28 +114,7 @@ const JournalForm: FC<{
           onClick={onSubmit}
         >
           <span>Submit</span>
-          {isSubmitting && (
-            <svg className="w-5 h-5 ml-2 animate-spin" viewBox="0 0 24 24">
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0
-                  12h4zm2 5.291A7.962 7.962 0 014 12H0c0
-                  3.042.546 5.918 1.537 8.544l4.243-1.253zm12.263
-                  1.252A7.962 7.962 0 0020 12h-4a7.962 7.962
-                  0 00-3.8-6.75l-2.464 2.464zM20.463 4.75A7.962
-                  7.962 0 0016 12h4c0-3.042-.546-5.918-1.537-8.544z"
-              />
-            </svg>
-          )}
+          {isSubmitting && <Spinner />}
         </button>
         <button
           className="p-2 font-semibold text-white bg-gray-500 sm:basis-1/2"
