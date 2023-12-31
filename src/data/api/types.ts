@@ -27,7 +27,10 @@ export type GetJournalEntriesFunction = AsyncFunction<
       order?: "asc" | "desc";
     };
   },
-  JournalEntry[]
+  {
+    journalEntries: JournalEntry[];
+    total: number;
+  }
 >;
 
 export type GetJournalEntryFunction = AsyncFunction<

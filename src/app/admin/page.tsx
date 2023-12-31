@@ -4,8 +4,6 @@ import TagSection from "@/ui/admin/TagSection";
 
 interface Props {
   searchParams: {
-    offset?: number;
-    limit?: number;
     keyword?: string;
     sortBy?: "date" | "title";
     order?: "asc" | "desc";

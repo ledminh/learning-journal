@@ -6,10 +6,9 @@ import List from "./List";
 import Sort from "./Sort";
 import Filter from "./Filter";
 import { MaterialOption, mapFilterToMaterial } from "./types";
+import { ITEMS_PER_PAGE } from "@/constants";
 
 interface Props {
-  offset?: number;
-  limit?: number;
   keyword?: string;
   sortBy?: "date" | "title";
   order?: "asc" | "desc";
@@ -17,8 +16,6 @@ interface Props {
 }
 
 export default async function JournalList({
-  offset,
-  limit,
   keyword,
   sortBy,
   order,
@@ -30,8 +27,8 @@ export default async function JournalList({
   };
 
   const { errorMessage, payload } = await getJournalEntries({
-    offset: offset ?? 0,
-    limit: limit ?? 10,
+    offset: 0,
+    limit: ITEMS_PER_PAGE,
     filters: {
       keyword,
       materialType: material ? mapFilterToMaterial[material] : undefined,
@@ -63,7 +60,9 @@ export default async function JournalList({
             {errorMessage}
           </p>
         )}
-        {payload && <List journalEntries={payload} />}
+        {payload && (
+          <List journalEntries={payload.journalEntries} total={payload.total} />
+        )}
       </section>
     </div>
   );

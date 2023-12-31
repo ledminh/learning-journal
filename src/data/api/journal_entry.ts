@@ -67,9 +67,21 @@ export const getJournalEntries: GetJournalEntriesFunction = async ({
     };
   }
 
+  if (payload === null) {
+    return {
+      errorMessage: "No journal entries found.",
+      payload: null,
+    };
+  }
+
   return {
     errorMessage: null,
-    payload: payload?.map(convertJournalEntryFromDBServer) as JournalEntry[],
+    payload: {
+      journalEntries: payload.journalEntries.map(
+        convertJournalEntryFromDBServer
+      ),
+      total: payload.total,
+    },
   };
 };
 

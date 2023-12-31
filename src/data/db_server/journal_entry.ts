@@ -142,12 +142,55 @@ export const getJournalEntries: GetJournalEntriesFunction = async function ({
       if (dbDate.payload === null) {
         return {
           errorMessage: null,
-          payload: [],
+          payload: {
+            journalEntries: [],
+            total: 0,
+          },
         };
       }
 
       dateID = dbDate.payload.id;
     }
+
+    const total = await prismaClient.journalEntry.count({
+      where: {
+        AND: [
+          filters?.date
+            ? {
+                dateEntryId: dateID,
+              }
+            : {},
+          filters?.materialType
+            ? {
+                material: {
+                  type: materialTypeMapToDB[filters.materialType],
+                },
+              }
+            : {},
+          filters?.keyword
+            ? {
+                OR: [
+                  {
+                    title: {
+                      contains: filters.keyword,
+                    },
+                  },
+                  {
+                    description: {
+                      contains: filters.keyword,
+                    },
+                  },
+                  {
+                    content: {
+                      contains: filters.keyword,
+                    },
+                  },
+                ],
+              }
+            : {},
+        ],
+      },
+    });
 
     const dbJournalEntries = await prismaClient.journalEntry.findMany({
       take: limit,
@@ -206,22 +249,25 @@ export const getJournalEntries: GetJournalEntriesFunction = async function ({
 
     return {
       errorMessage: null,
-      payload: dbJournalEntries.map((dbJournalEntry) => ({
-        id: dbJournalEntry.id,
-        createdAt: dbJournalEntry.createdAt,
-        updatedAt: dbJournalEntry.updatedAt,
-        title: dbJournalEntry.title,
-        slug: dbJournalEntry.slug,
-        tags: dbJournalEntry.tags.map((tag) => tag.name),
-        description: dbJournalEntry.description,
-        material: {
-          id: dbJournalEntry.material.id,
-          type: materialTypeMapFromDB[dbJournalEntry.material.type],
-          content: dbJournalEntry.material.content,
-          createdAt: dbJournalEntry.material.createdAt,
-        },
-        content: dbJournalEntry.content,
-      })),
+      payload: {
+        journalEntries: dbJournalEntries.map((dbJournalEntry) => ({
+          id: dbJournalEntry.id,
+          createdAt: dbJournalEntry.createdAt,
+          updatedAt: dbJournalEntry.updatedAt,
+          title: dbJournalEntry.title,
+          slug: dbJournalEntry.slug,
+          tags: dbJournalEntry.tags.map((tag) => tag.name),
+          description: dbJournalEntry.description,
+          material: {
+            id: dbJournalEntry.material.id,
+            type: materialTypeMapFromDB[dbJournalEntry.material.type],
+            content: dbJournalEntry.material.content,
+            createdAt: dbJournalEntry.material.createdAt,
+          },
+          content: dbJournalEntry.content,
+        })),
+        total,
+      },
     };
   } catch (e: any) {
     return {

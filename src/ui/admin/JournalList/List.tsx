@@ -8,12 +8,15 @@ import { getJournalEntries } from "@/data/api_call/getJournalEntries";
 
 import { MaterialOption, mapFilterToMaterial } from "./types";
 import useQueryString from "../utils/useQueryString";
+import { ITEMS_PER_PAGE } from "@/constants";
 
 const JournalEntriesList: React.FC<{
   journalEntries: JournalEntry[];
-}> = ({ journalEntries: _journalEntries }) => {
+  total: number;
+}> = ({ journalEntries: _journalEntries, total: _total }) => {
   const [journalEntries, setJournalEntries] =
     useState<JournalEntry[]>(_journalEntries);
+  const [total, setTotal] = useState<number>(_total);
 
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword");
@@ -21,28 +24,28 @@ const JournalEntriesList: React.FC<{
   const sortBy = searchParams.get("sortBy") as "date" | "title" | null;
   const order = searchParams.get("order") as "asc" | "desc" | null;
 
-  useEffect(() => {
-    const update = async () => {
-      const { errorMessage, payload } = await getJournalEntries({
-        filters: {
-          keyword: keyword ? keyword : undefined,
-          materialType: material ? mapFilterToMaterial[material] : undefined,
-        },
-        sort: {
-          by: sortBy ? sortBy : "date",
-          order: order ? order : "desc",
-        },
-      });
+  useUpdate(
+    journalEntries,
+    total,
+    keyword,
+    material,
+    sortBy,
+    order,
+    setJournalEntries,
+    setTotal
+  );
 
-      if (errorMessage) {
-        throw new Error(errorMessage);
-      }
-
-      setJournalEntries(payload!);
-    };
-
-    update();
-  }, [keyword, material]);
+  const { moreOnlick } = useMore(
+    journalEntries,
+    total,
+    journalEntries,
+    keyword,
+    material,
+    sortBy,
+    order,
+    setJournalEntries,
+    setTotal
+  );
 
   return (
     <div className="flex flex-col gap-2">
@@ -65,9 +68,16 @@ const JournalEntriesList: React.FC<{
             </li>
           );
         })}
-        <li className="flex justify-end">
-          <button className="p-1 text-white bg-neutral-500">more ...</button>
-        </li>
+        {journalEntries.length < total && (
+          <li className="flex justify-end">
+            <button
+              className="p-1 text-white bg-neutral-500 hover:bg-neutral-700"
+              onClick={moreOnlick}
+            >
+              more ...
+            </button>
+          </li>
+        )}
       </ul>
     </div>
   );
@@ -103,4 +113,88 @@ const KeywordTab: React.FC<{ keyword: string }> = ({ keyword }) => {
       </button>
     </div>
   );
+};
+
+/****************************************
+ * Hooks
+ */
+const useUpdate = (
+  _journalEntries: JournalEntry[],
+  _total: number,
+  keyword: string | null,
+  material: MaterialOption | null,
+  sortBy: "date" | "title" | null,
+  order: "asc" | "desc" | null,
+  setJournalEntries: (journalEntries: JournalEntry[]) => void,
+  setTotal: (total: number) => void
+) => {
+  useEffect(() => {
+    const update = async () => {
+      const { errorMessage, payload } = await getJournalEntries({
+        offset: 0,
+        limit: ITEMS_PER_PAGE,
+        filters: {
+          keyword: keyword ? keyword : undefined,
+          materialType: material ? mapFilterToMaterial[material] : undefined,
+        },
+        sort: {
+          by: sortBy ? sortBy : "date",
+          order: order ? order : "desc",
+        },
+      });
+
+      if (errorMessage) {
+        throw new Error(errorMessage);
+      }
+
+      if (payload === null) {
+        throw new Error("payload is null");
+      }
+
+      setJournalEntries(payload.journalEntries);
+      setTotal(payload.total);
+    };
+
+    update();
+  }, [keyword, material, sortBy, order]);
+};
+
+const useMore = (
+  _journalEntries: JournalEntry[],
+  _total: number,
+  journalEntries: JournalEntry[],
+  keyword: string | null,
+  material: MaterialOption | null,
+  sortBy: "date" | "title" | null,
+  order: "asc" | "desc" | null,
+  setJournalEntries: (journalEntries: JournalEntry[]) => void,
+  setTotal: (total: number) => void
+) => {
+  return {
+    moreOnlick: async () => {
+      const { errorMessage, payload } = await getJournalEntries({
+        offset: journalEntries.length,
+        limit: ITEMS_PER_PAGE,
+        filters: {
+          keyword: keyword ? keyword : undefined,
+          materialType: material ? mapFilterToMaterial[material] : undefined,
+        },
+        sort: {
+          by: sortBy ? sortBy : "date",
+          order: order ? order : "desc",
+        },
+      });
+
+      if (errorMessage) {
+        throw new Error(errorMessage);
+      }
+
+      if (payload === null) {
+        throw new Error("payload is null");
+      }
+
+      setJournalEntries([...journalEntries, ...payload.journalEntries]);
+      setTotal(payload.total);
+    },
+  };
 };

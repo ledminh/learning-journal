@@ -58,7 +58,10 @@ export type GetJournalEntriesFunction = AsyncFunction<
       order?: "asc" | "desc";
     };
   },
-  JournalEntry[]
+  {
+    journalEntries: JournalEntry[];
+    total: number;
+  }
 >;
 
 /******** UPDATE **********************/
