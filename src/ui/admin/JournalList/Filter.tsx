@@ -4,16 +4,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import useQueryString from "../utils/useQueryString";
 
-const Sort: React.FC<{
-  by: "date" | "title";
-  order: "asc" | "desc";
-}> = ({ by, order }) => {
+import type { MaterialOption } from "./types";
+
+const Filter: React.FC<{
+  material?: MaterialOption;
+}> = ({ material }) => {
   const [isVisble, toggle] = useToggle(false);
-  const { currentSortBy, currentOrder, options } = useOptions(
-    toggle,
-    by,
-    order
-  );
+  const { currentMaterial, options } = useOptions(toggle, material);
 
   return (
     <div className="relative basis-1/2">
@@ -21,7 +18,7 @@ const Sort: React.FC<{
         className="block w-full p-2 text-white bg-neutral-500 hover:bg-neutral-700"
         onClick={toggle}
       >
-        sort by: {currentSortBy} - {currentOrder}
+        Filter: {currentMaterial ? currentMaterial : "All"}
       </button>
       <div
         className={`${
@@ -32,7 +29,7 @@ const Sort: React.FC<{
           <button
             key={option.label}
             className={`block p-2 text-white basis-full sm:basis-[48%] lg:basis-full ${
-              option.label === currentSortBy + " - " + currentOrder
+              option.label === currentMaterial
                 ? "bg-neutral-900"
                 : "bg-neutral-500"
             } hover:bg-neutral-700`}
@@ -46,7 +43,7 @@ const Sort: React.FC<{
   );
 };
 
-export default Sort;
+export default Filter;
 
 /*************************
  * Hooks
@@ -60,26 +57,13 @@ const useToggle = (initialState: boolean) => {
 
 const useOptions = (
   toggle: (isVisble: boolean) => void,
-  by: "date" | "title",
-  order: "asc" | "desc"
+  material?: MaterialOption
 ) => {
-  const options = [
-    {
-      sortBy: "date",
-      order: "desc",
-    },
-    {
-      sortBy: "date",
-      order: "asc",
-    },
-    {
-      sortBy: "title",
-      order: "desc",
-    },
-    {
-      sortBy: "title",
-      order: "asc",
-    },
+  const options: Record<string, MaterialOption>[] = [
+    { material: "quote" },
+    { material: "code" },
+    { material: "image" },
+    { material: "link" },
   ];
 
   const pathname = usePathname();
@@ -87,21 +71,27 @@ const useOptions = (
 
   const { updateQueryString } = useQueryString();
 
-  const [currentSortBy, setCurrentSortBy] = useState<string>(by);
-  const [currentOrder, setCurrentOrder] = useState<string>(order);
+  const [currentMaterial, setCurrentMaterial] = useState<MaterialOption | null>(
+    material ?? null
+  );
 
-  const onClick = (option: { sortBy: string; order: string }) => {
+  const onClick = (option: Record<string, MaterialOption>) => {
+    if (option.material === currentMaterial) {
+      setCurrentMaterial(null);
+      router.push(pathname);
+      toggle(false);
+      return;
+    }
+
     router.push(pathname + "?" + updateQueryString(option));
-    setCurrentSortBy(option.sortBy);
-    setCurrentOrder(option.order);
+    setCurrentMaterial(option.material);
     toggle(false);
   };
 
   return {
-    currentSortBy,
-    currentOrder,
+    currentMaterial,
     options: options.map((option) => ({
-      label: `${option.sortBy} - ${option.order}`,
+      label: `${option.material}`,
       onClick: () => onClick(option),
     })),
   };

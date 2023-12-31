@@ -4,6 +4,8 @@ import SearchBar from "./SearchBar";
 
 import List from "./List";
 import Sort from "./Sort";
+import Filter from "./Filter";
+import { MaterialOption, mapFilterToMaterial } from "./types";
 
 interface Props {
   offset?: number;
@@ -11,6 +13,7 @@ interface Props {
   keyword?: string;
   sortBy?: "date" | "title";
   order?: "asc" | "desc";
+  material?: MaterialOption;
 }
 
 export default async function JournalList({
@@ -19,6 +22,7 @@ export default async function JournalList({
   keyword,
   sortBy,
   order,
+  material,
 }: Props) {
   const sort = {
     by: sortBy ?? "date",
@@ -30,6 +34,7 @@ export default async function JournalList({
     limit: limit ?? 10,
     filters: {
       keyword,
+      materialType: material ? mapFilterToMaterial[material] : undefined,
     },
     sort,
   });
@@ -48,11 +53,10 @@ export default async function JournalList({
         </div>
         <div className="flex flex-col w-full gap-2 lg:basis-1/2 sm:flex-row">
           <Sort {...sort} />
-          <button className="p-2 text-white bg-neutral-500 basis-1/2">
-            filter
-          </button>
+          <Filter material={material} />
         </div>
       </section>
+
       <section className="w-full">
         {errorMessage && (
           <p className="p-2 text-red-700 bg-red-200 border border-red-700 rounded-lg">
