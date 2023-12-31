@@ -85,13 +85,13 @@ const useOptions = (
   const pathname = usePathname();
   const router = useRouter();
 
-  const { updateQueryString } = useQueryString();
+  const { addQueryString } = useQueryString();
 
   const [currentSortBy, setCurrentSortBy] = useState<string>(by);
   const [currentOrder, setCurrentOrder] = useState<string>(order);
 
   const onClick = (option: { sortBy: string; order: string }) => {
-    router.push(pathname + "?" + updateQueryString(option));
+    router.push(pathname + "?" + addQueryString(option));
     setCurrentSortBy(option.sortBy);
     setCurrentOrder(option.order);
     toggle(false);

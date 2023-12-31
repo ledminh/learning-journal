@@ -69,7 +69,7 @@ const useOptions = (
   const pathname = usePathname();
   const router = useRouter();
 
-  const { updateQueryString } = useQueryString();
+  const { addQueryString, deleteQueryString } = useQueryString();
 
   const [currentMaterial, setCurrentMaterial] = useState<MaterialOption | null>(
     material ?? null
@@ -78,12 +78,12 @@ const useOptions = (
   const onClick = (option: Record<string, MaterialOption>) => {
     if (option.material === currentMaterial) {
       setCurrentMaterial(null);
-      router.push(pathname);
+      router.push(pathname + "?" + deleteQueryString(["material"]));
       toggle(false);
       return;
     }
 
-    router.push(pathname + "?" + updateQueryString(option));
+    router.push(pathname + "?" + addQueryString(option));
     setCurrentMaterial(option.material);
     toggle(false);
   };

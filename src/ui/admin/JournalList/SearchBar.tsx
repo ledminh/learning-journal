@@ -8,7 +8,7 @@ const SearchBar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const router = useRouter();
 
-  const { updateQueryString } = useQueryString();
+  const { addQueryString } = useQueryString();
   const pathname = usePathname();
 
   return (
@@ -20,7 +20,7 @@ const SearchBar: React.FC = () => {
       onChange={(e) => setSearchTerm(e.target.value)}
       onKeyDown={(e) => {
         if (e.key === "Enter" && searchTerm !== "") {
-          const newQueryString = updateQueryString({
+          const newQueryString = addQueryString({
             keyword: searchTerm,
           });
 
