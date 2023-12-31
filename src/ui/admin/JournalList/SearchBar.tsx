@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import useQueryString from "../utils/useQueryString";
 
 const SearchBar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const router = useRouter();
+
+  const { updateQueryString } = useQueryString();
+  const pathname = usePathname();
 
   return (
     <input
@@ -16,7 +20,11 @@ const SearchBar: React.FC = () => {
       onChange={(e) => setSearchTerm(e.target.value)}
       onKeyDown={(e) => {
         if (e.key === "Enter" && searchTerm !== "") {
-          router.push(`/admin?keyword=${searchTerm}`);
+          const newQueryString = updateQueryString({
+            keyword: searchTerm,
+          });
+
+          router.push(`${pathname}?${newQueryString}`);
           setSearchTerm("");
         }
       }}

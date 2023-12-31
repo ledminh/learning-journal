@@ -3,20 +3,35 @@ import { getJournalEntries } from "@/data/api/journal_entry";
 import SearchBar from "./SearchBar";
 
 import List from "./List";
+import Sort from "./Sort";
 
 interface Props {
   offset?: number;
   limit?: number;
   keyword?: string;
+  sortBy?: "date" | "title";
+  order?: "asc" | "desc";
 }
 
-export default async function JournalList({ offset, limit, keyword }: Props) {
+export default async function JournalList({
+  offset,
+  limit,
+  keyword,
+  sortBy,
+  order,
+}: Props) {
+  const sort = {
+    by: sortBy ?? "date",
+    order: order ?? "desc",
+  };
+
   const { errorMessage, payload } = await getJournalEntries({
     offset: offset ?? 0,
     limit: limit ?? 10,
     filters: {
       keyword,
     },
+    sort,
   });
 
   return (
@@ -32,9 +47,7 @@ export default async function JournalList({ offset, limit, keyword }: Props) {
           <SearchBar />
         </div>
         <div className="flex flex-col w-full gap-2 lg:basis-1/2 sm:flex-row">
-          <button className="p-2 text-white bg-neutral-500 basis-1/2">
-            sort by: date - desc
-          </button>
+          <Sort {...sort} />
           <button className="p-2 text-white bg-neutral-500 basis-1/2">
             filter
           </button>

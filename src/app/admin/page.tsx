@@ -6,6 +6,8 @@ interface Props {
     offset?: number;
     limit?: number;
     keyword?: string;
+    sortBy?: "date" | "title";
+    order?: "asc" | "desc";
   };
 }
 
