@@ -1,5 +1,5 @@
 import JournalList from "@/ui/admin/JournalList";
-import { MaterialOption } from "@/ui/admin/JournalList/types";
+import { MaterialOption } from "@/ui/types";
 import TagSection from "@/ui/admin/TagSection";
 
 interface Props {

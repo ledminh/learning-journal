@@ -1,16 +1,15 @@
-import JournalEntry from "@/ui/journal_entry";
-import Link from "next/link";
+import JournalEntryList from "@/ui/JournalEntryList";
+import { MaterialOption } from "@/ui/types";
 
-export default function Home() {
-  return (
-    <ul className="flex flex-col gap-2">
-      {Array.from({ length: 3 }).map((_, i) => (
-        <li key={i}>
-          <Link href="/entry/01">
-            <JournalEntry type="summary" />
-          </Link>
-        </li>
-      ))}
-    </ul>
-  );
+interface Props {
+  searchParams: {
+    keyword?: string;
+    sortBy?: "date" | "title";
+    order?: "asc" | "desc";
+    material?: MaterialOption;
+  };
+}
+
+export default function Home({ searchParams }: Props) {
+  return <JournalEntryList {...searchParams} />;
 }

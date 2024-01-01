@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar";
 import List from "./List";
 import Sort from "./Sort";
 import Filter from "./Filter";
-import { MaterialOption, mapFilterToMaterial } from "./types";
+import { MaterialOption, mapFilterToMaterial } from "@/ui/types";
 import { ITEMS_PER_PAGE } from "@/constants";
 
 interface Props {

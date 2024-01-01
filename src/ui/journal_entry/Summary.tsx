@@ -1,23 +1,22 @@
-export default function Summary() {
-  return (
-    <Wrapper>
-      <p>Date</p>
-      <h2>Entry Title</h2>
-      <p>Tags</p>
-      <p>Link/Quote/Code/Image</p>
-      <p>
-        Some description here. Lorem ipsum dolor sit amet consectetur
-        adipisicing elit. Quisquam voluptatum, quia, quod, voluptates tempora
-        doloremque quos dolorum.
-      </p>
-    </Wrapper>
-  );
+import { JournalEntry } from "@/data/server/types/journal_entry";
+
+interface Props {
+  journalEntry: JournalEntry;
 }
 
+const Summmary: React.FC<Props> = ({ journalEntry }) => (
+  <Wrapper>
+    <h2>{journalEntry.title}</h2>
+    <p>{journalEntry.tags}</p>
+    <p>{journalEntry.description}</p>
+  </Wrapper>
+);
+
+export default Summmary;
 /*******************
  * Components
  */
 
 const Wrapper = (props: { children: React.ReactNode }) => (
-  <div className="border border-slate-400 p-2">{props.children}</div>
+  <div className="p-2 border border-slate-400">{props.children}</div>
 );
