@@ -1,4 +1,5 @@
 import { MaterialType } from "@/data/server/types/material";
+
 export type MaterialOption = "quote" | "code" | "image" | "link";
 
 export const mapFilterToMaterial: Record<MaterialOption, MaterialType> = {
@@ -7,3 +8,6 @@ export const mapFilterToMaterial: Record<MaterialOption, MaterialType> = {
   image: MaterialType.IMAGE,
   link: MaterialType.LINK,
 };
+
+export type SortByOption = "date" | "title";
+export type SortOrderOption = "asc" | "desc";

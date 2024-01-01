@@ -6,7 +6,12 @@ import { JournalEntry } from "@/data/server/types/journal_entry";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getJournalEntries } from "@/data/api_call/getJournalEntries";
 
-import { MaterialOption, mapFilterToMaterial } from "./types";
+import {
+  MaterialOption,
+  mapFilterToMaterial,
+  SortByOption,
+  SortOrderOption,
+} from "./types";
 import useQueryString from "../utils/useQueryString";
 import { ITEMS_PER_PAGE } from "@/constants";
 
@@ -17,40 +22,45 @@ const JournalEntriesList: React.FC<{
   const [journalEntries, setJournalEntries] =
     useState<JournalEntry[]>(_journalEntries);
   const [total, setTotal] = useState<number>(_total);
+  const [isRefeshing, setIsRefeshing] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword");
   const material = searchParams.get("material") as MaterialOption | null;
-  const sortBy = searchParams.get("sortBy") as "date" | "title" | null;
-  const order = searchParams.get("order") as "asc" | "desc" | null;
+  const sortBy = searchParams.get("sortBy") as SortByOption | null;
+  const order = searchParams.get("order") as SortOrderOption | null;
 
-  useUpdate(
-    journalEntries,
-    total,
+  useUpdate({
     keyword,
     material,
     sortBy,
     order,
     setJournalEntries,
-    setTotal
-  );
+    setTotal,
+    setIsRefeshing,
+  });
 
-  const { moreOnlick } = useMore(
-    journalEntries,
-    total,
+  const { moreOnlick } = useMore({
     journalEntries,
     keyword,
     material,
     sortBy,
     order,
     setJournalEntries,
-    setTotal
-  );
+    setTotal,
+    setIsFetchingMore,
+  });
 
   return (
     <div className="flex flex-col gap-2">
       {keyword && <KeywordTab keyword={keyword} />}
-      <ul className="flex flex-col gap-2">
+      {isRefeshing && (
+        <div className="flex justify-center">
+          <span className="font-bold text-neutral-500">Loading ...</span>
+        </div>
+      )}
+      <ul className={`flex flex-col gap-2 ${isRefeshing ? "opacity-40" : ""}`}>
         {journalEntries.map((journal) => {
           return (
             <li key={journal.slug} className="pb-2 border-b border-neutral-700">
@@ -68,6 +78,11 @@ const JournalEntriesList: React.FC<{
             </li>
           );
         })}
+        {isFetchingMore && (
+          <li className="flex justify-center">
+            <span className="font-bold text-neutral-500">Loading ...</span>
+          </li>
+        )}
         {journalEntries.length < total && (
           <li className="flex justify-end">
             <button
@@ -118,28 +133,38 @@ const KeywordTab: React.FC<{ keyword: string }> = ({ keyword }) => {
 /****************************************
  * Hooks
  */
-const useUpdate = (
-  _journalEntries: JournalEntry[],
-  _total: number,
-  keyword: string | null,
-  material: MaterialOption | null,
-  sortBy: "date" | "title" | null,
-  order: "asc" | "desc" | null,
-  setJournalEntries: (journalEntries: JournalEntry[]) => void,
-  setTotal: (total: number) => void
-) => {
+
+interface UseUpdateProps {
+  keyword: string | null;
+  material: MaterialOption | null;
+  sortBy: "date" | "title" | null;
+  order: "asc" | "desc" | null;
+  setJournalEntries: (journalEntries: JournalEntry[]) => void;
+  setTotal: (total: number) => void;
+  setIsRefeshing: (isRefeshing: boolean) => void;
+}
+
+const useUpdate = ({
+  keyword,
+  material,
+  sortBy,
+  order,
+  setJournalEntries,
+  setTotal,
+  setIsRefeshing,
+}: UseUpdateProps) => {
   useEffect(() => {
     const update = async () => {
       const { errorMessage, payload } = await getJournalEntries({
         offset: 0,
         limit: ITEMS_PER_PAGE,
         filters: {
-          keyword: keyword ? keyword : undefined,
+          keyword: keyword ?? undefined,
           materialType: material ? mapFilterToMaterial[material] : undefined,
         },
         sort: {
-          by: sortBy ? sortBy : "date",
-          order: order ? order : "desc",
+          by: sortBy ?? "date",
+          order: order ?? "desc",
         },
       });
 
@@ -155,33 +180,45 @@ const useUpdate = (
       setTotal(payload.total);
     };
 
-    update();
+    setIsRefeshing(true);
+    update().then(() => setIsRefeshing(false));
   }, [keyword, material, sortBy, order]);
 };
 
-const useMore = (
-  _journalEntries: JournalEntry[],
-  _total: number,
-  journalEntries: JournalEntry[],
-  keyword: string | null,
-  material: MaterialOption | null,
-  sortBy: "date" | "title" | null,
-  order: "asc" | "desc" | null,
-  setJournalEntries: (journalEntries: JournalEntry[]) => void,
-  setTotal: (total: number) => void
-) => {
+interface UseMoreProps {
+  journalEntries: JournalEntry[];
+  keyword: string | null;
+  material: MaterialOption | null;
+  sortBy: "date" | "title" | null;
+  order: "asc" | "desc" | null;
+  setJournalEntries: (journalEntries: JournalEntry[]) => void;
+  setTotal: (total: number) => void;
+  setIsFetchingMore: (isFetchingMore: boolean) => void;
+}
+
+const useMore = ({
+  journalEntries,
+  keyword,
+  material,
+  sortBy,
+  order,
+  setJournalEntries,
+  setTotal,
+  setIsFetchingMore,
+}: UseMoreProps) => {
   return {
     moreOnlick: async () => {
+      setIsFetchingMore(true);
       const { errorMessage, payload } = await getJournalEntries({
         offset: journalEntries.length,
         limit: ITEMS_PER_PAGE,
         filters: {
-          keyword: keyword ? keyword : undefined,
+          keyword: keyword ?? undefined,
           materialType: material ? mapFilterToMaterial[material] : undefined,
         },
         sort: {
-          by: sortBy ? sortBy : "date",
-          order: order ? order : "desc",
+          by: sortBy ?? "date",
+          order: order ?? "desc",
         },
       });
 
@@ -192,6 +229,8 @@ const useMore = (
       if (payload === null) {
         throw new Error("payload is null");
       }
+
+      setIsFetchingMore(false);
 
       setJournalEntries([...journalEntries, ...payload.journalEntries]);
       setTotal(payload.total);

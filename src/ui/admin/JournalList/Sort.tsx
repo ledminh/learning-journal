@@ -1,19 +1,30 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useQueryString from "../utils/useQueryString";
 
 const Sort: React.FC<{
   by: "date" | "title";
   order: "asc" | "desc";
 }> = ({ by, order }) => {
-  const [isVisble, toggle] = useToggle(false);
+  const [isVisble, setIsViable, toggle] = useToggle(false);
   const { currentSortBy, currentOrder, options } = useOptions(
     toggle,
     by,
     order
   );
+
+  useEffect(() => {
+    // Close when user press Esc
+    const close = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsViable(false);
+    };
+
+    window.addEventListener("keydown", close);
+
+    return () => window.removeEventListener("keydown", close);
+  }, []);
 
   return (
     <div className="relative basis-1/2">
@@ -55,7 +66,7 @@ export default Sort;
 const useToggle = (initialState: boolean) => {
   const [state, setState] = useState(initialState);
   const toggle = () => setState((state) => !state);
-  return [state, toggle] as const;
+  return [state, setState, toggle] as const;
 };
 
 const useOptions = (
