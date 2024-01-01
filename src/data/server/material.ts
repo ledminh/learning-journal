@@ -11,7 +11,8 @@ import {
   MaterialType,
   materialTypeMapToDBServer,
 } from "./types/material";
-import { SupabaseClient } from "@supabase/supabase-js";
+
+import createSupabaseClient from "./supabase";
 
 /***************************
  * Function(s)
@@ -85,7 +86,9 @@ export const generateDataForMaterialLinkContent: GenerateDataForMaterialLinkCont
     const imageUrls = $("img")
       .map((i, el) => $(el).attr("src"))
       .get()
-      .map((imgUrl) => processImageUrl(imgUrl, url));
+      .map((imgUrl) =>
+        processImageUrl(imgUrl, url.split("/").slice(0, 3).join("/"))
+      );
 
     // make each item of imageUrls unique
     const imageUrlsSet = new Set(imageUrls);
@@ -103,7 +106,7 @@ export const generateDataForMaterialLinkContent: GenerateDataForMaterialLinkCont
   };
 
 export const uploadImage: UploadImageFunction = async ({ imageFile }) => {
-  const supabase = (await import("./supabase")) as unknown as SupabaseClient;
+  const supabase = createSupabaseClient();
 
   const fileName = imageFile.name.split(".")[0] + "_" + Date.now();
   const fileType = imageFile.name.split(".")[1];
@@ -139,7 +142,7 @@ export const uploadImage: UploadImageFunction = async ({ imageFile }) => {
 };
 
 export const deleteImage: DeleteImageFunction = async (data) => {
-  const supabase = (await import("./supabase")) as unknown as SupabaseClient;
+  const supabase = createSupabaseClient();
 
   const { imageUrl } = data;
 
@@ -178,9 +181,13 @@ export const deleteImage: DeleteImageFunction = async (data) => {
 /**********************************
  * Helpers
  */
-const processImageUrl = (imgUrl: string, rootUrl: string) => {
+const processImageUrl = (_imgUrl: string, rootUrl: string) => {
+  let imgUrl = _imgUrl.trim();
+
+  imgUrl = imgUrl.replace(/\/+$/, "");
+
   if (imgUrl.startsWith("https")) return imgUrl;
   else if (imgUrl.startsWith("http:")) return imgUrl.replace("http:", "https:");
-  else if (!imgUrl.startsWith("http")) return `${rootUrl}/${imgUrl}`;
+  else if (!imgUrl.startsWith("http")) return `${rootUrl}${imgUrl}`;
   else return imgUrl;
 };

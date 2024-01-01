@@ -1,29 +1,31 @@
 import { addJournalEntry } from "@/data/api/journal_entry";
 import { DataToCreateJournalEntry } from "@/data/server/types/journal_entry";
+import { MaterialType } from "@/data/server/types/material";
 
 export async function POST(request: Request) {
-  if (request.headers.get("content-type") !== "application/json") {
-    return new Response("Bad request", { status: 400 });
+  const reqForm = await request.formData();
+
+  const reqBody = Object.fromEntries(reqForm.entries());
+
+  if (!reqBody) {
+    return new Response("Request body is empty", { status: 400 });
   }
 
-  const reqBody = (await request.json()) as unknown;
+  const title = reqBody.title as string;
+  const content = reqBody.content as string;
+  const tags = reqBody.tags as string;
+  const description = reqBody.description as string;
+  const materialType = reqBody.materialType as MaterialType;
 
-  if (typeof reqBody !== "object") {
-    return new Response("Request body should be an object", { status: 400 });
-  }
-
-  const { title, content, material, tags, description } =
-    reqBody as DataToCreateJournalEntry;
-
-  if (!title || !content || !material || !tags || !description) {
+  if (!title || !content || !materialType || !tags || !description) {
     return new Response(
       `Request body should has ${
         !title
           ? "title"
           : !content
           ? "content"
-          : !material
-          ? "material"
+          : !materialType
+          ? "materialType"
           : !tags
           ? "tags"
           : "description"
@@ -34,11 +36,21 @@ export async function POST(request: Request) {
     );
   }
 
+  const materialContent =
+    materialType === MaterialType.IMAGE
+      ? reqForm.get("materialContent")
+      : materialType === MaterialType.LINK
+      ? JSON.parse(reqBody.materialContent as string)
+      : reqBody.materialContent;
+
   const { errorMessage, payload } = await addJournalEntry({
     title,
-    tags,
+    tags: JSON.parse(tags),
     description,
-    material,
+    material: {
+      type: materialType,
+      content: materialContent,
+    },
     content,
   });
 

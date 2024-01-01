@@ -1,4 +1,5 @@
-import post from "./post";
+import { MaterialType } from "@/data/server/types/material";
+import postForm from "./postForm";
 import { AddJournalEntryFunction } from "@/data/api/types";
 
 export const addJournalEntry: AddJournalEntryFunction = async ({
@@ -7,14 +8,19 @@ export const addJournalEntry: AddJournalEntryFunction = async ({
   description,
   material,
   content,
-}) =>
-  await post({
+}) => {
+  return await postForm({
     url: "/api/add_journal_entry",
-    body: {
+    data: {
       title,
-      tags,
+      tags: JSON.stringify(tags),
       description,
-      material,
+      materialType: material.type,
+      materialContent:
+        material.type === MaterialType.IMAGE
+          ? material.content
+          : JSON.stringify(material.content),
       content,
     },
   });
+};
