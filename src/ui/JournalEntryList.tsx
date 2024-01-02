@@ -41,7 +41,7 @@ const JournalEntryList: React.FC<Props> = async ({
         </p>
       )}
       {payload && (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-4">
           {payload.journalEntries.map((journalEntry) => (
             <li key={journalEntry.id}>
               <Link href="/entry/01">
