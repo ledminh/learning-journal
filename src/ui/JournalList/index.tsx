@@ -1,9 +1,8 @@
-import Link from "next/link";
-import JournalEntry from "@/ui/journal_entry";
 import { MaterialOption, mapFilterToMaterial } from "@/ui/types";
 
 import { getJournalEntries } from "@/data/api/journal_entry";
 import { ITEMS_PER_PAGE } from "@/constants";
+import List from "./List";
 
 interface Props {
   keyword?: string;
@@ -12,7 +11,7 @@ interface Props {
   material?: MaterialOption;
 }
 
-const JournalEntryList: React.FC<Props> = async ({
+const JournalList: React.FC<Props> = async ({
   keyword,
   sortBy,
   order,
@@ -41,18 +40,10 @@ const JournalEntryList: React.FC<Props> = async ({
         </p>
       )}
       {payload && (
-        <ul className="flex flex-col gap-4">
-          {payload.journalEntries.map((journalEntry) => (
-            <li key={journalEntry.id}>
-              <Link href="/entry/01">
-                <JournalEntry type="summary" journalEntry={journalEntry} />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <List journalEntries={payload.journalEntries} total={payload.total} />
       )}
     </>
   );
 };
 
-export default JournalEntryList;
+export default JournalList;

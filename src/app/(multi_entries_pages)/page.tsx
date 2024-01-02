@@ -1,4 +1,4 @@
-import JournalEntryList from "@/ui/JournalEntryList";
+import JournalEntryList from "@/ui/JournalList";
 import { MaterialOption } from "@/ui/types";
 
 interface Props {

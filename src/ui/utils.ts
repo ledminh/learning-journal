@@ -108,6 +108,7 @@ export const useUpdate = ({
       }
 
       setJournalEntries(payload.journalEntries);
+
       setTotal(payload.total);
     };
 
