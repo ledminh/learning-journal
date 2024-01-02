@@ -11,7 +11,7 @@ import Content from "./Content";
 import { DataToCreateMaterial } from "@/data/server/types/material";
 import { addJournalEntry } from "@/data/api_call/addJournalEntry";
 import { useRouter } from "next/navigation";
-import Spinner from "@/ui/spinner";
+import Spinner from "@/ui/Spinner";
 
 const JournalForm: FC<{
   dbTags: Tag[];
@@ -86,16 +86,7 @@ const JournalForm: FC<{
           setDataToConnectTags={setDtaCTags}
         />
       </label>
-      <label className="flex flex-col gap-2">
-        <span className="font-semibold">Description</span>
-        <Description
-          description={description}
-          setDescription={setDescription}
-          title={title}
-          content={content}
-          material={material}
-        />
-      </label>
+
       <label className="flex flex-col gap-4 p-2 border-2 border-black rounded-lg shadow-lg">
         <span className="font-semibold border-b-2 border-b-black">
           Material
@@ -105,6 +96,16 @@ const JournalForm: FC<{
       <label className="flex flex-col gap-1">
         <span className="font-semibold">Content</span>
         <Content content={content} setContent={setContent} />
+      </label>
+      <label className="flex flex-col gap-2">
+        <span className="font-semibold">Description</span>
+        <Description
+          description={description}
+          setDescription={setDescription}
+          title={title}
+          content={content}
+          material={material}
+        />
       </label>
       {errorMessage && <span className="text-red-500">{errorMessage}</span>}
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">

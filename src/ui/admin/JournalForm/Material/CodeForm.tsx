@@ -11,6 +11,8 @@ const CodeForm: React.FC<{
 }> = ({ setMaterial }) => {
   const [value, setValue] = useState("");
 
+  const [language, setLanguage] = useState("js");
+
   useEffect(() => {
     setMaterial(null);
   }, []);
@@ -26,12 +28,12 @@ const CodeForm: React.FC<{
   }, [value]);
 
   return (
-    <label className="flex flex-col gap-1">
+    <label className="flex flex-col gap-3">
       <span className="font-semibold">Code</span>
       <CodeEditor
         value={value}
-        language="js"
-        placeholder="Enter your JS code here ..."
+        language={language}
+        placeholder={`// Write your ${language} code here...`}
         onChange={(evn) => setValue(evn.target.value)}
         padding={15}
         style={{
@@ -44,6 +46,16 @@ const CodeForm: React.FC<{
           overflowY: "auto",
         }}
       />
+      <div className="flex">
+        <select
+          className="p-2 border border-black rounded-md"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+        >
+          <option value="js">JavaScript</option>
+          <option value="bash">Bash</option>
+        </select>
+      </div>
     </label>
   );
 };

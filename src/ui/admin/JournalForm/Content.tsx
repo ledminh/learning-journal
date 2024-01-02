@@ -15,10 +15,10 @@ const Content: React.FC<{
           fontFamily:
             "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
           resize: "none",
-          height: "300px",
           fontSize: "16px",
           overflowY: "auto",
         }}
+        height={500}
       />
     </>
   );
