@@ -1,19 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { JournalEntry } from "@/data/server/types/journal_entry";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { getJournalEntries } from "@/data/api_call/getJournalEntries";
 
-import {
-  MaterialOption,
-  mapFilterToMaterial,
-  SortByOption,
-  SortOrderOption,
-} from "./types";
+import { useMore, useUpdate } from "@/ui/utils";
+
+import { MaterialOption, SortByOption, SortOrderOption } from "@/ui/types";
+
 import useQueryString from "../utils/useQueryString";
-import { ITEMS_PER_PAGE } from "@/constants";
 
 const JournalEntriesList: React.FC<{
   journalEntries: JournalEntry[];
@@ -128,112 +124,4 @@ const KeywordTab: React.FC<{ keyword: string }> = ({ keyword }) => {
       </button>
     </div>
   );
-};
-
-/****************************************
- * Hooks
- */
-
-interface UseUpdateProps {
-  keyword: string | null;
-  material: MaterialOption | null;
-  sortBy: "date" | "title" | null;
-  order: "asc" | "desc" | null;
-  setJournalEntries: (journalEntries: JournalEntry[]) => void;
-  setTotal: (total: number) => void;
-  setIsRefeshing: (isRefeshing: boolean) => void;
-}
-
-const useUpdate = ({
-  keyword,
-  material,
-  sortBy,
-  order,
-  setJournalEntries,
-  setTotal,
-  setIsRefeshing,
-}: UseUpdateProps) => {
-  useEffect(() => {
-    const update = async () => {
-      const { errorMessage, payload } = await getJournalEntries({
-        offset: 0,
-        limit: ITEMS_PER_PAGE,
-        filters: {
-          keyword: keyword ?? undefined,
-          materialType: material ? mapFilterToMaterial[material] : undefined,
-        },
-        sort: {
-          by: sortBy ?? "date",
-          order: order ?? "desc",
-        },
-      });
-
-      if (errorMessage) {
-        throw new Error(errorMessage);
-      }
-
-      if (payload === null) {
-        throw new Error("payload is null");
-      }
-
-      setJournalEntries(payload.journalEntries);
-      setTotal(payload.total);
-    };
-
-    setIsRefeshing(true);
-    update().then(() => setIsRefeshing(false));
-  }, [keyword, material, sortBy, order]);
-};
-
-interface UseMoreProps {
-  journalEntries: JournalEntry[];
-  keyword: string | null;
-  material: MaterialOption | null;
-  sortBy: "date" | "title" | null;
-  order: "asc" | "desc" | null;
-  setJournalEntries: (journalEntries: JournalEntry[]) => void;
-  setTotal: (total: number) => void;
-  setIsFetchingMore: (isFetchingMore: boolean) => void;
-}
-
-const useMore = ({
-  journalEntries,
-  keyword,
-  material,
-  sortBy,
-  order,
-  setJournalEntries,
-  setTotal,
-  setIsFetchingMore,
-}: UseMoreProps) => {
-  return {
-    moreOnlick: async () => {
-      setIsFetchingMore(true);
-      const { errorMessage, payload } = await getJournalEntries({
-        offset: journalEntries.length,
-        limit: ITEMS_PER_PAGE,
-        filters: {
-          keyword: keyword ?? undefined,
-          materialType: material ? mapFilterToMaterial[material] : undefined,
-        },
-        sort: {
-          by: sortBy ?? "date",
-          order: order ?? "desc",
-        },
-      });
-
-      if (errorMessage) {
-        throw new Error(errorMessage);
-      }
-
-      if (payload === null) {
-        throw new Error("payload is null");
-      }
-
-      setIsFetchingMore(false);
-
-      setJournalEntries([...journalEntries, ...payload.journalEntries]);
-      setTotal(payload.total);
-    },
-  };
 };
