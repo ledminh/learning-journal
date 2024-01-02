@@ -3,11 +3,11 @@ export default function Block(props: {
   title: string;
 }) {
   return (
-    <div className="border border-slate-600 rounded-lg overflow-hidden">
-      <div className="bg-black text-white px-2">
+    <div className="overflow-hidden border rounded-lg border-slate-600">
+      <div className="px-2 text-white bg-black">
         {props.title.toLocaleUpperCase()}
       </div>
-      <div>{props.children}</div>
+      <div className="px-2 py-4">{props.children}</div>
     </div>
   );
 }
