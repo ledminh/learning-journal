@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import useQueryString from "../utils/useQueryString";
+import { useQueryString } from "@/ui/utils";
 
 import type { MaterialOption } from "./types";
 

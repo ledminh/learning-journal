@@ -9,7 +9,7 @@ import { useMore, useUpdate } from "@/ui/utils";
 
 import { MaterialOption, SortByOption, SortOrderOption } from "@/ui/types";
 
-import useQueryString from "../utils/useQueryString";
+import { useQueryString } from "@/ui/utils";
 import { formatDateString } from "@/utils/dateFunctions";
 
 const JournalEntriesList: React.FC<{

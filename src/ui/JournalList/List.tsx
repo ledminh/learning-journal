@@ -9,6 +9,9 @@ import { MaterialOption, SortByOption, SortOrderOption } from "@/ui/types";
 import { useSearchParams } from "next/navigation";
 
 import { useUpdate, useMore } from "@/ui/utils";
+import { ITEMS_PER_PAGE } from "@/constants";
+
+import Pagination from "@/ui/Pagination";
 
 const List: React.FC<{
   journalEntries: JournalEntryType[];
@@ -19,13 +22,14 @@ const List: React.FC<{
   const [total, setTotal] = useState<number>(_total);
 
   const [isRefeshing, setIsRefeshing] = useState(false);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword");
   const material = searchParams.get("material") as MaterialOption | null;
   const sortBy = searchParams.get("sortBy") as SortByOption | null;
   const order = searchParams.get("order") as SortOrderOption | null;
+  const page = searchParams.get("page") as string | null;
 
   useUpdate({
     keyword,
@@ -35,25 +39,15 @@ const List: React.FC<{
     setJournalEntries,
     setTotal,
     setIsRefeshing,
-  });
-
-  const { moreOnlick } = useMore({
-    journalEntries,
-    keyword,
-    material,
-    sortBy,
-    order,
-    setJournalEntries,
-    setTotal,
-    setIsFetchingMore,
+    page: page ? parseInt(page) : 1,
   });
 
   return (
     <ul className="flex flex-col gap-4">
       {isRefeshing && (
-        <div className="flex justify-center">
+        <li className="flex justify-center">
           <span className="font-bold text-neutral-500">Loading ...</span>
-        </div>
+        </li>
       )}
       {journalEntries.map((journalEntry) => (
         <li key={journalEntry.id}>
@@ -62,19 +56,18 @@ const List: React.FC<{
           </Link>
         </li>
       ))}
-      {isFetchingMore && (
+      {isFetching && (
         <li className="flex justify-center">
           <span className="font-bold text-neutral-500">Loading ...</span>
         </li>
       )}
-      {journalEntries.length < total && (
-        <li className="flex justify-end">
-          <button
-            className="p-1 text-white bg-neutral-500 hover:bg-neutral-700"
-            onClick={moreOnlick}
-          >
-            more ...
-          </button>
+      {total > ITEMS_PER_PAGE && (
+        <li className="flex justify-center">
+          <Pagination
+            currentPage={page ? parseInt(page) : 1}
+            setIsFetching={setIsFetching}
+            totalEntries={total}
+          />
         </li>
       )}
     </ul>

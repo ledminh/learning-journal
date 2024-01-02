@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import useQueryString from "../utils/useQueryString";
+import { useQueryString } from "@/ui/utils";
 
 const Sort: React.FC<{
   by: "date" | "title";
