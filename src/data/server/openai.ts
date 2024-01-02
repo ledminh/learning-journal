@@ -11,7 +11,7 @@ export async function askGPT(question: string) {
       {
         role: "system",
         content:
-          "You are a useful assistant, skilled in summarize materials including programming codes and text in to short description.",
+          "You are a useful assistant, skilled in summarize materials including programming codes and text in to one sentence.",
       },
       {
         role: "user",

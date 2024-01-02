@@ -1,4 +1,3 @@
-import { JournalEntry } from "../server/types/journal_entry";
 import { convertJournalEntryFromDBServer } from "../server/journal_entry";
 import { materialTypeMapToDBServer } from "../server/types/material";
 import {

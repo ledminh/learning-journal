@@ -10,3 +10,11 @@ export function getEndOfDate(date: Date) {
   );
   return new Date(nextDay.getTime() - 1);
 }
+
+export function formatDateString(date: Date) {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}

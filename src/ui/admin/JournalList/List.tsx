@@ -10,6 +10,7 @@ import { useMore, useUpdate } from "@/ui/utils";
 import { MaterialOption, SortByOption, SortOrderOption } from "@/ui/types";
 
 import useQueryString from "../utils/useQueryString";
+import { formatDateString } from "@/utils/dateFunctions";
 
 const JournalEntriesList: React.FC<{
   journalEntries: JournalEntry[];
@@ -66,8 +67,8 @@ const JournalEntriesList: React.FC<{
               >
                 <p className="font-bold text-blue-700">{journal.title}</p>
                 <p className="text-sm italic">
-                  <span className="font-bold">Created at: </span>
-                  {new Date(journal.createdAt).toLocaleDateString()}
+                  <span className="font-semibold">Created at: </span>
+                  {formatDateString(journal.createdAt)}
                 </p>
                 <p className="text-xs">{journal.description}</p>
               </Link>
