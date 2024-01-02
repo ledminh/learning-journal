@@ -8,7 +8,7 @@ import { MaterialOption, SortByOption, SortOrderOption } from "@/ui/types";
 
 import { useSearchParams } from "next/navigation";
 
-import { useUpdate, useMore } from "@/ui/utils";
+import { useUpdate } from "@/ui/utils";
 import { ITEMS_PER_PAGE } from "@/constants";
 
 import Pagination from "@/ui/Pagination";
@@ -22,7 +22,6 @@ const List: React.FC<{
   const [total, setTotal] = useState<number>(_total);
 
   const [isRefeshing, setIsRefeshing] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
 
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword");
@@ -43,34 +42,31 @@ const List: React.FC<{
   });
 
   return (
-    <ul className="flex flex-col gap-4">
-      {isRefeshing && (
-        <li className="flex justify-center">
-          <span className="font-bold text-neutral-500">Loading ...</span>
-        </li>
-      )}
-      {journalEntries.map((journalEntry) => (
-        <li key={journalEntry.id}>
-          <Link href="/entry/01">
-            <JournalEntry type="summary" journalEntry={journalEntry} />
-          </Link>
-        </li>
-      ))}
-      {isFetching && (
-        <li className="flex justify-center">
-          <span className="font-bold text-neutral-500">Loading ...</span>
-        </li>
-      )}
+    <div className="flex flex-col gap-6">
+      <ul className="relative flex flex-col gap-4">
+        {isRefeshing && (
+          <li className="absolute top-0 left-0 flex items-center justify-center w-full h-full p-2 bg-white bg-opacity-80">
+            <span className="text-xl font-bold text-blue-900">Loading ...</span>
+          </li>
+        )}
+        {journalEntries.map((journalEntry) => (
+          <li key={journalEntry.id} className={isRefeshing ? "opacity-25" : ""}>
+            <Link href="/entry/01">
+              <JournalEntry type="summary" journalEntry={journalEntry} />
+            </Link>
+          </li>
+        ))}
+      </ul>
       {total > ITEMS_PER_PAGE && (
         <li className="flex justify-center">
           <Pagination
             currentPage={page ? parseInt(page) : 1}
-            setIsFetching={setIsFetching}
             totalEntries={total}
+            isRefresing={isRefeshing}
           />
         </li>
       )}
-    </ul>
+    </div>
   );
 };
 
