@@ -1,8 +1,10 @@
 import { useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export default function useQueryString() {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const addQueryString = useCallback(
     (params: Record<string, string>) => {
@@ -14,7 +16,8 @@ export default function useQueryString() {
       })
         .map(([key, value]) => `${key}=${value}`)
         .join("&");
-      return queryString;
+
+      router.push(pathname + "?" + queryString);
     },
     [searchParams]
   );
@@ -23,7 +26,15 @@ export default function useQueryString() {
     (params: string[]) => {
       const _params = new URLSearchParams(searchParams);
       params.forEach((param) => _params.delete(param));
-      return _params.toString();
+
+      if (_params.toString() === "") {
+        router.push(pathname);
+        return;
+      }
+
+      const queryString = _params.toString();
+
+      router.push(pathname + "?" + queryString);
     },
     [searchParams]
   );

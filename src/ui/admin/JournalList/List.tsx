@@ -3,13 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { JournalEntry } from "@/data/server/types/journal_entry";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
-import { useMore, useUpdate } from "@/ui/utils";
+import { useMore, useUpdate, useQueryString } from "@/ui/utils";
 
 import { MaterialOption, SortByOption, SortOrderOption } from "@/ui/types";
 
-import { useQueryString } from "@/ui/utils";
 import { formatDateString } from "@/utils/dateFunctions";
 
 const JournalEntriesList: React.FC<{
@@ -102,13 +101,10 @@ export default JournalEntriesList;
  */
 
 const KeywordTab: React.FC<{ keyword: string }> = ({ keyword }) => {
-  const router = useRouter();
-  const pathname = usePathname();
-
   const { deleteQueryString } = useQueryString();
 
   const removeKeywordFromUrl = () => {
-    router.push(pathname + "?" + deleteQueryString(["keyword"]));
+    deleteQueryString(["keyword"]);
   };
 
   return (

@@ -1,4 +1,5 @@
 import { ITEMS_PER_PAGE } from "@/constants";
+import { useQueryString } from "./utils";
 
 interface PaginationProps {
   currentPage: number;
@@ -10,12 +11,15 @@ const Pagination: React.FC<PaginationProps> = ({
   totalEntries,
   setIsFetching,
 }) => {
+  const { addQueryString } = useQueryString();
+
   const getNumberOfPages = () => {
     return Math.ceil(totalEntries / ITEMS_PER_PAGE);
   };
 
   const onClick = () => {
     setIsFetching(true);
+    addQueryString({ page: currentPage + 1 + "" });
   };
 
   return (

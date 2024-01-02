@@ -29,7 +29,7 @@ const List: React.FC<{
   const material = searchParams.get("material") as MaterialOption | null;
   const sortBy = searchParams.get("sortBy") as SortByOption | null;
   const order = searchParams.get("order") as SortOrderOption | null;
-  const page = searchParams.get("page") as string | null;
+  const page = searchParams.get("page");
 
   useUpdate({
     keyword,

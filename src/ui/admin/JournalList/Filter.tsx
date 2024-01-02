@@ -1,10 +1,9 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useQueryString } from "@/ui/utils";
 
-import type { MaterialOption } from "./types";
+import type { MaterialOption } from "@/ui/types";
 
 const Filter: React.FC<{
   material?: MaterialOption;
@@ -77,9 +76,6 @@ const useOptions = (
     { material: "link" },
   ];
 
-  const pathname = usePathname();
-  const router = useRouter();
-
   const { addQueryString, deleteQueryString } = useQueryString();
 
   const [currentMaterial, setCurrentMaterial] = useState<MaterialOption | null>(
@@ -89,12 +85,12 @@ const useOptions = (
   const onClick = (option: Record<string, MaterialOption>) => {
     if (option.material === currentMaterial) {
       setCurrentMaterial(null);
-      router.push(pathname + "?" + deleteQueryString(["material"]));
+      deleteQueryString(["material"]);
       toggle(false);
       return;
     }
 
-    router.push(pathname + "?" + addQueryString(option));
+    addQueryString(option);
     setCurrentMaterial(option.material);
     toggle(false);
   };

@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryString } from "@/ui/utils";
 
@@ -93,16 +92,13 @@ const useOptions = (
     },
   ];
 
-  const pathname = usePathname();
-  const router = useRouter();
-
   const { addQueryString } = useQueryString();
 
   const [currentSortBy, setCurrentSortBy] = useState<string>(by);
   const [currentOrder, setCurrentOrder] = useState<string>(order);
 
   const onClick = (option: { sortBy: string; order: string }) => {
-    router.push(pathname + "?" + addQueryString(option));
+    addQueryString(option);
     setCurrentSortBy(option.sortBy);
     setCurrentOrder(option.order);
     toggle(false);
