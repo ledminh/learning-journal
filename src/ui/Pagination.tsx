@@ -62,31 +62,50 @@ function getPageArray(
   addQueryString: (query: Record<string, string>) => void
 ) {
   const numberOfPages = getNumberOfPages(totalEntries);
+  const allPages = Array.from({ length: numberOfPages }, (_, i) => i + 1);
 
-  if (numberOfPages === 1) return [];
+  const currentPagi = Math.ceil(currentPage / MAX_PAGES_PER_PAGINATION);
+  const lastPageOfCurrentPagi = currentPagi * MAX_PAGES_PER_PAGINATION;
+  const firstPageOfCurrentPagi =
+    lastPageOfCurrentPagi - MAX_PAGES_PER_PAGINATION + 1;
 
-  let pageArray: number[] = [];
+  const currentPages: ("next" | "prev" | number)[] = allPages.slice(
+    firstPageOfCurrentPagi - 1,
+    lastPageOfCurrentPagi
+  );
 
-  if (numberOfPages <= 4) {
-    pageArray = Array.from({ length: numberOfPages }).map(
-      (_, index) => index + 1
-    );
-  } else if (currentPage >= numberOfPages - MAX_PAGES_PER_PAGINATION) {
-    pageArray = Array.from({ length: MAX_PAGES_PER_PAGINATION }).map(
-      (_, index) => numberOfPages - MAX_PAGES_PER_PAGINATION + index + 1
-    );
-  } else {
-    pageArray = Array.from({ length: MAX_PAGES_PER_PAGINATION }).map(
-      (_, index) => currentPage + index
-    );
+  if (currentPages[0] !== 1) {
+    currentPages.unshift("prev");
   }
 
-  return pageArray.map((page) => ({
+  if (currentPages[currentPages.length - 1] !== numberOfPages) {
+    currentPages.push("next");
+  }
+
+  function prevPagi() {
+    goToPage(firstPageOfCurrentPagi - 1);
+  }
+
+  function nextPagi() {
+    goToPage(lastPageOfCurrentPagi + 1);
+  }
+
+  function goToPage(page: number) {
+    addQueryString({ page: String(page) });
+    setNextIndex(page);
+  }
+
+  return currentPages.map((page) => ({
     pageNumber: page,
 
     onClick: () => {
-      setNextIndex(page);
-      addQueryString({ page: page + "" });
+      if (page === "prev") {
+        prevPagi();
+      } else if (page === "next") {
+        nextPagi();
+      } else {
+        goToPage(page);
+      }
     },
   }));
 }
