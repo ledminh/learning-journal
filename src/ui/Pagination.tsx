@@ -28,13 +28,15 @@ const Pagination: React.FC<PaginationProps> = ({
       ).map(({ pageNumber, onClick }) => (
         <li key={pageNumber}>
           <button
-            className={`px-4 py-2 border rounded-md text-neutral-500 border-neutral-500 hover:bg-neutral-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 ${
+            className={`px-4 py-2 h-12  border rounded-md text-neutral-500 border-neutral-500 hover:bg-neutral-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 ${
               currentPage === pageNumber ? "bg-neutral-500 text-white" : ""
             }`}
             onClick={onClick}
           >
             {isRefresing && pageNumber === nextIndex ? (
-              <Spinner />
+              <div className="flex items-center justify-center w-full h-full">
+                <Spinner className="w-3 h-3" />
+              </div>
             ) : (
               <span>{pageNumber}</span>
             )}
