@@ -1,20 +1,23 @@
-import { getTags } from "@/data/api/tag";
+import { Tag } from "@/data/server/types/tag";
 import Block from "@/ui/layout/Block";
 import Link from "next/link";
 
-export async function TagBlock() {
-  const { errorMessage, payload } = await getTags({});
+type Props = {
+  errorMessage: string | null;
+  tags: Tag[] | null;
+};
 
+export async function TagBlock({ errorMessage, tags }: Props) {
   return (
     <Block title="Tags">
       <div className="flex flex-col gap-4">
         {errorMessage && (
           <div className="p-2 font-mono text-sm bg-red-100">{errorMessage}</div>
         )}
-        {payload && (
+        {tags && (
           <div className="flex flex-col gap-4">
             <ul className="flex flex-wrap gap-2">
-              {payload.map((tag) => (
+              {tags.map((tag) => (
                 <li key={tag.id}>
                   <Link
                     href={`/tag/${tag.slug}`}

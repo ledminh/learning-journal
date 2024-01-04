@@ -1,14 +1,14 @@
 import Link from "next/link";
 import Block from "@/ui/layout/Block";
-import { getDates } from "@/data/api/date";
 import { formatDateString } from "@/utils/dateFunctions";
+import { DateEntry } from "@/data/server/types/date";
 
-export async function DateBlock() {
-  const { errorMessage, payload: dateEntries } = await getDates({
-    offset: 0,
-    limit: 5,
-  });
+type Props = {
+  errorMessage: string | null;
+  dateEntries: DateEntry[] | null;
+};
 
+export async function DateBlock({ errorMessage, dateEntries }: Props) {
   return (
     <Block title="Date">
       {errorMessage && <div className="text-red-500">{errorMessage}</div>}

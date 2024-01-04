@@ -19,6 +19,7 @@ const SearchBar: React.FC = () => {
         if (e.key === "Enter" && searchTerm !== "") {
           addQueryString({
             keyword: searchTerm,
+            page: "1",
           });
 
           setSearchTerm("");
