@@ -29,9 +29,11 @@ export async function DateBlock() {
               </li>
             ))}
           </ul>
-          <Link href="/dates" className="font-mono text-blue-800 underline">
-            View all dates
-          </Link>
+          <div>
+            <Link href="/dates" className="font-mono text-blue-800 underline">
+              View all dates
+            </Link>
+          </div>
         </div>
       )}
     </Block>

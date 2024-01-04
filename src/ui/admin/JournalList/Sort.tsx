@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useQueryString } from "@/ui/utils";
+import { SortByOption, SortOrderOption } from "@/ui/types";
 
 const Sort: React.FC<{
   by: "date" | "title";
@@ -70,10 +71,13 @@ const useToggle = (initialState: boolean) => {
 
 const useOptions = (
   toggle: (isVisble: boolean) => void,
-  by: "date" | "title",
-  order: "asc" | "desc"
+  by: SortByOption,
+  order: SortOrderOption
 ) => {
-  const options = [
+  const options: {
+    sortBy: SortByOption;
+    order: SortOrderOption;
+  }[] = [
     {
       sortBy: "date",
       order: "desc",
@@ -94,10 +98,13 @@ const useOptions = (
 
   const { addQueryString } = useQueryString();
 
-  const [currentSortBy, setCurrentSortBy] = useState<string>(by);
-  const [currentOrder, setCurrentOrder] = useState<string>(order);
+  const [currentSortBy, setCurrentSortBy] = useState<SortByOption>(by);
+  const [currentOrder, setCurrentOrder] = useState<SortOrderOption>(order);
 
-  const onClick = (option: { sortBy: string; order: string }) => {
+  const onClick = (option: {
+    sortBy: SortByOption;
+    order: SortOrderOption;
+  }) => {
     addQueryString(option);
     setCurrentSortBy(option.sortBy);
     setCurrentOrder(option.order);
