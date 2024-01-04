@@ -2,7 +2,7 @@ import { ITEMS_PER_PAGE, MAX_PAGES_PER_PAGINATION } from "@/constants";
 import { useQueryString } from "./utils";
 import Spinner from "@/ui/Spinner";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface PaginationProps {
   isRefresing: boolean;
@@ -16,7 +16,11 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const { addQueryString } = useQueryString();
 
-  const [nextIndex, setNextIndex] = useState<number | null>(null);
+  const [nextIndex, setNextIndex] = useState<number>(currentPage);
+
+  useEffect(() => {
+    setNextIndex(currentPage);
+  }, [currentPage]);
 
   return (
     <ul className="flex justify-center gap-2">

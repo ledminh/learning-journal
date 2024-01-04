@@ -1,6 +1,5 @@
 import { getTags } from "@/data/api/tag";
 import Block from "@/ui/layout/Block";
-import { error } from "console";
 import Link from "next/link";
 
 export async function TagBlock() {
@@ -26,9 +25,11 @@ export async function TagBlock() {
                 </li>
               ))}
             </ul>
-            <Link href="/tags" className="font-mono text-blue-800 underline">
-              View all tags
-            </Link>
+            <div>
+              <Link href="/tags" className="font-mono text-blue-800 underline">
+                View all tags
+              </Link>
+            </div>
           </div>
         )}
       </div>
