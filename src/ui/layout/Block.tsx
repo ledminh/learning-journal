@@ -7,7 +7,7 @@ export default function Block(props: {
       <div className="px-2 text-white bg-black">
         {props.title.toLocaleUpperCase()}
       </div>
-      <div className="px-2 py-4">{props.children}</div>
+      <div className="px-2 py-4 md:block">{props.children}</div>
     </div>
   );
 }

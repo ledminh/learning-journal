@@ -12,7 +12,7 @@ interface SideBarProps {
 
 export default function SideBar({ tagsLoad, datesLoad }: SideBarProps) {
   return (
-    <div className="flex flex-row flex-wrap items-center justify-center gap-4 md:flex-col md:items-start">
+    <div className="flex flex-col items-start justify-center gap-4">
       <TagBlock errorMessage={tagsLoad.errorMessage} tags={tagsLoad.payload} />
       <DateBlock
         errorMessage={datesLoad.errorMessage}
