@@ -5,10 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { SortByOption, SortOrderOption } from "../types";
 import { useQueryString } from "../utils";
-import { useSearchParams } from "next/navigation";
-import { ChangeEvent, useState } from "react";
-import { SortByOption, SortOrderOption } from "../types";
-import { useQueryString } from "../utils";
 
 export function SortBlock() {
   const searchParams = useSearchParams();
