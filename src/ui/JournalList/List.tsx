@@ -44,16 +44,9 @@ const List: React.FC<{
   return (
     <div className="flex flex-col gap-6">
       <ul className="relative flex flex-col gap-4">
-        {isRefeshing && (
-          <li className="absolute top-[20vh] left-0 flex items-center justify-center w-full p-2 bg-white bg-opacity-80">
-            <span className="text-4xl font-bold text-blue-900">
-              Loading ...
-            </span>
-          </li>
-        )}
         {journalEntries.map((journalEntry) => (
-          <li key={journalEntry.id} className={isRefeshing ? "opacity-25" : ""}>
-            <Link href="/entry/01">
+          <li key={journalEntry.id}>
+            <Link href="/entry/01" className={isRefeshing ? "opacity-20" : ""}>
               <JournalEntry type="summary" journalEntry={journalEntry} />
             </Link>
           </li>
