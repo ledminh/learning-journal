@@ -17,8 +17,10 @@ export default async function WithSidebarLayout({
 
   return (
     <div className="grid grid-cols-8 gap-0 md:gap-10">
-      <aside className="hidden col-span-8 md:sticky md:top-4 md:block md:col-span-3 md:order-2">
-        <SideBar tagsLoad={tagsLoad} datesLoad={datesLoad} />
+      <aside className="hidden col-span-8 md:block md:col-span-3 md:order-2">
+        <div className="md:sticky md:top-4">
+          <SideBar tagsLoad={tagsLoad} datesLoad={datesLoad} />
+        </div>
       </aside>
       <aside className="md:hidden">
         <MobileSideBar>
