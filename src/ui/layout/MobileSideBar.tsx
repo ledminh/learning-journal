@@ -12,8 +12,8 @@ const MobileSideBar: React.FC<{
     <>
       <MenuButton open={() => setShown(true)} />
       <div
-        className={`fixed top-0 bottom-0 animation duration-300  bg-white z-50 ${
-          shown ? "right-0" : "-right-[100%]"
+        className={`fixed top-0 bottom-0 right-0 animation duration-300  bg-white z-50 ${
+          shown ? "" : "translate-x-full"
         } h-full p-4 border-4 border-l-black flex flex-col gap-4`}
       >
         <div className="flex flex-row justify-end">
