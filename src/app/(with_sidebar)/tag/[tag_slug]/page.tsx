@@ -18,8 +18,11 @@ export default async function TagPage(props: { params: { tag_slug: string } }) {
   }
 
   return (
-    <>
-      <p>Tag {payload.name}</p>
+    <div className="flex flex-col gap-4">
+      <h3 className="p-2 text-xl text-white bg-neutral-500">
+        <span className="font-bold">Tag:</span>{" "}
+        <span className="font-mono">{payload.name}</span>
+      </h3>
       <ul className="flex flex-col gap-2">
         {payload.journalEntries.map((jE) => (
           <li key={jE.id}>
@@ -29,6 +32,6 @@ export default async function TagPage(props: { params: { tag_slug: string } }) {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }
