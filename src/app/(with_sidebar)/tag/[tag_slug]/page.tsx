@@ -1,8 +1,6 @@
-import Link from "next/link";
-import JournalEntry from "@/ui/journal_entry";
 import { getTag } from "@/data/api/tag";
-import { MaterialOption, mapFilterToMaterial } from "@/ui/types";
-import { ITEMS_PER_PAGE } from "@/constants";
+import { MaterialOption, mapFilterToMaterial, LoadFunction } from "@/ui/types";
+import JournalEntryList from "@/ui/JournalList";
 
 interface Props {
   params: {
@@ -17,22 +15,10 @@ interface Props {
 }
 
 export default async function TagPage(props: Props) {
-  const sort = {
-    by: props.searchParams.sortBy ?? "date",
-    order: props.searchParams.order ?? "desc",
-  };
-
   const { errorMessage, payload } = await getTag({
     slug: props.params.tag_slug,
     offset: 0,
-    limit: ITEMS_PER_PAGE,
-    filters: {
-      keyword: props.searchParams.keyword,
-      materialType: props.searchParams.material
-        ? mapFilterToMaterial[props.searchParams.material]
-        : undefined,
-    },
-    sort,
+    limit: 0,
   });
 
   if (errorMessage) {
@@ -43,21 +29,54 @@ export default async function TagPage(props: Props) {
     );
   }
 
+  if (!payload) {
+    return (
+      <p className="p-2 text-red-700 bg-red-200 border border-red-700 rounded-lg">
+        No payload when loading tag
+      </p>
+    );
+  }
+
+  const load: LoadFunction = async ({ offset, limit, filters, sort }) => {
+    "use server";
+
+    const { errorMessage, payload } = await getTag({
+      slug: props.params.tag_slug,
+      offset,
+      limit,
+      filters: {
+        keyword: filters?.keyword,
+        materialType: filters?.materialType
+          ? mapFilterToMaterial[filters.materialType]
+          : undefined,
+      },
+      sort,
+    });
+
+    if (errorMessage) {
+      return { errorMessage, payload: null };
+    }
+
+    if (!payload) {
+      return { errorMessage: "No payload", payload: null };
+    }
+
+    return {
+      errorMessage: null,
+      payload: {
+        journalEntries: payload.tag.journalEntries,
+        total: payload.numJournalEntries,
+      },
+    };
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <h3 className="p-2 text-xl text-white bg-neutral-500">
         <span className="font-bold">Tag:</span>{" "}
         <span className="font-mono">{payload!.tag.name}</span>
       </h3>
-      <ul className="flex flex-col gap-2">
-        {payload!.tag.journalEntries.map((jE) => (
-          <li key={jE.id}>
-            <Link href={`/entry/${jE.slug}`}>
-              <JournalEntry type="summary" journalEntry={jE} />
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <JournalEntryList {...props.searchParams} load={load} />
     </div>
   );
 }
