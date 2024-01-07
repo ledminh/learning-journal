@@ -47,7 +47,10 @@ export type GetTagEntryFunction = AsyncFunction<
       };
     };
   },
-  TagEntry
+  {
+    tag: TagEntry;
+    numJournalEntries: number;
+  }
 >;
 
 // Get all/some tag entries with/without their journal entries.

@@ -119,7 +119,10 @@ export type GetTagFunction = AsyncFunction<
       keyword?: string;
     };
   },
-  Tag
+  {
+    tag: Tag;
+    numJournalEntries: number;
+  }
 >;
 
 export type AddTagsFunction = AsyncFunction<

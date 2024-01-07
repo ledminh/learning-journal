@@ -43,6 +43,12 @@ const List: React.FC<{
 
   return (
     <div className="flex flex-col gap-6">
+      {keyword && (
+        <h3 className="p-2 text-xl bg-blue-200">
+          <span className="font-bold">Search:</span>{" "}
+          <span className="font-mono">"{keyword}"</span>
+        </h3>
+      )}
       <ul className="relative flex flex-col gap-4">
         {journalEntries.map((journalEntry) => (
           <li key={journalEntry.id}>

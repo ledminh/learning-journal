@@ -77,16 +77,23 @@ export const getTag: GetTagFunction = async function (params) {
     };
   }
 
+  if (!payload) {
+    return {
+      errorMessage: "No payload",
+      payload: null,
+    };
+  }
+
   return {
     errorMessage: null,
     payload: {
-      id: payload?.id as string,
-      name: payload?.name as string,
-      slug: payload?.slug as string,
-
-      journalEntries: payload?.journalEntries.map(
-        convertJournalEntryFromDBServer
-      ) as JournalEntry[],
+      tag: {
+        ...payload.tag,
+        journalEntries: payload.tag.journalEntries.map(
+          convertJournalEntryFromDBServer
+        ),
+      },
+      numJournalEntries: payload.numJournalEntries,
     },
   };
 };
@@ -129,9 +136,16 @@ export const updateTag: UpdateTagFunction = async function ({ name, newName }) {
     };
   }
 
+  if (!payload) {
+    return {
+      errorMessage: "tag not found",
+      payload: null,
+    };
+  }
+
   const { errorMessage: errorMessage2, payload: payload2 } =
     await dbServer.Tag.updateTag({
-      ...(payload as TagEntry),
+      ...payload.tag,
       name: newName,
       slug: createSlug(newName),
     });

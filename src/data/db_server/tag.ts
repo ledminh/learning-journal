@@ -143,26 +143,42 @@ export const getTag: GetTagEntryFunction = async ({ slug, options }) => {
       throw new Error("Tag not found.");
     }
 
+    const total = await prismaClient.journalEntry.count({
+      where: {
+        tags: {
+          some: {
+            name: tag.name,
+          },
+        },
+      },
+    });
+
     return {
       errorMessage: null,
       payload: {
-        ...tag,
-        journalEntries: tag.journalEntries.map((journalEntry) => ({
-          id: journalEntry.id,
-          title: journalEntry.title,
-          slug: journalEntry.slug,
-          content: journalEntry.content,
-          description: journalEntry.description,
-          createdAt: journalEntry.createdAt,
-          updatedAt: journalEntry.updatedAt,
-          material: {
-            id: journalEntry.material.id,
-            content: journalEntry.material.content,
-            type: materialTypeMapFromDB[journalEntry.material.type],
-            createdAt: journalEntry.material.createdAt,
-          },
-          tags: journalEntry.tags.map((tag) => tag.name),
-        })),
+        tag: {
+          id: tag.id,
+          name: tag.name,
+          slug: tag.slug,
+          createdAt: tag.createdAt,
+          journalEntries: tag.journalEntries.map((journalEntry) => ({
+            id: journalEntry.id,
+            title: journalEntry.title,
+            slug: journalEntry.slug,
+            content: journalEntry.content,
+            description: journalEntry.description,
+            createdAt: journalEntry.createdAt,
+            updatedAt: journalEntry.updatedAt,
+            material: {
+              id: journalEntry.material.id,
+              content: journalEntry.material.content,
+              type: materialTypeMapFromDB[journalEntry.material.type],
+              createdAt: journalEntry.material.createdAt,
+            },
+            tags: journalEntry.tags.map((tag) => tag.name),
+          })),
+        },
+        numJournalEntries: total,
       },
     };
   } catch (error: any) {
