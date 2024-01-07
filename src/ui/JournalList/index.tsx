@@ -1,14 +1,21 @@
-import { MaterialOption, mapFilterToMaterial } from "@/ui/types";
+"use server";
 
-import { getJournalEntries } from "@/data/api/journal_entry";
+import {
+  MaterialOption,
+  SortByOption,
+  SortOrderOption,
+  LoadFunction,
+} from "@/ui/types";
+
 import { ITEMS_PER_PAGE } from "@/constants";
 import List from "./List";
 
 interface Props {
   keyword?: string;
-  sortBy?: "date" | "title";
-  order?: "asc" | "desc";
+  sortBy?: SortByOption;
+  order?: SortOrderOption;
   material?: MaterialOption;
+  load: LoadFunction;
 }
 
 const JournalList: React.FC<Props> = async ({
@@ -16,18 +23,19 @@ const JournalList: React.FC<Props> = async ({
   sortBy,
   order,
   material,
+  load,
 }) => {
   const sort = {
     by: sortBy ?? "date",
     order: order ?? "desc",
   };
 
-  const { errorMessage, payload } = await getJournalEntries({
+  const { errorMessage, payload } = await load({
     offset: 0,
     limit: ITEMS_PER_PAGE,
     filters: {
       keyword,
-      materialType: material ? mapFilterToMaterial[material] : undefined,
+      materialType: material,
     },
     sort,
   });
@@ -40,7 +48,11 @@ const JournalList: React.FC<Props> = async ({
         </p>
       )}
       {payload && (
-        <List journalEntries={payload.journalEntries} total={payload.total} />
+        <List
+          journalEntries={payload.journalEntries}
+          total={payload.total}
+          load={load}
+        />
       )}
     </>
   );

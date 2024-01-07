@@ -4,7 +4,12 @@ import { useState } from "react";
 import type { JournalEntry as JournalEntryType } from "@/data/server/types/journal_entry";
 import Link from "next/link";
 import JournalEntry from "@/ui/journal_entry";
-import { MaterialOption, SortByOption, SortOrderOption } from "@/ui/types";
+import {
+  LoadFunction,
+  MaterialOption,
+  SortByOption,
+  SortOrderOption,
+} from "@/ui/types";
 
 import { useSearchParams } from "next/navigation";
 
@@ -16,7 +21,8 @@ import Pagination from "@/ui/Pagination";
 const List: React.FC<{
   journalEntries: JournalEntryType[];
   total: number;
-}> = ({ journalEntries: _journalEntries, total: _total }) => {
+  load: LoadFunction;
+}> = ({ journalEntries: _journalEntries, total: _total, load }) => {
   const [journalEntries, setJournalEntries] =
     useState<JournalEntryType[]>(_journalEntries);
   const [total, setTotal] = useState<number>(_total);
@@ -31,6 +37,7 @@ const List: React.FC<{
   const page = searchParams.get("page");
 
   useUpdate({
+    load,
     keyword,
     material,
     sortBy,

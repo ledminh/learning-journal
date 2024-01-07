@@ -9,10 +9,10 @@ interface Props {
     tag_slug: string;
   };
   searchParams: {
+    keyword?: string;
     sortBy?: "date" | "title";
     order?: "asc" | "desc";
     material?: MaterialOption;
-    keyword?: string;
   };
 }
 

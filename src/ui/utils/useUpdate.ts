@@ -1,11 +1,11 @@
-import { MaterialOption, mapFilterToMaterial } from "@/ui/types";
+import { LoadFunction, MaterialOption, mapFilterToMaterial } from "@/ui/types";
 
 import { JournalEntry } from "@/data/server/types/journal_entry";
-import { getJournalEntries } from "@/data/api_call/getJournalEntries";
 import { ITEMS_PER_PAGE } from "@/constants";
 import { useEffect, useRef } from "react";
 
 interface UseUpdateProps {
+  load: LoadFunction;
   keyword: string | null;
   material: MaterialOption | null;
   sortBy: "date" | "title" | null;
@@ -17,6 +17,7 @@ interface UseUpdateProps {
 }
 
 const useUpdate = ({
+  load,
   keyword,
   material,
   sortBy,
@@ -35,12 +36,12 @@ const useUpdate = ({
         return;
       }
 
-      const { errorMessage, payload } = await getJournalEntries({
+      const { errorMessage, payload } = await load({
         offset: page ? (page - 1) * ITEMS_PER_PAGE : 0,
         limit: ITEMS_PER_PAGE,
         filters: {
           keyword: keyword ?? undefined,
-          materialType: material ? mapFilterToMaterial[material] : undefined,
+          materialType: material ? material : undefined,
         },
         sort: {
           by: sortBy ?? "date",
