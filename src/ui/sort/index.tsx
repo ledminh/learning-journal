@@ -2,7 +2,7 @@
 
 import Block from "@/ui/layout/Block";
 import { useSearchParams } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { SortByOption, SortOrderOption } from "../types";
 import { useQueryString } from "../utils";
 
@@ -14,6 +14,16 @@ export function SortBlock() {
 
   const [sortBy, setSortBy] = useState<SortByOption>(currentSortBy);
   const [order, setOrder] = useState<SortOrderOption>(currentOrder);
+
+  useEffect(() => {
+    if (currentSortBy !== sortBy) {
+      setSortBy(currentSortBy);
+    }
+
+    if (currentOrder !== order) {
+      setOrder(currentOrder);
+    }
+  }, [currentSortBy, currentOrder]);
 
   const { addQueryString } = useQueryString();
 
