@@ -18,10 +18,9 @@ export async function DateBlock({ errorMessage, dateEntries }: Props) {
             {dateEntries.map((dateEntry) => (
               <li key={dateEntry.id}>
                 <Link
-                  href={`/date/${formatDateString(dateEntry.date).replace(
-                    /[ ,]/g,
-                    "-"
-                  )}`}
+                  href={`/date/${formatDateString(dateEntry.date)
+                    .replace(/[ ,]/g, "-")
+                    .replace(/-{2,}/g, "-")}`}
                   className="font-mono underline"
                 >
                   {formatDateString(dateEntry.date)}
