@@ -1,7 +1,11 @@
 import * as dbDate from "@/data/db_server/date";
 import { convertJournalEntryFromDBServer } from "@/data/server/journal_entry";
 import { DateEntry } from "../server/types/date";
-import { GetDateFunction } from "./types";
+import {
+  GetDateFunction,
+  GetNewestDateFunction,
+  GetOldestDateFunction,
+} from "./types";
 
 /**
  * Retrieves a list of dates from the API (without JE).
@@ -106,6 +110,76 @@ export const getDate: GetDateFunction = async function ({ date }) {
       id: payload!.id,
       date: payload!.date,
       journalEntries: payload!.journalEntries.map(
+        convertJournalEntryFromDBServer
+      ),
+    },
+  };
+};
+
+export const getNewestDate: GetNewestDateFunction = async function () {
+  const { errorMessage, payload } = await dbDate.getDates({
+    options: {
+      limit: 1,
+      offset: 0,
+      sort: {
+        order: "desc",
+      },
+    },
+  });
+
+  if (errorMessage) {
+    return {
+      errorMessage,
+      payload: null,
+    };
+  } else if (!payload) {
+    return {
+      errorMessage: null,
+      payload: null,
+    };
+  }
+
+  return {
+    errorMessage: null,
+    payload: {
+      id: payload![0].id,
+      date: payload![0].date,
+      journalEntries: payload![0].journalEntries.map(
+        convertJournalEntryFromDBServer
+      ),
+    },
+  };
+};
+
+export const getOldestDate: GetOldestDateFunction = async function () {
+  const { errorMessage, payload } = await dbDate.getDates({
+    options: {
+      limit: 1,
+      offset: 0,
+      sort: {
+        order: "asc",
+      },
+    },
+  });
+
+  if (errorMessage) {
+    return {
+      errorMessage,
+      payload: null,
+    };
+  } else if (!payload) {
+    return {
+      errorMessage: null,
+      payload: null,
+    };
+  }
+
+  return {
+    errorMessage: null,
+    payload: {
+      id: payload![0].id,
+      date: payload![0].date,
+      journalEntries: payload![0].journalEntries.map(
         convertJournalEntryFromDBServer
       ),
     },

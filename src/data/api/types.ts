@@ -95,6 +95,9 @@ export type GetDateFunction = AsyncFunction<
   DateEntry
 >;
 
+export type GetNewestDateFunction = AsyncFunction<{}, DateEntry>;
+export type GetOldestDateFunction = AsyncFunction<{}, DateEntry>;
+
 /**************************
  * Tag API
  */
