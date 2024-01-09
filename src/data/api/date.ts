@@ -1,11 +1,7 @@
 import * as dbDate from "@/data/db_server/date";
 import { convertJournalEntryFromDBServer } from "@/data/server/journal_entry";
 import { DateEntry } from "../server/types/date";
-import {
-  GetDateFunction,
-  GetNewestDateFunction,
-  GetOldestDateFunction,
-} from "./types";
+import { GetDateFunction, GetDatesOfMonthFunction } from "./types";
 
 /**
  * Retrieves a list of dates from the API (without JE).
@@ -188,7 +184,7 @@ export const getNewestMonth = async function () {
   };
 };
 
-export async function getDatesOfMonth(date: Date) {
+export const getDatesOfMonth: GetDatesOfMonthFunction = async (date: Date) => {
   const { errorMessage, payload } = await getDates({
     from: getBeginningOfMonth(date),
     to: getEndOfMonth(date),
@@ -206,7 +202,7 @@ export async function getDatesOfMonth(date: Date) {
     errorMessage: null,
     payload,
   };
-}
+};
 
 /************* HELPERS *************************/
 

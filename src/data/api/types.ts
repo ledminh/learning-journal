@@ -95,8 +95,7 @@ export type GetDateFunction = AsyncFunction<
   DateEntry
 >;
 
-export type GetNewestDateFunction = AsyncFunction<{}, DateEntry>;
-export type GetOldestDateFunction = AsyncFunction<{}, DateEntry>;
+export type GetDatesOfMonthFunction = AsyncFunction<Date, DateEntry[]>;
 
 /**************************
  * Tag API

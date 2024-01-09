@@ -1,5 +1,5 @@
 import { addJournalEntry } from "@/data/api/journal_entry";
-import { DataToCreateJournalEntry } from "@/data/server/types/journal_entry";
+
 import { MaterialType } from "@/data/server/types/material";
 
 export async function POST(request: Request) {
