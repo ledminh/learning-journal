@@ -6,6 +6,10 @@ import { useState } from "react";
 import { LeftArrowTip, RightArrowTip } from "@/ui/ArrowTip";
 import getDatesOfMonth from "@/data/api_call/getDatesOfMonth";
 
+import CalendarHeatmap from "react-calendar-heatmap";
+
+import { getBeginningOfMonth, getEndOfMonth } from "@/data/api/date";
+
 interface Props {
   initDateEntries: DateEntry[];
   newestMonth: Date;
@@ -82,34 +86,72 @@ export default function DateList({
           />
         </Button>
       </div>
-      {errorMessage && (
+      {errorMessage ? (
         <div className="p-2 text-red-500 bg-red-100">{errorMessage}</div>
-      )}
-      {dateEntries.length === 0 && (
-        <div className="p-2 text-red-500 bg-red-100">No Date Entry found!</div>
-      )}
-      {dateEntries.length > 0 && (
-        <ul className="flex flex-col gap-6">
-          {dateEntries.map((dateEntry) => (
-            <li key={dateEntry.id} className="flex flex-col gap-3">
-              <h4 className="p-2 text-xl font-semibold bg-neutral-200">
-                {dateEntry.date.toLocaleDateString()}
-              </h4>
-              <ul className="p-2">
-                {dateEntry.journalEntries.map((journalEntry) => (
-                  <li key={journalEntry.id}>
-                    <Link
-                      href={"/entry/" + journalEntry.slug}
-                      className="text-blue-600 underline"
-                    >
-                      {journalEntry.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
+      ) : (
+        <>
+          <div className="flex items-center justify-center">
+            <div className="w-1/3">
+              <CalendarHeatmap
+                startDate={getBeginningOfMonth(dateEntries[0].date)}
+                endDate={getEndOfMonth(dateEntries[0].date)}
+                values={dateEntries
+                  .map((dateEntry) => ({
+                    date: dateEntry.date,
+                    count: dateEntry.journalEntries.length,
+                  }))
+                  .filter((value) => value.count > 0)}
+                classForValue={(value) => {
+                  if (!value) {
+                    return "no-value";
+                  }
+                  return `value`;
+                }}
+                titleForValue={(value) => {
+                  if (!value) {
+                    return `No Date Entry`;
+                  }
+
+                  return `${value.date.toLocaleDateString("en-US")}: ${
+                    value.count
+                  } Date Entry`;
+                }}
+                showMonthLabels={false}
+                horizontal={false}
+                gutterSize={7}
+              />
+            </div>
+          </div>
+          {dateEntries.length === 0 && (
+            <div className="p-2 text-gray-500 bg-blue-100">
+              No Date Entry found!
+            </div>
+          )}
+
+          {dateEntries.length > 0 && (
+            <ul className="flex flex-col gap-6">
+              {dateEntries.map((dateEntry) => (
+                <li key={dateEntry.id} className="flex flex-col gap-3">
+                  <h4 className="p-2 text-xl font-semibold bg-neutral-200">
+                    {dateEntry.date.toLocaleDateString()}
+                  </h4>
+                  <ul className="p-2">
+                    {dateEntry.journalEntries.map((journalEntry) => (
+                      <li key={journalEntry.id}>
+                        <Link
+                          href={"/entry/" + journalEntry.slug}
+                          className="text-blue-600 underline"
+                        >
+                          {journalEntry.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </div>
   );

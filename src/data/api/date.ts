@@ -262,10 +262,10 @@ async function getDatesWithToAndFrom(options: { to: Date; from: Date }) {
   };
 }
 
-function getBeginningOfMonth(date: Date) {
-  return new Date(date.getFullYear(), date.getMonth(), 1);
+export function getBeginningOfMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), 0);
 }
 
-function getEndOfMonth(date: Date) {
+export function getEndOfMonth(date: Date) {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 }

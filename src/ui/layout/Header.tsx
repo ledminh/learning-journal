@@ -4,9 +4,9 @@ export default function Header() {
   return (
     <div className="flex flex-col gap-3">
       <Link href="/">
-        <h1 className="text-4xl font-bold">LEARNING JOURNAL</h1>
+        <h1 className="text-5xl font-bold">LEARNING JOURNAL</h1>
       </Link>
-      <p className="bg-slate-200 p-1 text-sm">
+      <p className="p-1 text-sm bg-slate-200">
         I created this learning journal to practice writing and to document my
         learning process.{" "}
         <Link
