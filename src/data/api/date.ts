@@ -116,42 +116,7 @@ export const getDate: GetDateFunction = async function ({ date }) {
   };
 };
 
-export const getNewestDate: GetNewestDateFunction = async function () {
-  const { errorMessage, payload } = await dbDate.getDates({
-    options: {
-      limit: 1,
-      offset: 0,
-      sort: {
-        order: "desc",
-      },
-    },
-  });
-
-  if (errorMessage) {
-    return {
-      errorMessage,
-      payload: null,
-    };
-  } else if (!payload) {
-    return {
-      errorMessage: null,
-      payload: null,
-    };
-  }
-
-  return {
-    errorMessage: null,
-    payload: {
-      id: payload![0].id,
-      date: payload![0].date,
-      journalEntries: payload![0].journalEntries.map(
-        convertJournalEntryFromDBServer
-      ),
-    },
-  };
-};
-
-export const getOldestDate: GetOldestDateFunction = async function () {
+export const getOldestMonth = async function () {
   const { errorMessage, payload } = await dbDate.getDates({
     options: {
       limit: 1,
@@ -174,17 +139,74 @@ export const getOldestDate: GetOldestDateFunction = async function () {
     };
   }
 
+  const oldestDate = payload[0].date;
+
+  const oldestMonth = oldestDate.getMonth();
+  const oldestYear = oldestDate.getFullYear();
+
   return {
     errorMessage: null,
     payload: {
-      id: payload![0].id,
-      date: payload![0].date,
-      journalEntries: payload![0].journalEntries.map(
-        convertJournalEntryFromDBServer
-      ),
+      date: new Date(oldestYear, oldestMonth, 1),
     },
   };
 };
+
+export const getNewestMonth = async function () {
+  const { errorMessage, payload } = await dbDate.getDates({
+    options: {
+      limit: 1,
+      offset: 0,
+      sort: {
+        order: "desc",
+      },
+    },
+  });
+
+  if (errorMessage) {
+    return {
+      errorMessage,
+      payload: null,
+    };
+  } else if (!payload) {
+    return {
+      errorMessage: null,
+      payload: null,
+    };
+  }
+
+  const newestDate = payload[0].date;
+
+  const newestMonth = newestDate.getMonth();
+  const newestYear = newestDate.getFullYear();
+
+  return {
+    errorMessage: null,
+    payload: {
+      date: new Date(newestYear, newestMonth, 1),
+    },
+  };
+};
+
+export async function getDatesOfMonth(date: Date) {
+  const { errorMessage, payload } = await getDates({
+    from: getBeginningOfMonth(date),
+    to: getEndOfMonth(date),
+  });
+
+  if (errorMessage) {
+    return { errorMessage, payload: null };
+  }
+
+  if (!payload) {
+    return { errorMessage: "No Date Entry found!", payload: null };
+  }
+
+  return {
+    errorMessage: null,
+    payload,
+  };
+}
 
 /************* HELPERS *************************/
 
@@ -242,4 +264,12 @@ async function getDatesWithToAndFrom(options: { to: Date; from: Date }) {
       ),
     })),
   };
+}
+
+function getBeginningOfMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
+function getEndOfMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 }
