@@ -7,6 +7,7 @@ export default function JournalEntry(props: {
   type: "full" | "summary";
   journalEntry: JournalEntryType;
 }) {
-  if (props.type === "full") return <FullEntry />;
+  if (props.type === "full")
+    return <FullEntry journalEntry={props.journalEntry} />;
   else return <Summary journalEntry={props.journalEntry} />;
 }

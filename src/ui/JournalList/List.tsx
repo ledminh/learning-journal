@@ -59,7 +59,10 @@ const List: React.FC<{
       <ul className="relative flex flex-col gap-4">
         {journalEntries.map((journalEntry) => (
           <li key={journalEntry.id}>
-            <Link href="/entry/01" className={isRefeshing ? "opacity-20" : ""}>
+            <Link
+              href={`/entry/${journalEntry.slug}`}
+              className={isRefeshing ? "opacity-20" : ""}
+            >
               <JournalEntry type="summary" journalEntry={journalEntry} />
             </Link>
           </li>
