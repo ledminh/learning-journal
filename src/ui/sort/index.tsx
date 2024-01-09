@@ -1,13 +1,14 @@
 "use client";
 
 import Block from "@/ui/layout/Block";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { SortByOption, SortOrderOption } from "../types";
 import { useQueryString } from "../utils";
 
 export function SortBlock() {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const currentSortBy = (searchParams.get("sortBy") as SortByOption) || "date";
   const currentOrder = (searchParams.get("order") as SortOrderOption) || "desc";
@@ -26,6 +27,12 @@ export function SortBlock() {
   }, [currentSortBy, currentOrder]);
 
   const { addQueryString } = useQueryString();
+
+  const path = pathname.split("/").pop();
+
+  if (path && path.includes("dates")) {
+    return null;
+  }
 
   const onSortByChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSortBy(e.target.value as SortByOption);
