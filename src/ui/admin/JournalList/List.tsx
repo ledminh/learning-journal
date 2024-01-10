@@ -5,9 +5,17 @@ import Link from "next/link";
 import { JournalEntry } from "@/data/server/types/journal_entry";
 import { useSearchParams } from "next/navigation";
 
+import getJournalEntries from "@/data/api_call/getJournalEntries";
+
 import { useMore, useUpdate, useQueryString } from "@/ui/utils";
 
-import { MaterialOption, SortByOption, SortOrderOption } from "@/ui/types";
+import {
+  MaterialOption,
+  SortByOption,
+  SortOrderOption,
+  LoadFunction,
+  mapFilterToMaterial,
+} from "@/ui/types";
 
 import { formatDateString } from "@/utils/dateFunctions";
 
@@ -28,6 +36,7 @@ const JournalEntriesList: React.FC<{
   const order = searchParams.get("order") as SortOrderOption | null;
 
   useUpdate({
+    load,
     keyword,
     material,
     sortBy,
@@ -121,4 +130,38 @@ const KeywordTab: React.FC<{ keyword: string }> = ({ keyword }) => {
       </button>
     </div>
   );
+};
+
+/**********************
+ * Helpers
+ */
+
+const load: LoadFunction = async ({ offset, limit, filters, sort }) => {
+  const { errorMessage, payload } = await getJournalEntries({
+    offset,
+    limit,
+    filters: {
+      keyword: filters?.keyword,
+      materialType: filters?.materialType
+        ? mapFilterToMaterial[filters.materialType]
+        : undefined,
+    },
+    sort,
+  });
+
+  if (errorMessage) {
+    return { errorMessage, payload: null };
+  }
+
+  if (!payload) {
+    return { errorMessage: "No payload", payload: null };
+  }
+
+  return {
+    errorMessage: null,
+    payload: {
+      journalEntries: payload.journalEntries,
+      total: payload.total,
+    },
+  };
 };

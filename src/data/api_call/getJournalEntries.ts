@@ -1,7 +1,7 @@
 import post from "./post";
 import { GetJournalEntriesFunction } from "@/data/api/types";
 
-export const getJournalEntries: GetJournalEntriesFunction = async ({
+const getJournalEntries: GetJournalEntriesFunction = async ({
   limit,
   offset,
   filters,
@@ -50,3 +50,5 @@ export const getJournalEntries: GetJournalEntriesFunction = async ({
     },
   };
 };
+
+export default getJournalEntries;

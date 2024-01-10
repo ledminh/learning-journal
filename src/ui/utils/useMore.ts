@@ -1,7 +1,7 @@
 import { MaterialOption, mapFilterToMaterial } from "@/ui/types";
 
 import { JournalEntry } from "@/data/server/types/journal_entry";
-import { getJournalEntries } from "@/data/api_call/getJournalEntries";
+import getJournalEntries from "@/data/api_call/getJournalEntries";
 import { ITEMS_PER_PAGE } from "@/constants";
 
 interface UseMoreProps {

@@ -30,6 +30,6 @@
   }
 
   code {
-    @apply bg-gray-300 rounded px-2 font-mono;
+    @apply bg-gray-300 rounded px-2 font-mono italic;
   }
 }

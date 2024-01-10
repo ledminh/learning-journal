@@ -42,9 +42,9 @@ export default async function JournalList({
         <div className="flex flex-col w-full gap-2 lg:basis-1/2 sm:flex-row">
           <Link
             href="/admin/add-journal"
-            className="inline-block p-2 border border-neutral-700 hover:bg-blue-300 basis-1/2"
+            className="inline-block p-2 bg-blue-300 border border-neutral-700 hover:bg-blue-200 basis-1/2"
           >
-            <span>Add New Journal</span>
+            <span className="font-semibold">Add New Journal</span>
           </Link>
           <SearchBar />
         </div>
