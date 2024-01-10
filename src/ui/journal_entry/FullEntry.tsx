@@ -3,6 +3,8 @@ import createSlug from "@/utils/createSlug";
 import Link from "next/link";
 import Material from "./Material";
 
+import markdown from "@wcj/markdown-to-html";
+
 interface FullEntryProps {
   journalEntry: JournalEntry;
 }
@@ -11,7 +13,7 @@ export default function FullEntry({ journalEntry }: FullEntryProps) {
   const { title, tags, material, content, createdAt, updatedAt } = journalEntry;
 
   return (
-    <div className="flex flex-col gap-4 p-4 m-auto rounded-lg shadow-sm lg:w-10/12 lg:items-center shadow-black">
+    <div className="flex flex-col gap-8 p-4 m-auto rounded-lg shadow-sm lg:w-10/12 lg:items-center shadow-black">
       <div className="flex flex-col gap-2 lg:items-center">
         <p className="flex gap-2 font-mono">
           <span className="font-bold">
@@ -36,10 +38,10 @@ export default function FullEntry({ journalEntry }: FullEntryProps) {
         ))}
       </div>
       <Material material={material} />
-      <section>
-        <h4>Content</h4>
-        <p>{content}</p>
-      </section>
+      <section
+        dangerouslySetInnerHTML={{ __html: markdown(content) }}
+        className="markdown-text"
+      />
     </div>
   );
 }

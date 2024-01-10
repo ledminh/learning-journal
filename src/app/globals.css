@@ -13,3 +13,23 @@
   height: 10px;
   width: 10px;
 }
+
+.markdown-text {
+  @apply text-gray-900;
+
+  p {
+    @apply mb-4;
+  }
+
+  ul {
+    @apply list-disc ml-6 flex flex-row flex-wrap gap-2;
+
+    li {
+      @apply basis-full;
+    }
+  }
+
+  code {
+    @apply bg-gray-300 rounded px-2 font-mono;
+  }
+}
