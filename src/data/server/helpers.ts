@@ -17,8 +17,12 @@ export const generateJournalEntryDescription: GenerateJournalEntryDescriptionFun
         materialContent =
           "This material is a code. The code is: " + material.content;
       } else if (materialType === MaterialType.IMAGE) {
-        materialContent =
-          "This material is an image with url: " + material.content;
+        if (typeof material.content === "string") {
+          materialContent =
+            "This material is an image with url: " + material.content;
+        } else {
+          materialContent = "This material is an image";
+        }
       } else if (materialType === MaterialType.LINK) {
         materialContent =
           "This material is a link to a page that has title: " +

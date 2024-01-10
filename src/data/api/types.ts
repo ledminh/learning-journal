@@ -45,6 +45,26 @@ export type AddJournalEntryFunction = AsyncFunction<
   JournalEntry
 >;
 
+export type DataToUpdateMaterial =
+  | { id: string }
+  | (
+      | {
+          id: null;
+          type: MaterialType.QUOTE | MaterialType.CODE;
+          content: string;
+        }
+      | {
+          id: null;
+          type: MaterialType.LINK;
+          content: MaterialLinkContent;
+        }
+      | {
+          id: null;
+          type: MaterialType.IMAGE;
+          content: File;
+        }
+    );
+
 export type UpdateJournalEntryFunction = AsyncFunction<
   {
     id: string;
@@ -54,25 +74,7 @@ export type UpdateJournalEntryFunction = AsyncFunction<
     slug: string;
     tags: DataToConnectTag[];
 
-    material:
-      | { id: string }
-      | (
-          | {
-              id: null;
-              type: MaterialType.QUOTE | MaterialType.CODE;
-              content: string;
-            }
-          | {
-              id: null;
-              type: MaterialType.LINK;
-              content: MaterialLinkContent;
-            }
-          | {
-              id: null;
-              type: MaterialType.IMAGE;
-              content: File;
-            }
-        );
+    material: DataToUpdateMaterial;
   },
   JournalEntry
 >;

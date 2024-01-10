@@ -1,31 +1,58 @@
 "use client";
 
-import { useState, FC } from "react";
+import { useState, FC, useEffect } from "react";
 import AddTags from "./AddTags";
 import { Tag } from "@/data/server/types/tag";
-import { DataToConnectTag } from "@/data/server/types/journal_entry";
+import {
+  DataToConnectTag,
+  JournalEntry,
+} from "@/data/server/types/journal_entry";
 import Description from "./Description";
 import MaterialComponent from "./Material";
 import Content from "./Content";
 
 import { DataToCreateMaterial } from "@/data/server/types/material";
+import { DataToUpdateMaterial } from "@/data/api/types";
 import { addJournalEntry } from "@/data/api_call/addJournalEntry";
 import { useRouter } from "next/navigation";
 import Spinner from "@/ui/Spinner";
+import { updateJournalEntry } from "@/data/api/journal_entry";
 
 const JournalForm: FC<{
   dbTags: Tag[];
-}> = function ({ dbTags }) {
+  journalEntry?: JournalEntry;
+}> = function ({ dbTags, journalEntry }) {
   const [title, setTitle] = useState("");
   const [dtaCTags, setDtaCTags] = useState<DataToConnectTag[]>([]);
   const [description, setDescription] = useState("");
-  const [material, setMaterial] = useState<DataToCreateMaterial | null>(null);
+  const [material, setMaterial] = useState<
+    DataToCreateMaterial | DataToUpdateMaterial | null
+  >(null);
   const [content, setContent] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (!journalEntry) return;
+
+    const dtaCTags = journalEntry.tags.map((tag) => {
+      const tagObj = dbTags.find((t) => t.name === tag)!;
+
+      return {
+        id: tagObj.id,
+        name: null,
+      };
+    });
+
+    setTitle(journalEntry.title);
+    setDtaCTags(dtaCTags);
+    setDescription(journalEntry.description);
+    setContent(journalEntry.content);
+    setMaterial({ id: journalEntry.material.id });
+  }, [journalEntry]);
 
   const isJEValid = () =>
     title !== "" &&
@@ -39,18 +66,38 @@ const JournalForm: FC<{
 
     setIsSubmitting(true);
 
-    const data = {
-      title,
-      description,
-      material: material!,
-      content,
-      tags: dtaCTags,
-    };
+    // UPDATE
+    if (journalEntry) {
+      const data = {
+        id: journalEntry.id,
+        slug: journalEntry.slug,
+        title,
+        description,
+        material: material as DataToUpdateMaterial,
+        content,
+        tags: dtaCTags,
+      };
 
-    const { errorMessage } = await addJournalEntry(data);
+      const { errorMessage } = await updateJournalEntry(data);
 
-    if (errorMessage) {
-      return setErrorMessage(errorMessage);
+      if (errorMessage) {
+        return setErrorMessage(errorMessage);
+      }
+    } else {
+      // CREATE
+      const data = {
+        title,
+        description,
+        material: material as DataToCreateMaterial,
+        content,
+        tags: dtaCTags,
+      };
+
+      const { errorMessage } = await addJournalEntry(data);
+
+      if (errorMessage) {
+        return setErrorMessage(errorMessage);
+      }
     }
 
     setIsSubmitting(false);
@@ -91,7 +138,7 @@ const JournalForm: FC<{
         <span className="font-semibold border-b-2 border-b-black">
           Material
         </span>
-        <MaterialComponent setMaterial={setMaterial} />
+        <MaterialComponent setMaterial={setMaterial} material={material} />
       </label>
       <label className="flex flex-col gap-1">
         <span className="font-semibold">Content</span>

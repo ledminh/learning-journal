@@ -1,5 +1,6 @@
 import {
   MaterialType,
+  Material,
   DataToCreateMaterial,
 } from "@/data/server/types/material";
 
@@ -10,8 +11,9 @@ import CodeForm from "./CodeForm";
 
 const MaterialForm: React.FC<{
   type: MaterialType;
-  setMaterial: (material: DataToCreateMaterial | null) => void;
-}> = ({ type, setMaterial }) => (
+  setMaterial: (material: DataToCreateMaterial | Material | null) => void;
+  material: DataToCreateMaterial | Material | null;
+}> = ({ type, setMaterial, material }) => (
   <div className="flex flex-col gap-2">
     {(() => {
       switch (type) {
@@ -20,7 +22,7 @@ const MaterialForm: React.FC<{
         case MaterialType.CODE:
           return <CodeForm setMaterial={setMaterial} />;
         case MaterialType.IMAGE:
-          return <ImageForm setMaterial={setMaterial} />;
+          return <ImageForm setMaterial={setMaterial} material={material} />;
         case MaterialType.QUOTE:
           return <QuoteForm setMaterial={setMaterial} />;
         default:

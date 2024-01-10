@@ -5,14 +5,15 @@ import {
 import generateDescription from "./utils/generateDescription";
 
 import { useState } from "react";
-import Spinner from "@/ui/spinner";
+import Spinner from "@/ui/Spinner";
+import { DataToUpdateMaterial } from "@/data/api/types";
 
 const Description: React.FC<{
   description: string;
   setDescription: (description: string) => void;
   title: string;
   content: string;
-  material: DataToCreateMaterial | null;
+  material: DataToCreateMaterial | DataToUpdateMaterial | null;
 }> = function ({ title, content, material, description, setDescription }) {
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +21,7 @@ const Description: React.FC<{
     generateDescription({
       title,
       content,
-      material: material || {
+      material: material ?? {
         type: MaterialType.QUOTE,
         content: "This is a placeholder quote because there is no material.",
       },

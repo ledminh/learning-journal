@@ -3,12 +3,14 @@ import Image from "next/image";
 
 import {
   DataToCreateMaterial,
+  Material,
   MaterialType,
 } from "@/data/server/types/material";
 
 const ImageForm: React.FC<{
-  setMaterial: (material: DataToCreateMaterial | null) => void;
-}> = ({ setMaterial }) => {
+  setMaterial: (material: DataToCreateMaterial | Material | null) => void;
+  material: DataToCreateMaterial | Material | null;
+}> = ({ setMaterial, material }) => {
   const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
@@ -17,6 +19,8 @@ const ImageForm: React.FC<{
 
   useEffect(() => {
     if (!file) return setMaterial(null);
+
+    if (typeof file === "string") return;
 
     const material: DataToCreateMaterial = {
       type: MaterialType.IMAGE,
@@ -38,7 +42,11 @@ const ImageForm: React.FC<{
       {file && (
         <div className="relative w-60 h-60">
           <Image
-            src={URL.createObjectURL(file)}
+            src={
+              material
+                ? (material.content as string)
+                : URL.createObjectURL(file)
+            }
             alt="image material"
             fill
             className="object-cover w-full h-full rounded-md"
