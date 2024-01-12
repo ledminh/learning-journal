@@ -1,7 +1,7 @@
 import ModalWrapper from "@/ui/admin/ModalWrapper";
 
 import { useRef } from "react";
-import { deleteJournalEntry } from "@/data/api/journal_entry";
+import deleteJournalEntry from "@/data/api_call/deleteJournalEntry";
 import { JournalEntry } from "@/data/server/types/journal_entry";
 
 const DeleteJournalModal: React.FC<{
@@ -29,7 +29,6 @@ const DeleteJournalModal: React.FC<{
     }
 
     afterDelete();
-    setLoading(false);
   };
 
   return (

@@ -8,6 +8,8 @@ import {
   DeleteJournalEntryFunction,
 } from "./types";
 import * as dbJournalEntry from "@/data/db_server/journal_entry";
+import * as dbDate from "@/data/db_server/date";
+
 import createSlug from "@/utils/createSlug";
 import { addTags } from "./tag";
 import { createMaterial } from "../server/material";
@@ -292,7 +294,7 @@ export const updateJournalEntry: UpdateJournalEntryFunction = async function (
 export const deleteJournalEntry: DeleteJournalEntryFunction = async function (
   data
 ) {
-  const { errorMessage } = await dbJournalEntry.deleteJournalEntry({
+  const { errorMessage, payload } = await dbJournalEntry.deleteJournalEntry({
     id: data.id,
   });
 
@@ -303,14 +305,45 @@ export const deleteJournalEntry: DeleteJournalEntryFunction = async function (
     };
   }
 
-  if (data.material.type === MaterialType.IMAGE) {
+  if (!payload) {
+    return {
+      errorMessage: "Journal entry not found",
+      payload: null,
+    };
+  }
+
+  if (payload.material.type === materialTypeMapToDBServer[MaterialType.IMAGE]) {
     const { errorMessage: errorMessageDI } = await deleteImage({
-      imageUrl: data.material.content,
+      imageUrl: payload.material.content,
     });
 
     if (errorMessageDI) {
       return {
         errorMessage: errorMessageDI,
+        payload: null,
+      };
+    }
+  }
+
+  const { errorMessage: errorMessageD, payload: deletedDate } = await getDate({
+    date: payload.createdAt,
+  });
+
+  if (errorMessageD) {
+    return {
+      errorMessage: errorMessageD,
+      payload: null,
+    };
+  }
+
+  if (deletedDate!.journalEntries.length === 0) {
+    const { errorMessage: errorMessageDD } = await dbDate.deleteDate({
+      date: payload.createdAt,
+    });
+
+    if (errorMessageDD) {
+      return {
+        errorMessage: errorMessageDD,
         payload: null,
       };
     }

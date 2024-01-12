@@ -80,7 +80,7 @@ export type UpdateJournalEntryFunction = AsyncFunction<
 >;
 
 export type DeleteJournalEntryFunction = AsyncFunction<
-  JournalEntry,
+  { id: string },
   {
     success: boolean;
   }
