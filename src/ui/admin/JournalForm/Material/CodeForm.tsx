@@ -1,40 +1,34 @@
 import {
   DataToCreateMaterial,
+  Material,
   MaterialType,
 } from "@/data/server/types/material";
 
 import CodeEditor from "@uiw/react-textarea-code-editor";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const CodeForm: React.FC<{
   setMaterial: (material: DataToCreateMaterial | null) => void;
-}> = ({ setMaterial }) => {
-  const [value, setValue] = useState("");
-
+  material: DataToCreateMaterial | Material | null;
+}> = ({ setMaterial, material }) => {
   const [language, setLanguage] = useState("js");
 
-  useEffect(() => {
-    setMaterial(null);
-  }, []);
-
-  useEffect(() => {
-    if (value === "") return setMaterial(null);
-
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const material: DataToCreateMaterial = {
       type: MaterialType.CODE,
-      content: value,
+      content: e.target.value,
     };
     setMaterial(material);
-  }, [value]);
+  };
 
   return (
     <label className="flex flex-col gap-3">
       <span className="font-semibold">Code</span>
       <CodeEditor
-        value={value}
+        value={material === null ? "" : (material.content as string)}
         language={language}
         placeholder={`// Write your ${language} code here...`}
-        onChange={(evn) => setValue(evn.target.value)}
+        onChange={onChange}
         padding={15}
         style={{
           backgroundColor: "#000",
@@ -43,7 +37,7 @@ const CodeForm: React.FC<{
           resize: "none",
           height: "300px",
           fontSize: "16px",
-          overflowY: "auto",
+          overflowY: "scroll",
         }}
       />
       <div className="flex">

@@ -1,19 +1,19 @@
 import {
   DataToCreateMaterial,
+  Material,
   MaterialType,
 } from "@/data/server/types/material";
 import generateDescription from "./utils/generateDescription";
 
 import { useState } from "react";
 import Spinner from "@/ui/Spinner";
-import { DataToUpdateMaterial } from "@/data/api/types";
 
 const Description: React.FC<{
   description: string;
   setDescription: (description: string) => void;
   title: string;
   content: string;
-  material: DataToCreateMaterial | DataToUpdateMaterial | null;
+  material: DataToCreateMaterial | Material | null;
 }> = function ({ title, content, material, description, setDescription }) {
   const [loading, setLoading] = useState(false);
 

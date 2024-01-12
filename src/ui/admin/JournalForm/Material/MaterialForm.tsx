@@ -18,13 +18,13 @@ const MaterialForm: React.FC<{
     {(() => {
       switch (type) {
         case MaterialType.LINK:
-          return <LinkForm setMaterial={setMaterial} />;
+          return <LinkForm setMaterial={setMaterial} material={material} />;
         case MaterialType.CODE:
-          return <CodeForm setMaterial={setMaterial} />;
+          return <CodeForm setMaterial={setMaterial} material={material} />;
         case MaterialType.IMAGE:
           return <ImageForm setMaterial={setMaterial} material={material} />;
         case MaterialType.QUOTE:
-          return <QuoteForm setMaterial={setMaterial} />;
+          return <QuoteForm setMaterial={setMaterial} material={material} />;
         default:
           throw new Error("Invalid material type");
       }

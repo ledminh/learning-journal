@@ -5,35 +5,59 @@ import { useEffect, useState } from "react";
 import {
   DataToCreateMaterial,
   MaterialType,
+  Material,
+  MaterialLinkContent,
 } from "@/data/server/types/material";
 
 const LinkForm: React.FC<{
-  setMaterial: (material: DataToCreateMaterial | null) => void;
-}> = ({ setMaterial }) => {
+  setMaterial: (material: DataToCreateMaterial | Material | null) => void;
+  material: DataToCreateMaterial | Material | null;
+}> = ({ setMaterial, material }) => {
   const [status, setStatus] = useState<"unInit" | "loading" | "loaded">(
     "unInit"
   );
 
-  const [currentUrl, setCurrentUrl] = useState("");
+  const [currentUrl, setCurrentUrl] = useState(
+    material === null ? "" : (material.content as MaterialLinkContent).url
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [currentTitle, setCurrentTitle] = useState<string | null>(null);
+  const [currentTitle, setCurrentTitle] = useState<string | null>("");
   const [currentDescription, setCurrentDescription] = useState<string | null>(
-    null
+    ""
   );
 
-  const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
+  const [currentImageUrl, setCurrentImageUrl] = useState<string | null>("");
 
   const [imageUrls, setImageUrls] = useState<string[] | null>(null);
 
   useEffect(() => {
-    setMaterial(null);
-    setStatus("unInit");
-    setCurrentUrl("");
-    setErrorMessage(null);
-    setCurrentTitle(null);
-    setCurrentDescription(null);
-    setCurrentImageUrl(null);
-    setImageUrls(null);
+    if (material === null) {
+      setStatus("unInit");
+      setCurrentUrl("");
+      setErrorMessage(null);
+      setCurrentTitle(null);
+      setCurrentDescription(null);
+      setCurrentImageUrl(null);
+      setImageUrls(null);
+    } else {
+      getLinkInfo({
+        currentUrl: (material.content as MaterialLinkContent).url,
+        setStatus,
+        setErrorMessage,
+        setCurrentTitle,
+        setCurrentDescription,
+        setCurrentImageUrl,
+        setImageUrls,
+      }).then(() => {
+        if (errorMessage) return;
+        setCurrentTitle((material.content as MaterialLinkContent).title);
+        setCurrentDescription(
+          (material.content as MaterialLinkContent).description
+        );
+
+        setCurrentImageUrl((material.content as MaterialLinkContent).imageUrl);
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -114,7 +138,7 @@ const LinkForm: React.FC<{
               onChange={(e) => setCurrentDescription(e.target.value)}
             />
           </label>
-          {imageUrls!.length > 0 && (
+          {imageUrls && imageUrls.length > 0 && (
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-center bg-gray-200 border-4 border-gray-600 w-60 h-60">
                 <Image
@@ -125,20 +149,21 @@ const LinkForm: React.FC<{
                 />
               </div>
               <ul className="flex flex-wrap gap-2">
-                {imageUrls!.map((url) => (
-                  <li key={url}>
-                    <button
-                      className={`flex items-center justify-center w-16 h-16 bg-gray-200 border-4 ${
-                        currentImageUrl === url
-                          ? "border-red-600"
-                          : "border-gray-600"
-                      } hover:opacity-50`}
-                      onClick={() => setCurrentImageUrl(url)}
-                    >
-                      <Image src={url} alt="image" width={50} height={50} />
-                    </button>
-                  </li>
-                ))}
+                {imageUrls &&
+                  imageUrls.map((url) => (
+                    <li key={url}>
+                      <button
+                        className={`flex items-center justify-center w-16 h-16 bg-gray-200 border-4 ${
+                          currentImageUrl === url
+                            ? "border-red-600"
+                            : "border-gray-600"
+                        } hover:opacity-50`}
+                        onClick={() => setCurrentImageUrl(url)}
+                      >
+                        <Image src={url} alt="image" width={50} height={50} />
+                      </button>
+                    </li>
+                  ))}
               </ul>
             </div>
           )}

@@ -40,7 +40,7 @@ export default function FullEntry({ journalEntry }: FullEntryProps) {
       <Material material={material} />
       <section
         dangerouslySetInnerHTML={{ __html: markdown(content) }}
-        className="markdown-text"
+        className="w-full markdown-text"
       />
     </div>
   );

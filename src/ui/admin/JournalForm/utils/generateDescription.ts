@@ -1,11 +1,10 @@
-import { DataToUpdateMaterial } from "@/data/api/types";
 import { generateJEDescription } from "@/data/api_call/generateJEDescription";
-import { DataToCreateMaterial } from "@/data/server/types/material";
+import { DataToCreateMaterial, Material } from "@/data/server/types/material";
 
 interface Props {
   title: string;
   content: string;
-  material: DataToCreateMaterial | DataToUpdateMaterial;
+  material: DataToCreateMaterial | Material;
   setDescription: (description: string) => void;
   setLoading: (loading: boolean) => void;
 }

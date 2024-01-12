@@ -29,9 +29,9 @@ export default function Material({ material }: MaterialProps) {
 
     case serverTypes.MaterialType.CODE:
       return (
-        <>
+        <div className="w-full">
           <CodeEditor
-            value={material.content.replace(/"/g, "").replace(/\n/g, "\n")}
+            value={material.content}
             language={"js"}
             padding={15}
             style={{
@@ -45,7 +45,7 @@ export default function Material({ material }: MaterialProps) {
             }}
             disabled
           />
-        </>
+        </div>
       );
 
     default:

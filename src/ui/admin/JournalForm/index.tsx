@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FC, useEffect } from "react";
+import { useState, FC } from "react";
 import AddTags from "./AddTags";
 import { Tag } from "@/data/server/types/tag";
 import {
@@ -11,48 +11,48 @@ import Description from "./Description";
 import MaterialComponent from "./Material";
 import Content from "./Content";
 
-import { DataToCreateMaterial } from "@/data/server/types/material";
-import { DataToUpdateMaterial } from "@/data/api/types";
+import { DataToCreateMaterial, Material } from "@/data/server/types/material";
 import { addJournalEntry } from "@/data/api_call/addJournalEntry";
+
+import { isMaterial } from "@/ui/utils";
+
 import { useRouter } from "next/navigation";
 import Spinner from "@/ui/Spinner";
-import { updateJournalEntry } from "@/data/api/journal_entry";
+import { updateJournalEntry } from "@/data/api_call/updateJournalEntry";
 
 const JournalForm: FC<{
   dbTags: Tag[];
   journalEntry?: JournalEntry;
 }> = function ({ dbTags, journalEntry }) {
-  const [title, setTitle] = useState("");
-  const [dtaCTags, setDtaCTags] = useState<DataToConnectTag[]>([]);
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState(journalEntry?.title ?? "");
+
+  const [dtaCTags, setDtaCTags] = useState<DataToConnectTag[]>(
+    journalEntry
+      ? journalEntry.tags.map((tag) => {
+          const tagObj = dbTags.find((t) => t.name === tag)!;
+
+          return {
+            id: tagObj.id,
+            name: null,
+          };
+        })
+      : []
+  );
+
+  const [description, setDescription] = useState(
+    journalEntry?.description ?? ""
+  );
+
   const [material, setMaterial] = useState<
-    DataToCreateMaterial | DataToUpdateMaterial | null
-  >(null);
-  const [content, setContent] = useState("");
+    DataToCreateMaterial | Material | null
+  >(journalEntry?.material ?? null);
+
+  const [content, setContent] = useState(journalEntry?.content ?? "");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const router = useRouter();
-
-  useEffect(() => {
-    if (!journalEntry) return;
-
-    const dtaCTags = journalEntry.tags.map((tag) => {
-      const tagObj = dbTags.find((t) => t.name === tag)!;
-
-      return {
-        id: tagObj.id,
-        name: null,
-      };
-    });
-
-    setTitle(journalEntry.title);
-    setDtaCTags(dtaCTags);
-    setDescription(journalEntry.description);
-    setContent(journalEntry.content);
-    setMaterial({ id: journalEntry.material.id });
-  }, [journalEntry]);
 
   const isJEValid = () =>
     title !== "" &&
@@ -66,6 +66,13 @@ const JournalForm: FC<{
 
     setIsSubmitting(true);
 
+    const materialData = isMaterial(material)
+      ? { id: material.id }
+      : {
+          id: null,
+          ...material!,
+        };
+
     // UPDATE
     if (journalEntry) {
       const data = {
@@ -73,7 +80,7 @@ const JournalForm: FC<{
         slug: journalEntry.slug,
         title,
         description,
-        material: material as DataToUpdateMaterial,
+        material: materialData,
         content,
         tags: dtaCTags,
       };

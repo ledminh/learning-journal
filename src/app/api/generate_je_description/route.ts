@@ -1,6 +1,5 @@
-import { DataToUpdateMaterial } from "@/data/api/types";
 import { generateJournalEntryDescription } from "@/data/server/helpers";
-import { DataToCreateMaterial } from "@/data/server/types/material";
+import { DataToCreateMaterial, Material } from "@/data/server/types/material";
 
 export async function POST(request: Request) {
   if (request.headers.get("content-type") !== "application/json") {
@@ -20,7 +19,7 @@ export async function POST(request: Request) {
   const { title, content, material } = reqBody as {
     title: string;
     content: string;
-    material: DataToCreateMaterial | DataToUpdateMaterial;
+    material: DataToCreateMaterial | Material;
   };
 
   if (title === undefined || content === undefined || material === undefined) {

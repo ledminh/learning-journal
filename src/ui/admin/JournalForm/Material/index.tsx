@@ -4,21 +4,15 @@ import {
   DataToCreateMaterial,
 } from "@/data/server/types/material";
 import MaterialForm from "./MaterialForm";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const MaterialComponent: React.FC<{
   setMaterial: (material: DataToCreateMaterial | Material | null) => void;
   material: DataToCreateMaterial | Material | null;
 }> = ({ setMaterial, material }) => {
   const [currentType, setCurrentType] = useState<MaterialType>(
-    MaterialType.LINK
+    material?.type ?? MaterialType.LINK
   );
-
-  useEffect(() => {
-    if (material) {
-      setCurrentType(material.type);
-    }
-  }, [material]);
 
   return (
     <>
