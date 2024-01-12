@@ -1,6 +1,7 @@
 import JournalForm from "@/ui/admin/JournalForm";
 import { getTags } from "@/data/api/tag";
 import { getJournalEntry } from "@/data/api/journal_entry";
+import DeleteJournal from "@/ui/admin/DeleteJournal";
 
 interface Props {
   params: {
@@ -29,7 +30,7 @@ export default async function EditJournalPage({ params }: Props) {
     <div className="flex flex-col gap-4">
       <section className="flex items-center justify-between gap-4 p-2 bg-neutral-200">
         <h2 className="text-lg font-semibold">{journalEntry.title}</h2>
-        <button className="px-2 py-1 text-white bg-red-900">delete</button>
+        <DeleteJournal journalEntry={journalEntry} />
       </section>
       <JournalForm dbTags={dbTags} journalEntry={journalEntry} />
     </div>

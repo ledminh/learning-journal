@@ -107,15 +107,7 @@ const JournalForm: FC<{
       }
     }
 
-    setIsSubmitting(false);
-
-    setTitle("");
-    setDtaCTags([]);
-    setDescription("");
-    setMaterial(null);
-    setContent("");
-
-    router.push("/admin");
+    router.back();
   };
 
   return (

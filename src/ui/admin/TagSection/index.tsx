@@ -9,9 +9,13 @@ const TagSection: FC = async () => {
     return <Wrapper>{errorMessage}</Wrapper>;
   }
 
+  if (tags === null) {
+    return <Wrapper>Cannot load tags</Wrapper>;
+  }
+
   return (
     <Wrapper>
-      <Content tags={tags!} />
+      <Content tags={tags} />
     </Wrapper>
   );
 };

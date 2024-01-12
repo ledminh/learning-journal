@@ -33,7 +33,10 @@ const AddTagModal: React.FC<{
       setOpen={setOpenModal}
       initialFocus={inputRef}
       title="Add New Tag"
-      onSubmit={onSubmit}
+      submitButton={{
+        text: "Add",
+        onClick: onSubmit,
+      }}
     >
       <div className="mt-2 text-sm text-gray-500">
         <label htmlFor="tag-name" className="sr-only">
