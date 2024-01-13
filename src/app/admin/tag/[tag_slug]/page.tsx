@@ -2,6 +2,7 @@ import { getTag } from "@/data/api/tag";
 import RenameTag from "@/ui/admin/RenameTag";
 import EmptyTag from "@/ui/admin/EmptyTag";
 import TagJournalList from "@/ui/admin/TagJournalList";
+import DeleteTag from "@/ui/admin/DeleteTag";
 
 interface Props {
   params: {
@@ -39,7 +40,7 @@ export default async function TagPage({ params }: Props) {
         <div className="flex items-center justify-start gap-2">
           <RenameTag tag={payload.tag} />
           <EmptyTag tag={payload.tag} />
-          <button className="px-2 py-1 text-white bg-red-900/50">delete</button>
+          <DeleteTag tag={payload.tag} />
         </div>
       </section>
       <section className="flex flex-col gap-4">
