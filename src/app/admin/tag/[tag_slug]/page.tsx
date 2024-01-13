@@ -9,7 +9,13 @@ interface Props {
 }
 
 export default async function TagPage({ params }: Props) {
-  const { errorMessage, payload } = await getTag({ slug: params.tag_slug });
+  const { errorMessage, payload } = await getTag({
+    slug: params.tag_slug,
+    sort: {
+      by: "date",
+      order: "desc",
+    },
+  });
 
   if (errorMessage) {
     return <div className="p-2 font-mono bg-red-200">{errorMessage}</div>;
