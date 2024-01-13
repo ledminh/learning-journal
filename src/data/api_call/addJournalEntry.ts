@@ -18,11 +18,10 @@ export const addJournalEntry: AddJournalEntryFunction = async ({
       tags: JSON.stringify(tags),
       description,
       materialType: material.type,
-      materialContent: isMaterial(material)
-        ? material.type === MaterialType.LINK
+      materialContent:
+        material.type === MaterialType.LINK
           ? JSON.stringify(material.content)
-          : material.content
-        : undefined,
+          : material.content,
       content,
     },
   });

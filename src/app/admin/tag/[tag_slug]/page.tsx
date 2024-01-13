@@ -1,6 +1,7 @@
 import { getTag } from "@/data/api/tag";
 import Link from "next/link";
 import { JournalEntry } from "@/data/server/types/journal_entry";
+import RenameTag from "@/ui/admin/RenameTag";
 
 interface Props {
   params: {
@@ -36,9 +37,7 @@ export default async function TagPage({ params }: Props) {
           TAG: {payload.tag.name}
         </h2>
         <div className="flex items-center justify-start gap-2">
-          <button className="px-2 py-1 text-white bg-neutral-500">
-            rename
-          </button>
+          <RenameTag tag={payload.tag} />
           <button className="px-2 py-1 text-white bg-red-900">empty</button>
           <button className="px-2 py-1 text-white bg-red-900/50">delete</button>
         </div>
