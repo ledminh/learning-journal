@@ -5,6 +5,8 @@ import * as serverTypes from "@/data/server/types/material";
 import Image from "next/image";
 import Link from "next/link";
 
+import { useEffect, useState } from "react";
+
 interface MaterialProps {
   material: serverTypes.Material;
 }
@@ -17,15 +19,7 @@ export default function Material({ material }: MaterialProps) {
       return <MaterialLink {...material.content} />;
 
     case serverTypes.MaterialType.IMAGE:
-      return (
-        <Image
-          src={material.content}
-          alt={material.content}
-          className="rounded-md shadow-sm"
-          width={500}
-          height={500}
-        />
-      );
+      return <MaterialImage src={material.content} alt={material.content} />;
 
     case serverTypes.MaterialType.CODE:
       return (
@@ -86,3 +80,57 @@ const MaterialLink = (props: {
     </div>
   </Link>
 );
+
+const MaterialImage = (props: { src: string; alt: string }) => {
+  const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpenModal(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  return (
+    <>
+      <button
+        className="flex items-center justify-center w-full h-full"
+        onClick={() => setOpenModal(true)}
+      >
+        <Image
+          src={props.src}
+          alt={props.alt}
+          className="rounded-md shadow-sm"
+          width={500}
+          height={500}
+        />
+      </button>
+      <div
+        className={`fixed inset-0 z-10 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-60 ${
+          openModal ? "" : "hidden"
+        }`}
+        onClick={() => setOpenModal(false)}
+      >
+        <button
+          className="absolute top-0 right-0 p-2 text-white bg-red-900"
+          onClick={() => setOpenModal(false)}
+        >
+          close
+        </button>
+        <Image
+          src={props.src}
+          alt={props.alt}
+          className="rounded-md shadow-sm"
+          width={1000}
+          height={1000}
+          onClick={(e) => e.stopPropagation()}
+        />
+      </div>
+    </>
+  );
+};
