@@ -449,6 +449,14 @@ export const emptyTag: EmptyTagFunction = async ({ name }) => {
       };
     }
 
+    await prismaClient.dateEntry.deleteMany({
+      where: {
+        journalEntries: {
+          none: {},
+        },
+      },
+    });
+
     const tag = await prismaClient.tag.findUnique({
       where: {
         name,
