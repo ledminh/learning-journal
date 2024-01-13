@@ -19,9 +19,12 @@ export default function FullEntry({ journalEntry }: FullEntryProps) {
           <span className="font-bold">
             {createdAt.toLocaleDateString("en-US")}
           </span>
-          <span className="italic">
-            (updated at: {updatedAt.toLocaleDateString("en-US")})
-          </span>
+          {createdAt.toLocaleDateString("en-US") !==
+            updatedAt.toLocaleDateString("en-US") && (
+            <span className="font-semibold text-gray-400">
+              [edited at: {updatedAt.toLocaleDateString("en-US")}]
+            </span>
+          )}
         </p>
         <h3 className="text-3xl font-semibold text-blue-600">{title}</h3>
       </div>
