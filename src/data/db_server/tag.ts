@@ -432,7 +432,7 @@ export const removeJournalEntryFromTag: RemoveJournalEntryFromTagFunction =
 
 export const emptyTag: EmptyTagFunction = async ({ name }) => {
   try {
-    const jE = await prismaClient.journalEntry.findMany({
+    const { count: jeCount } = await prismaClient.journalEntry.deleteMany({
       where: {
         tags: {
           some: {
@@ -442,16 +442,16 @@ export const emptyTag: EmptyTagFunction = async ({ name }) => {
       },
     });
 
-    const tag = await prismaClient.tag.update({
+    if (jeCount === 0) {
+      return {
+        errorMessage: "No journal entries found.",
+        payload: null,
+      };
+    }
+
+    const tag = await prismaClient.tag.findUnique({
       where: {
         name,
-      },
-      data: {
-        journalEntries: {
-          disconnect: jE.map((journalEntry) => ({
-            id: journalEntry.id,
-          })),
-        },
       },
       include: {
         journalEntries: {
@@ -462,6 +462,13 @@ export const emptyTag: EmptyTagFunction = async ({ name }) => {
         },
       },
     });
+
+    if (!tag) {
+      return {
+        errorMessage: "Tag not found.",
+        payload: null,
+      };
+    }
 
     return {
       errorMessage: null,

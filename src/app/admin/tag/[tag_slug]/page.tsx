@@ -1,7 +1,7 @@
 import { getTag } from "@/data/api/tag";
-import Link from "next/link";
-import { JournalEntry } from "@/data/server/types/journal_entry";
 import RenameTag from "@/ui/admin/RenameTag";
+import EmptyTag from "@/ui/admin/EmptyTag";
+import TagJournalList from "@/ui/admin/TagJournalList";
 
 interface Props {
   params: {
@@ -38,44 +38,14 @@ export default async function TagPage({ params }: Props) {
         </h2>
         <div className="flex items-center justify-start gap-2">
           <RenameTag tag={payload.tag} />
-          <button className="px-2 py-1 text-white bg-red-900">empty</button>
+          <EmptyTag tag={payload.tag} />
           <button className="px-2 py-1 text-white bg-red-900/50">delete</button>
         </div>
       </section>
       <section className="flex flex-col gap-4">
         <h3 className="text-lg font-semibold">Journal Entries</h3>
-        <JournalList journalEntries={payload.tag.journalEntries} />
+        <TagJournalList journalEntries={payload.tag.journalEntries} />
       </section>
     </div>
   );
 }
-
-/***************************
- * Components
- */
-
-const JournalList: React.FC<{ journalEntries: JournalEntry[] }> = ({
-  journalEntries,
-}) => {
-  return (
-    <ul className="flex flex-col gap-2">
-      {journalEntries.length > 0 ? (
-        journalEntries.map((journalEntry, index) => (
-          <li key={journalEntry.id}>
-            <Link
-              href={`/admin/edit-journal/${journalEntry.slug}`}
-              className={`flex items-center justify-between p-2 hover:bg-blue-400 ${
-                index % 2 === 0 ? "bg-blue-100" : "bg-blue-200"
-              }`}
-            >
-              <span className="font-semibold">{journalEntry.title}</span>
-              <span>{journalEntry.createdAt.toLocaleDateString("en-US")}</span>
-            </Link>
-          </li>
-        ))
-      ) : (
-        <li className="p-2 font-mono bg-red-200">No journal entries found</li>
-      )}
-    </ul>
-  );
-};
