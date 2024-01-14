@@ -28,17 +28,36 @@ After many years of learning, the author discovered that his brain can only proc
    ```
 3. Create a `.env.local` file in the root directory and add the following environment variables
    ```sh
-   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/learning-journal?schema=public"
+    OPENAI_API_KEY= # Get it from https://platform.openai.com/api_keys (after signning up for an account).
+    NEXT_PUBLIC_SUPABASE_URL= # Get it from https://app.supabase.io/ (after signning up for an account and create your own organization and project).
+    NEXT_PUBLIC_SUPABASE_ANON_KEY= # Get it from https://app.supabase.io/ (after signning up for an account and create your own organization and project).
+    ADMIN_EMAIL= # Go to the authentication section of your supabase's project, create a new user with an email and add it here. You can only use this email to log in to the admin section for managing the journals on your app.
    ```
+4. Setup the database
+   ```sh
+   npx prisma migrate dev --name init
+   ```
+5. Run the app
+   ```sh
+    npm run dev
+   ```
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Usage
 
-Instructions on how to use your project and any relevant examples.
+After installing, go to [http://localhost:3000](http://localhost:3000) to see the app. Admin section can be accessed at [http://localhost:3000/admin](http://localhost:3000/admin). You can only login to the admin section with the email you added to the `ADMIN_EMAIL` environment variable.
 
 ## Contributing
 
-Guidelines for contributing to your project and how others can get involved.
+Contributions are welcome! If you would like to contribute to this project, please follow these guidelines:
+
+1. Fork the repository and create your branch from `main`.
+2. Make your changes.
+3. Submit a pull request with a clear description of your changes and why they should be merged.
+
+Thank you for your contributions!
 
 ## License
 
-Information about the license for your project.
+This project is licensed under the GNU GPL License.
+Please see the [LICENSE](./LICENSE) file for more details.
