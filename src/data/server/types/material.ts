@@ -1,4 +1,4 @@
-import { AsyncFunction } from "@/data/types";
+import { AsyncFunction } from "@/types";
 import * as dbServerType from "@/data/db_server/types";
 
 /***************************

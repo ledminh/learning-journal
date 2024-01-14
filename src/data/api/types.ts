@@ -3,7 +3,7 @@ import {
   MaterialType,
 } from "@/data/server/types/material";
 import { Tag } from "@/data/server/types/tag";
-import { AsyncFunction } from "@/data/types";
+import { AsyncFunction } from "@/types";
 import { DateEntry } from "../server/types/date";
 import {
   DataToConnectTag,

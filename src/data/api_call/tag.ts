@@ -1,4 +1,4 @@
-import { AsyncFunction } from "../types";
+import { AsyncFunction } from "@/types";
 import { Tag } from "@/data/server/types/tag";
 
 import post from "./post";

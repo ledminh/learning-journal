@@ -1,6 +1,6 @@
 import { MaterialType } from "@/data/server/types/material";
 import { JournalEntry } from "@/data/server/types/journal_entry";
-import { AsyncFunction } from "@/data/types";
+import { AsyncFunction } from "@/types";
 
 export type MaterialOption = "quote" | "code" | "image" | "link";
 

@@ -1,4 +1,4 @@
-import { AsyncFunction } from "../types";
+import { AsyncFunction } from "@/types";
 
 type PostFunction = AsyncFunction<
   {

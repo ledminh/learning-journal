@@ -1,6 +1,6 @@
 import { MaterialType as DBMaterialType } from "@prisma/client";
 
-import { AsyncFunction } from "@/data/types";
+import { AsyncFunction } from "@/types";
 
 export enum MaterialType {
   Link = "MaterialType/link",

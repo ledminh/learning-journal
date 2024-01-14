@@ -2,7 +2,7 @@
  * Data
  */
 
-import { AsyncFunction } from "@/data/types";
+import { AsyncFunction } from "@/types";
 import { DataToAddMaterial, Material, MaterialType } from "./material";
 
 export type DataToAddJournalEntry = {

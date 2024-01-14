@@ -1,4 +1,4 @@
-import { AsyncFunction } from "@/data/types";
+import { AsyncFunction } from "@/types";
 import { DataToCreateMaterial, Material } from "./material";
 
 export type GenerateJournalEntryDescriptionFunction = AsyncFunction<
