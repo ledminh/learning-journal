@@ -7,6 +7,7 @@ The app is still in its infancy. It does not support multiple users yet. Anyone 
 ## Table of Contents
 
 - [Motivation](#motivation)
+- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
