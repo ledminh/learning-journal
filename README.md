@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# LEARNING JOURNAL
 
-## Getting Started
+This is a React and TypeScript project built with Next.js. It uses Prisma for database management, Jest for testing, and Tailwind CSS for styling. It is a learning journal that allows users to create and manage their own learning journal entries. Users can create, read, update, and delete entries. Each journal entry is a small chunk of information that contains a topic, a learning material, and some notes. There are 4 types of learning material: quote, code, image, and link. The idea is when user sees something interesting or learns something new, they can quote it, crop a screenshot, or copy the link then write down what they learned in their own words.
 
-First, run the development server:
+The app is still in its infancy. It does not support multiple users yet. Anyone wants to use it can do so by cloning the repo and running it locally like any Next.js app. The installation instruction is below.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Table of Contents
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [Motivation](#motivation)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Motivation
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+After many years of learning, the author discovered that his brain can only process a small chunk of information at a time and the best way to learn anything is to write it down. He created this web app to help him any anyone whose brain works like his. The main purpose of this app is not to document what you learn (well, you can do that if you want) but to help you learn by writing down. You will recognize that when you see the live version on the author's website. There are topics, concepts, and information that has been repeated multiple times in different ways and in different entries.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation
 
-## Learn More
+1. Clone the repo
+   ```sh
+   git clone
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Create a `.env.local` file in the root directory and add the following environment variables
+   ```sh
+   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/learning-journal?schema=public"
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+## Usage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Instructions on how to use your project and any relevant examples.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Contributing
 
-## Deploy on Vercel
+Guidelines for contributing to your project and how others can get involved.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Information about the license for your project.
