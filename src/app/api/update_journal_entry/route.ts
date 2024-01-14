@@ -2,7 +2,15 @@ import { updateJournalEntry } from "@/data/api/journal_entry";
 
 import { MaterialType } from "@/data/server/types/material";
 
+import authenticate from "@/utils/authenticate";
+
 export async function POST(request: Request) {
+  const { errorMessage: authErrorMessage } = await authenticate();
+
+  if (authErrorMessage) {
+    return new Response(authErrorMessage, { status: 401 });
+  }
+
   const reqForm = await request.formData();
 
   const reqBody = Object.fromEntries(reqForm.entries());

@@ -134,7 +134,7 @@ export const uploadImage: UploadImageFunction = async ({ imageFile }) => {
     errorMessage: null,
     payload: {
       imageUrl:
-        process.env.SUPABASE_URL +
+        process.env.NEXT_PUBLIC_SUPABASE_URL +
         "/storage/v1/object/public/images/" +
         data.path,
     },

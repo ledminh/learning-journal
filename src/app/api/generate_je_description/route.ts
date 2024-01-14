@@ -1,7 +1,15 @@
 import { generateJournalEntryDescription } from "@/data/server/helpers";
 import { DataToCreateMaterial, Material } from "@/data/server/types/material";
 
+import authenticate from "@/utils/authenticate";
+
 export async function POST(request: Request) {
+  const { errorMessage: authErrorMessage } = await authenticate();
+
+  if (authErrorMessage) {
+    return new Response(authErrorMessage, { status: 401 });
+  }
+
   if (request.headers.get("content-type") !== "application/json") {
     return new Response(
       `Bad request. The content-type should be "application/json".
