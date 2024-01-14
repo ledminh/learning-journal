@@ -8,6 +8,7 @@ The app is still in its infancy. It does not support multiple users yet. Anyone 
 
 - [Motivation](#motivation)
 - [Screenshots](#screenshots)
+- [Demo](#demo)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
@@ -21,6 +22,10 @@ After many years of learning, the author discovered that his brain can only proc
 
 ![Learning Journal Screenshot](./learning-journal-screenshot.png)
 
+## Demo
+
+You can see the demo at [https://learning-journal-drab.vercel.app/](https://learning-journal-drab.vercel.app/).
+
 ## Installation
 
 1. Clone the repo
@@ -32,12 +37,16 @@ After many years of learning, the author discovered that his brain can only proc
    npm install
    ```
 3. Create a `.env.local` file in the root directory and add the following environment variables
+
    ```sh
     OPENAI_API_KEY= # Get it from https://platform.openai.com/api_keys (after signning up for an account).
     NEXT_PUBLIC_SUPABASE_URL= # Get it from https://app.supabase.io/ (after signning up for an account and create your own organization and project).
     NEXT_PUBLIC_SUPABASE_ANON_KEY= # Get it from https://app.supabase.io/ (after signning up for an account and create your own organization and project).
+    DATABASE_URL= # Get it from https://app.supabase.io/ (after signning up for an account and create your own organization and project).
     ADMIN_EMAIL= # Go to the authentication section of your supabase's project, create a new user with an email and add it here. You can only use this email to log in to the admin section for managing the journals on your app.
+
    ```
+
 4. Setup the database
    ```sh
    npx prisma migrate dev --name init
