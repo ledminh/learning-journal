@@ -9,6 +9,7 @@ import {
 } from "./types";
 import * as dbJournalEntry from "@/data/db_server/journal_entry";
 import * as dbDate from "@/data/db_server/date";
+import * as dbMaterial from "@/data/db_server/material";
 
 import createSlug from "@/utils/createSlug";
 import { addTags } from "./tag";
@@ -265,8 +266,6 @@ export const updateJournalEntry: UpdateJournalEntryFunction = async function (
     }
   });
 
-  // Prepare material
-
   const { errorMessage: errorMessageJE, payload } =
     await dbJournalEntry.updateJournalEntry({
       id: data.id,
@@ -325,6 +324,20 @@ export const deleteJournalEntry: DeleteJournalEntryFunction = async function (
     }
   }
 
+  // Delete material
+
+  const { errorMessage: errorMessageDM } = await dbMaterial.deleteMaterial({
+    id: payload.material.id,
+  });
+
+  if (errorMessageDM) {
+    return {
+      errorMessage: errorMessageDM,
+      payload: null,
+    };
+  }
+
+  // Delete date if no journal entries left
   const { errorMessage: errorMessageD, payload: deletedDate } = await getDate({
     date: payload.createdAt,
   });

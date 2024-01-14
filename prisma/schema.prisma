@@ -8,41 +8,40 @@ datasource db {
 }
 
 model JournalEntry {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          String     @id @default(uuid())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   title       String
-  slug        String  @unique
+  slug        String     @unique
   description String
-  materialId  String   @unique
+  materialId  String     @unique
   content     String
-  dateEntryId      String?
-  date        DateEntry?    @relation(fields: [dateEntryId], references: [id])
-  material    Material @relation(fields: [materialId], references: [id])
-  tags        Tag[]    @relation("JournalEntryToTag")
-  
+  dateEntryId String?
+  date        DateEntry? @relation(fields: [dateEntryId], references: [id])
+  material    Material   @relation(fields: [materialId], references: [id])
+  tags        Tag[]      @relation("JournalEntryToTag")
 }
 
 model Tag {
-  id       String         @id @default(uuid())  
-  name      String        @unique
-  createdAt DateTime       @default(now())
-  slug      String      @unique 
-  journalEntries   JournalEntry[] @relation("JournalEntryToTag")
+  name           String         @unique
+  createdAt      DateTime       @default(now())
+  slug           String         @unique
+  id             String         @id @default(uuid())
+  journalEntries JournalEntry[] @relation("JournalEntryToTag")
 }
 
 model Material {
-  id        String        @id @default(uuid())
-  createdAt DateTime      @default(now())
-  type      MaterialType
-  content   String
-  journalEntries     JournalEntry?
+  id           String        @id @default(uuid())
+  createdAt    DateTime      @default(now())
+  type         MaterialType
+  content      String
+  journalEntry JournalEntry?
 }
 
 model DateEntry {
-  id    String         @id @default(uuid())
-  date  DateTime       @unique @default(now())
-  journalEntries JournalEntry[] 
+  id             String         @id @default(uuid())
+  date           DateTime       @unique @default(now())
+  journalEntries JournalEntry[]
 }
 
 enum MaterialType {

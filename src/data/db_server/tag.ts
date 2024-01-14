@@ -432,6 +432,23 @@ export const removeJournalEntryFromTag: RemoveJournalEntryFromTagFunction =
 
 export const emptyTag: EmptyTagFunction = async ({ name }) => {
   try {
+    const jEs = await prismaClient.journalEntry.findMany({
+      where: {
+        tags: {
+          some: {
+            name: name,
+          },
+        },
+      },
+    });
+
+    if (jEs.length === 0) {
+      return {
+        errorMessage: "No journal entries found.",
+        payload: null,
+      };
+    }
+
     const { count: jeCount } = await prismaClient.journalEntry.deleteMany({
       where: {
         tags: {
@@ -445,6 +462,21 @@ export const emptyTag: EmptyTagFunction = async ({ name }) => {
     if (jeCount === 0) {
       return {
         errorMessage: "No journal entries found.",
+        payload: null,
+      };
+    }
+
+    const { count: mtCount } = await prismaClient.material.deleteMany({
+      where: {
+        id: {
+          in: jEs.map((jE) => jE.materialId),
+        },
+      },
+    });
+
+    if (mtCount === 0) {
+      return {
+        errorMessage: "No material found.",
         payload: null,
       };
     }
