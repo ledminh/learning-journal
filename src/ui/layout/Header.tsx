@@ -7,8 +7,8 @@ export default function Header() {
         <h1 className="text-5xl font-bold">LEARNING JOURNAL</h1>
       </Link>
       <p className="p-1 text-sm bg-slate-200">
-        I created this learning journal to practice writing and to document my
-        learning process.{" "}
+        I created this learning journal to practice writting and to help me
+        learn by writting everything down.{" "}
         <Link
           href="https://github.com/ledminh/learning-journal"
           className="border-b border-slate-400 hover:border-slate-900"
