@@ -16,6 +16,10 @@ The app is still in its infancy. It does not support multiple users yet. Anyone 
 
 After many years of learning, the author discovered that his brain can only process a small chunk of information at a time and the best way to learn anything is to write it down. He created this web app to help him any anyone whose brain works like his. The main purpose of this app is not to document what you learn (well, you can do that if you want) but to help you learn by writing down. You will recognize that when you see the live version on the author's website. There are topics, concepts, and information that has been repeated multiple times in different ways and in different entries.
 
+## Screenshots
+
+![Learning Journal Screenshot](./learning-journal-screenshot.png)
+
 ## Installation
 
 1. Clone the repo
