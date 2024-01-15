@@ -21,7 +21,7 @@ After 10 years of living in the U.S., the author still finds himself struggling 
 
 As a result, he created this web app to help him and any anyone whose brain works like his. The main purpose of this app is not to document what you learn (well, you can do that if you want) but to help you learn by writing down. You will recognize that when you see the live version on the author's website. There are topics, concepts, and information that has been repeated multiple times in different ways and in different entries.
 
-# Tech stack
+## Tech stack
 
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
