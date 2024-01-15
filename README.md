@@ -1,12 +1,13 @@
 # LEARNING JOURNAL
 
-This is a React and TypeScript project built with Next.js. It uses Prisma for database management, Jest for testing, and Tailwind CSS for styling. It is a learning journal that allows users to create and manage their own learning journal entries. Users can create, read, update, and delete entries. Each journal entry is a small chunk of information that contains a topic, a learning material, and some notes. There are 4 types of learning material: quote, code, image, and link. The idea is when user sees something interesting or learns something new, they can quote it, crop a screenshot, or copy the link then write down what they learned in their own words.
+This is a React and TypeScript project built with Next.js. It uses Prisma for database management, Jest for testing, and Tailwind CSS for styling. It is a learning journal that allows users to create and manage their own learning journal entries. Each journal entry is a small chunk of information that contains a title, a learning material, and some notes. There are 4 types of learning material: quote, code, image, and link. The idea is when user sees something interesting or learns something new, they can quote it, crop a screenshot, or copy the link then write down what they learned in their own words.
 
 The app is still in its infancy. It does not support multiple users yet. Anyone wants to use it can do so by cloning the repo and running it locally like any Next.js app. The installation instruction is below.
 
 ## Table of Contents
 
-- [Motivation](#motivation)
+- [Back story](#back-story)
+- [Tech stack](#tech-stack)
 - [Screenshots](#screenshots)
 - [Demo](#demo)
 - [Installation](#installation)
@@ -14,9 +15,22 @@ The app is still in its infancy. It does not support multiple users yet. Anyone 
 - [Contributing](#contributing)
 - [License](#license)
 
-## Motivation
+## Back story
 
-After many years of learning, the author discovered that his brain can only process a small chunk of information at a time and the best way to learn anything is to write it down. He created this web app to help him any anyone whose brain works like his. The main purpose of this app is not to document what you learn (well, you can do that if you want) but to help you learn by writing down. You will recognize that when you see the live version on the author's website. There are topics, concepts, and information that has been repeated multiple times in different ways and in different entries.
+After 10 years of living in the U.S., the author still finds himself struggling with speaking in English, especially when it comes to explaining something complex. He knows that the best way to improve anything is to practice. He starts to write down to explain anything he learned in his own words. Recently, he also realized that his brain can only process a small chunk of information at a time.
+
+As a result, he created this web app to help him and any anyone whose brain works like his. The main purpose of this app is not to document what you learn (well, you can do that if you want) but to help you learn by writing down. You will recognize that when you see the live version on the author's website. There are topics, concepts, and information that has been repeated multiple times in different ways and in different entries.
+
+# Tech stack
+
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Next.js](https://nextjs.org/)
+- [Prisma](https://www.prisma.io/)
+- [Jest](https://jestjs.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [OpenAI](https://openai.com/)
+- [Supabase](https://supabase.io/)
 
 ## Screenshots
 
