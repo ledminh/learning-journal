@@ -7,6 +7,7 @@ const deleteTag: DeleteTagFunction = async ({ name }) => {
     body: {
       name,
     },
+    revalidate: true,
   });
 };
 

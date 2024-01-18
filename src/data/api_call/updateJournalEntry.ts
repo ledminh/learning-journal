@@ -29,5 +29,6 @@ export const updateJournalEntry: UpdateJournalEntryFunction = async ({
         : undefined,
       content,
     },
+    revalidate: true,
   });
 };

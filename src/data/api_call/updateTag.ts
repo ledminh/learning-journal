@@ -8,6 +8,7 @@ const updateTag: UpdateTagFunction = async ({ name, newName }) => {
       name,
       newName,
     },
+    revalidate: true,
   });
 };
 

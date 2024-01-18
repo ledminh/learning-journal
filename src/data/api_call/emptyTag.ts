@@ -7,6 +7,7 @@ const emptyTag: EmptyTagFunction = async ({ name }) => {
     body: {
       name,
     },
+    revalidate: true,
   });
 };
 

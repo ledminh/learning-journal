@@ -4,11 +4,12 @@ type PostFormFunction = AsyncFunction<
   {
     url: string;
     data: Record<string, any>;
+    revalidate?: boolean;
   },
   any
 >;
 
-const postForm: PostFormFunction = async ({ url, data }) => {
+const postForm: PostFormFunction = async ({ url, data, revalidate }) => {
   const form = new FormData();
 
   for (const key in data) {
@@ -18,6 +19,9 @@ const postForm: PostFormFunction = async ({ url, data }) => {
   const response = await fetch(url, {
     method: "POST",
     body: form,
+    next: {
+      revalidate: revalidate ? 60 : false,
+    },
   });
 
   if (!response.ok) {

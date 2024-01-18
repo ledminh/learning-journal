@@ -7,6 +7,7 @@ const deleteJournalEntry: DeleteJournalEntryFunction = async ({ id }) => {
     body: {
       id,
     },
+    revalidate: true,
   });
 
   if (errorMessage) {

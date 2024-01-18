@@ -4,17 +4,21 @@ type PostFunction = AsyncFunction<
   {
     url: string;
     body: any;
+    revalidate?: boolean;
   },
   any
 >;
 
-const post: PostFunction = async function ({ url, body }) {
+const post: PostFunction = async function ({ url, body, revalidate }) {
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "content-type": "application/json",
     },
     body: JSON.stringify(body),
+    next: {
+      revalidate: revalidate ? 60 : false,
+    },
   });
 
   if (!response.ok) {

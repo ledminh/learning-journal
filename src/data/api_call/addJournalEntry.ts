@@ -24,5 +24,6 @@ export const addJournalEntry: AddJournalEntryFunction = async ({
           : material.content,
       content,
     },
+    revalidate: true,
   });
 };
