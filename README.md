@@ -43,13 +43,17 @@ You can see the demo at [https://learning-journal-drab.vercel.app/](https://lear
 ## Installation
 
 1. Clone the repo
+
    ```sh
    git clone
    ```
+
 2. Install NPM packages
+
    ```sh
    npm install
    ```
+
 3. Create a `.env.local` file in the root directory and add the following environment variables
 
    ```sh
@@ -62,13 +66,17 @@ You can see the demo at [https://learning-journal-drab.vercel.app/](https://lear
    ```
 
 4. Setup the database
+
    ```sh
    npx prisma migrate dev --name init
    ```
+
 5. Run the app
+
    ```sh
     npm run dev
    ```
+
 6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Usage
