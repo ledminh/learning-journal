@@ -99,19 +99,19 @@ const MaterialImage = (props: { src: string; alt: string }) => {
   return (
     <>
       <button
-        className="flex items-center justify-center w-full h-full"
+        className="flex items-center justify-center"
         onClick={() => setOpenModal(true)}
       >
         <Image
           src={props.src}
           alt={props.alt}
-          className="rounded-md shadow-sm"
-          width={500}
-          height={500}
+          width="250"
+          height="250"
+          className="rounded-md shadow-sm w-auto h-auto"
         />
       </button>
       <div
-        className={`fixed inset-0 z-10 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-60 ${
+        className={`fixed inset-0 z-10 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-60 overflow-y-scroll ${
           openModal ? "" : "hidden"
         }`}
         onClick={() => setOpenModal(false)}
@@ -125,7 +125,7 @@ const MaterialImage = (props: { src: string; alt: string }) => {
         <Image
           src={props.src}
           alt={props.alt}
-          className="rounded-md shadow-sm"
+          className="rounded-md shadow-sm w-[60vw] h-auto"
           width={1000}
           height={1000}
           onClick={(e) => e.stopPropagation()}
