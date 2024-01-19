@@ -90,13 +90,6 @@ export default function DateList({
         <div className="p-2 text-red-500 bg-red-100">{errorMessage}</div>
       ) : (
         <>
-          <p>
-            {"First dateEntries date: " +
-              dateEntries[0].date.toLocaleDateString()}
-          </p>
-          <p>{"oldestMonth: " + oldestMonth.toLocaleDateString()}</p>
-          <p>{"newestMonth: " + newestMonth.toLocaleDateString()}</p>
-
           <div className="flex items-center justify-center">
             <div className="w-1/3">
               <CalendarHeatmap

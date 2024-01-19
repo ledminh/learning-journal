@@ -143,7 +143,7 @@ export const getOldestMonth = async function () {
   return {
     errorMessage: null,
     payload: {
-      date: new Date(oldestYear, oldestMonth, 1),
+      date: new Date(oldestYear, oldestMonth, 15),
     },
   };
 };
@@ -179,7 +179,7 @@ export const getNewestMonth = async function () {
   return {
     errorMessage: null,
     payload: {
-      date: new Date(newestYear, newestMonth, 1),
+      date: new Date(newestYear, newestMonth, 15),
     },
   };
 };
