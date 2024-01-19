@@ -4,6 +4,8 @@ import { getDates } from "@/data/api/date";
 import SideBar from "@/ui/layout/SideBar";
 import MobileSideBar from "@/ui/layout/MobileSideBar";
 
+export const revalidate = 0;
+
 export default async function WithSidebarLayout({
   children,
 }: {
