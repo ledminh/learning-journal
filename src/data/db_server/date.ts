@@ -238,7 +238,7 @@ export const getDates: GetDateEntriesFunction = async function ({ options }) {
                 title: options?.journalEntrySort?.order,
               }
             : {
-                title: "asc",
+                createdAt: "desc",
               },
         },
       },
