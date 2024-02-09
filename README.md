@@ -1,8 +1,8 @@
 # LEARNING JOURNAL
 
-This is a React and TypeScript project built with Next.js. It uses Prisma for database management, Jest for testing, and Tailwind CSS for styling. It is a learning journal that allows users to create and manage their own learning journal entries. Each journal entry is a small chunk of information that contains a title, a learning material, and some notes. There are 4 types of learning material: quote, code, image, and link. The idea is when user sees something interesting or learns something new, they can quote it, crop a screenshot, or copy the link then write down what they learned in their own words.
+This project is developed using React and TypeScript, and it's built on Next.js. It utilizes PostgreSQL as its database, employs Prisma for database management, Jest for testing purposes, and Tailwind CSS for styling. Designed as a learning journal, this application enables users to create and manage entries detailing their learning experiences. Each journal entry comprises a title, learning material, and personal notes. The learning material can be categorized into four types: quote, code, image, and link. The concept behind the app is to allow users to record interesting findings or new knowledge by quoting text, cropping screenshots, or copying links, and then to describe what they've learned in their own words.
 
-The app is still in its infancy. It does not support multiple users yet. Anyone wants to use it can do so by cloning the repo and running it locally like any Next.js app. The installation instruction is below.
+Currently, the app is in the early stages of development and does not yet support multiple users. Those interested in using the application can do so by cloning the repository and running it locally, following the standard procedure for Next.js applications. Below are the installation instructions.
 
 ## Table of Contents
 
@@ -17,9 +17,9 @@ The app is still in its infancy. It does not support multiple users yet. Anyone 
 
 ## Back story
 
-After 10 years of living in the U.S., the author still finds himself struggling with speaking in English, especially when it comes to explaining something complex. He knows that the best way to improve anything is to practice. He starts to write down to explain anything he learned in his own words. Recently, he also realized that his brain can only process a small chunk of information at a time.
+After ten years of living in the U.S., the author still finds himself struggling with speaking in English, especially when it comes to explaining something complex. He knows that the best way to improve anything is to practice. He starts to write down to explain anything he learned in his own words. Recently, he also realized that his brain can only process a small chunk of information at a time.
 
-As a result, he created this web app to help him and any anyone whose brain works like his. The main purpose of this app is not to document what you learn (well, you can do that if you want) but to help you learn by writing down. You will recognize that when you see the live version on the author's website. There are topics, concepts, and information that has been repeated multiple times in different ways and in different entries.
+As a result, he created this web app to help him and anyone whose brain works like his. The main purpose of this app is not to document what you learn (well, you can do that if you want) but to help you learn by writing it down. You will recognize that when you see the live version on the author's website. There are topics, concepts, and information that have been repeated multiple times in different ways and different entries.
 
 ## Tech stack
 
