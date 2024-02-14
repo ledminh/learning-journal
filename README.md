@@ -39,6 +39,7 @@ As a result, he created this web app to help him and anyone whose brain works li
 ## Demo
 
 You can see the demo at [https://learning-journal-drab.vercel.app/](https://learning-journal-drab.vercel.app/).
+Admin login is at [https://learning-journal-drab.vercel.app/admin](https://learning-journal-drab.vercel.app/admin). You can log in with the email "demo@ledminh.dev" and password "demo_password_54321".
 
 ## Installation
 
