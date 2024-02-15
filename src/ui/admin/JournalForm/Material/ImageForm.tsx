@@ -20,7 +20,7 @@ const ImageForm: React.FC<{
 
   return (
     <div className="flex flex-col items-center justify-center gap-2">
-      <label className="flex items-center justify-center py-2 cursor-pointer hover:text-blue-500">
+      <label className="flex items-center justify-center p-4 bg-blue-300 cursor-pointer hover:text-white hover:bg-blue-500">
         <span className="font-semibold">
           {material ? "Change" : "Add"} Image
         </span>
@@ -31,7 +31,7 @@ const ImageForm: React.FC<{
         />
       </label>
       {material && (
-        <div className="relative w-60 h-60">
+        <div className="relative w-full h-[200px] border-8 border-gray-600 p-2">
           <Image
             src={
               material.content instanceof File

@@ -92,29 +92,34 @@ const MaterialImage = (props: { src: string; alt: string }) => {
     };
 
     window.addEventListener("keydown", handleKeyDown);
-
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("click", () => setOpenModal(false));
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("click", () => setOpenModal(false));
+    };
   }, []);
 
   return (
     <>
       <button
         className="flex items-center justify-center"
-        onClick={() => setOpenModal(true)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpenModal(true);
+        }}
       >
         <Image
           src={props.src}
           alt={props.alt}
-          width="250"
-          height="250"
-          className="rounded-md shadow-sm w-auto h-auto"
+          width="700"
+          height="700"
+          className="w-auto h-auto rounded-md shadow-sm"
         />
       </button>
       <div
         className={`fixed inset-0 z-10 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-60 overflow-y-scroll ${
           openModal ? "" : "hidden"
         }`}
-        onClick={() => setOpenModal(false)}
       >
         <button
           className="absolute top-0 right-0 p-2 text-white bg-red-900"
@@ -125,7 +130,7 @@ const MaterialImage = (props: { src: string; alt: string }) => {
         <Image
           src={props.src}
           alt={props.alt}
-          className="rounded-md shadow-sm w-[60vw] h-auto"
+          className="rounded-md shadow-sm w-[80vw] h-auto"
           width={1000}
           height={1000}
           onClick={(e) => e.stopPropagation()}
